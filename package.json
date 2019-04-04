@@ -1,11 +1,25 @@
 {
   "name": "ez-life",
   "version": "1.0.0",
-  "description": "INFO30005 2019 Semester 1 Project.",
+  "description": "INFO30005 Semester long project Semester 1, 2019.",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.20"
   },
-  "author": "Gilbert Vincenta, Firman Otto, Erya Wen, Garvin Prathama Bulkin",
-  "license": "ISC"
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gvincenta/ez-life.git"
+  },
+  "author": "Gilbert Vincenta, Erya Wen, Firman Otto, Garvin Prathama Bulkin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gvincenta/ez-life/issues"
+  },
+  "homepage": "https://github.com/gvincenta/ez-life#readme"
 }
