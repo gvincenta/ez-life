@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 // Database setup
 require('./models/db.js');
-
+const PORT = process.env.PORT || 3000; 
 
 // Routes setup
 var routes = require('./routes/routes.js');
@@ -14,6 +14,6 @@ app.use('/',routes);
 
 
 // Start the server
-app.listen(4000,function(req,res){
-	console.log('Express listening on port 4000');
+app.listen(PORT,function(req,res){
+	console.log('Express listening on port ${PORT}');
 });
