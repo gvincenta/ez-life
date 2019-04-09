@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-
+//id : google id, email: gmail account.
 var personSchema = mongoose.Schema(
     {
         id : String,
@@ -9,4 +9,5 @@ var personSchema = mongoose.Schema(
         }
     }
 );
+//export
 mongoose.model('person',personSchema);

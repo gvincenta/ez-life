@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
+
 // Database setup
 require('./models/db.js');
 const PORT = process.env.PORT || 3000; 

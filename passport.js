@@ -25,7 +25,7 @@ passport.use(new JWTStrategy({
         done(error, false);
     }
 }));
-
+//handle google tokens. 
 passport.use("googleToken", new GooglePlusTokenStrategy({
     clientID :process.env.CLIENT_ID,
     clientSecret : process.env.CLIENT_SECRET
@@ -48,6 +48,7 @@ passport.use("googleToken", new GooglePlusTokenStrategy({
         await newUser.save();
         done(null, newUser);
     }
+    //catch errors:
     catch(error){
         
         done(error, false, error.message); 

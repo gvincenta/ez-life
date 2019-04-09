@@ -1,12 +1,12 @@
 // Create database
 var mongoose = require('mongoose');
-
-
 const options = {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false
   };
+
+// connect....
 mongoose.connect(process.env.MONGO_URL || "mongodb://localhost/test", options, function(err) {
     // Check error in initial connection. There is no 2nd param to the callback.
     if (err){
@@ -18,6 +18,6 @@ mongoose.connect(process.env.MONGO_URL || "mongodb://localhost/test", options, f
     }
  
 });
-
+// require db.
 require('./person.js');
 

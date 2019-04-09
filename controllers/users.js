@@ -1,18 +1,21 @@
 var mongoose = require("mongoose");
 var Person  = mongoose.model("person");
 var JWT = require("jsonwebtoken");
-var JWT_S = process.env.JWT_SECRET;
+var {JWT_SECRET} = require("../configuration/index.js");
 //code goes here. 
 
+/**sends token for acces to user. */
 var signToken = user => {
     return JWT.sign({
         iss : 'ez-life', // optional
         sub : user._id,
         issuedAt :new Date().getTime(), //optional
         exp : new Date().setDate(new Date().getDate() +1 )
-    }, JWT_S // important, please be serious. 
+    }, JWT_SECRET // important, please be serious. 
     );    
 }
+
+/**adds new user */
 var addUser = async function(req,res, next){
     // email, password
     // find user
@@ -41,13 +44,18 @@ var getUserData = async function(req,res, next){
 
 
 };
+
+/**login existing user */
+
 var login = async function(req,res, next){
-    // make token
     console.log("req.user",req.user);
+    // make token
     var token = signToken(req.user);
+    //return tokem
     res.status(200).json({token});
 };
 
+/**get all the users in db. */
 var getAllUsers =  function(req,res, next){
     Person.find(function(err,people){
         if(!err){
@@ -56,8 +64,9 @@ var getAllUsers =  function(req,res, next){
             res.sendStatus(404);
         }
     });
-};
+}; // why empty? 
 
+/**exporting.. */
 module.exports.addUser = addUser;
 module.exports.login = login;
 module.exports.getUserData = getUserData;
