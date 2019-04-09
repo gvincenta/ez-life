@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 var Person  = mongoose.model("person");
 var JWT = require("jsonwebtoken");
-var {JWT_SECRET} = require("../configuration/index.js");
+
 //code goes here. 
 
 /**sends token for acces to user. */
@@ -11,7 +11,7 @@ var signToken = user => {
         sub : user._id,
         issuedAt :new Date().getTime(), //optional
         exp : new Date().setDate(new Date().getDate() +1 )
-    }, JWT_SECRET // important, please be serious. 
+    }, process.env.JWT_SECRET // important, please be serious. 
     );    
 }
 
