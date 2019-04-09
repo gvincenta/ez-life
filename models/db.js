@@ -20,3 +20,4 @@ mongoose.connect(process.env.MONGO_URL || "mongodb://localhost/test", options, f
 });
 
 require('./person.js');
+
