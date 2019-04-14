@@ -6,13 +6,13 @@ var userController = require('../controllers/users.js');
 var passportConfiguration = require("../passport.js");
 
 //get user data
-user.get("/userData",  passport.authenticate("jwt", {session : false}) , userController.getUserData);
+user.get("/details",  passport.authenticate("jwt", {session : false}) , userController.getUserData);
 
 //sign in / login users
-user.post("/oauth/google", passport.authenticate('googleToken', {session : false}), userController.login);
+user.post("/login",passport.authenticate('googleToken', {session : false}), userController.login);
 
-//print all users.
-user.get("/getAll",function(req, res){
-    res.send(userController.getAllUsers);
-})
+
+//add details optionally
+user.post("/details",  passport.authenticate("jwt", {session : false}) , userController.addUserData);
+
 module.exports = user;

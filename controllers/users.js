@@ -1,7 +1,8 @@
 var mongoose = require("mongoose");
 var Person  = mongoose.model("person");
 var JWT = require("jsonwebtoken");
-
+var {schemas}= require('../validators/validator');
+var Joi = require('joi');
 //code goes here. 
 
 /**sends token for acces to user. */
@@ -11,63 +12,68 @@ var signToken = user => {
         sub : user._id,
         issuedAt :new Date().getTime(), //optional
         exp : new Date().setDate(new Date().getDate() +1 )
-    }, process.env.JWT_SECRET // important, please be serious. 
+    }, process.env.JWT_SECRET 
     );    
 }
 
-/**adds new user */
-var addUser = async function(req,res, next){
-    // email, password
-    // find user
-    var {email, password} = req.value.body;
-    var findUser = await Person.findOne({email});
-    if (findUser){
-        return res.status(403).json({error : "Email is already in use"});
-    }
-    // need to expand req.value.body
-    // create new user
-    var newUser =  new Person({ 
-        email, 
-        password
-    });    
-    
-    await newUser.save();
-
-    //generate token
-    var token = signToken(newUser);
-
-    //respond w/ token
-    res.status(200).json({token});
-};
+/**gets user data
+ * @params req.user : user's details given from token. 
+ * @return sends user's detail 
+ */
 var getUserData = async function(req,res, next){
-    console.log("i\'ve reached here!");
-
-
+    Person.findById(req.user._id, function(err, data){
+        if(err){
+          res.send(err);
+          return;
+        }
+        res.send(data);
+    });
 };
 
-/**login existing user */
-
+/**login existing user
+ * 
+ */
 var login = async function(req,res, next){
-    console.log("req.user",req.user);
     // make token
     var token = signToken(req.user);
-    //return tokem
+    //return token
     res.status(200).json({token});
 };
 
-/**get all the users in db. */
-var getAllUsers =  function(req,res, next){
-    Person.find(function(err,people){
-        if(!err){
-            res.send(people);
-        }else{
-            res.sendStatus(404);
-        }
-    });
-}; // why empty? 
+/**adds profile data to 1 user in db. 
+ * @params req.body : new details of user in JSON format
+ * @params req.user : user's details given by token
+ * @return displays user's new details
+*/
+var addUserData =  async function(req,res, next){
+    
+    Joi.validate(req.body, schemas.loginSchema)
+        .then(item=>{
+            Person.findOneAndUpdate(
+                {"_id": req.user._id}, 
+                {"name":item.name,
+                 "birthdate": item.birthdate,
+                 "gender": item.gender
+                }, 
+                {"new": true})
+            .then(doc =>{
+                    res.json(doc)
+            })
+            .catch(err =>{
+                res.status(500).json(err)
+            });
+        })
+        .catch(err =>{
+            res.status(500).json(err)
+        });
+        
 
-/**exporting.. */
-module.exports.addUser = addUser;
+    
+}; 
+
+
+
+/*exporting.. */
 module.exports.login = login;
 module.exports.getUserData = getUserData;
-module.exports.getAllUsers = getAllUsers;
+module.exports.addUserData = addUserData;

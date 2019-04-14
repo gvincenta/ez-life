@@ -4,7 +4,6 @@ var router = express.Router();
 var controller = require('../controllers/controller.js');
 
 // welcomes users to homepage. 
-router.get('/api',controller.findAllPeople);
 router.get('/',function(req,res){res.send("Welcome to EZ(Y) LIFE!")});
 
 

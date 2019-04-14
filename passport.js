@@ -29,23 +29,21 @@ passport.use(new JWTStrategy({
 passport.use("googleToken", new GooglePlusTokenStrategy({
     clientID :process.env.CLIENT_ID,
     clientSecret : process.env.CLIENT_SECRET
-}, async (accessToken, refreshToken, profile, done)=>{
+}, async(  accessToken, refreshToken, profile, done)=>{
     try{
-        
         // check if user exists
-        var existingUser = await Person.findOne({"id" : profile.id});
+        var existingUser = await  Person.findOne({"id" : profile.id});
         if (existingUser){
             console.log("user alr exists in DB ");
             return done(null, existingUser);
         }
-        
         // if new account
         console.log("user not exists in DB ");
         var newUser = new Person ({
             id : profile.id,
             email: profile.emails[0].value
         })
-        await newUser.save();
+         await newUser.save();
         done(null, newUser);
     }
     //catch errors:
