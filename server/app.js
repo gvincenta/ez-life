@@ -7,7 +7,7 @@ var path = require('path');
 
 // Database setup
 require('./models/db.js');
-const PORT = process.env.PORT || 3000; 
+const PORT = process.env.PORT || 5000; 
 
 // Routes setup
 var routes = require('./routes/routes.js');
