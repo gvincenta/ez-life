@@ -9,7 +9,6 @@ class Report extends Component {
     {res : {} }; 
     axios.defaults.baseURL = '/api';
     axios.defaults.headers.common['Authorization'] = this.props.token;
-    console.log("token",this.props.token);
   }
  
   handleRetrieval(event){

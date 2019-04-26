@@ -74,15 +74,15 @@ var findTransaction =  function (req, res) {
             $project : {
               _id : "$data._id",
               name : "$name",
-              amount : "$data.realAMount",
+              amount : "$data.realAmount",
                date: "$data.date"
             }
-        }
+          }
         
            
         ]).then(
             doc =>{
-                
+                res.json(doc);
             }
         );
 };

@@ -2,10 +2,13 @@ import React, {Component} from 'react';
 
 import TransItem from './transItem';
 import axios from 'axios';
-
+/**TransList, a class to render all transaction's lists.  */
 export default class TransList extends Component{
+   /** init object
+    * @params this.props: needs user's token for axios to make requests to backend.
+   */
     constructor (props){
-        super(props); // mandatory
+        super(props); 
         this.state = 
           {
             name : "min. 3 characters", 
@@ -26,13 +29,10 @@ export default class TransList extends Component{
           this.handleLoad();
       }
       handleLoad = ()=>{
-        console.log("sad");
-        var self = this; 
+       var self = this; 
         axios.get('/transactions')
       .then(function (response) {
-        console.log("run");
         var d = response.data;
-        console.log("data",d);
 
         self.setState({transactions: d });
 
@@ -40,17 +40,23 @@ export default class TransList extends Component{
       .catch(function (err) {
         self.setState({error: err});
       });
-      console.log(self.state.transactions);
     }
 
+   /** handle 1 field's change: */
+    handleChange = (event) => {
+      event.preventDefault();
 
-   
+        this.setState({ [event.target.name]: event.target.value });
 
+    }
+    /**  handle add new button, pass it to backend :
+     * @params this.state :coming from user's input, needs {name, date, realAmount}.
+     * then, reloads table to reflect backend's changes on transaction. 
+    */
     handleAddNew = (event) => {
         event.preventDefault();
        var self = this;
         
-        console.log(this.state);
        
           axios.post('/transactions', {
             name : this.state.name,
@@ -58,7 +64,6 @@ export default class TransList extends Component{
         date : this.state.date
           })
           .then(function (response) {
-            console.log(" then response");
             console.log(response.data);
             self.handleLoad();
           })
@@ -67,16 +72,12 @@ export default class TransList extends Component{
           });
           
         }
-      
-
-      handleChange (event) {
-        this.setState({ [event.target.name]: event.target.value });
-        
-        console.log(this.state);
-      }
-
+    /** mandatory render: 
+     * renders table to reflect backend's storage + renders field for user's  input
+     * @params this.state : user enters input, stored into the state of the object. 
+     */
     render(){
-        const {transactions} = this.state
+        const {transactions} = this.state;
         return(
             <div>
                  <table className="table table-hover">
@@ -105,20 +106,16 @@ export default class TransList extends Component{
             </div>
             <div className="panel-body"> 
               <form>
-              <label > Name: </label><input type="text" name="name"  />
-                  <label > Amount:</label><input type="text" name="realAmount" />
-                  <label> Date:</label><input type="text" name="date" />
+              <label > Transaction: </label><input type="text" name="name" value = {this.state.name} onChange={this.handleChange}  />
+                  <label > Amount:</label><input type="text" name="amount" value = {this.state.amount} onChange={this.handleChange}  />
+                  <label> Date of Transaction:</label><input type="text" name="date" value = {this.state.date} onChange={this.handleChange}   />
                   
-                  <input type="submit" value="add" onClick={this.handleAddNew}/> 
+                  <input type="submit" value="add new" onClick={this.handleAddNew}/> 
+                  
               </form>
             </div>
  
-                {/*<button type="button" className="btn-icon" onClick ={this.handleAddClick}>
-                        <Icon name="plus" width={20} fill={"#42778c"} />
-                    </button>
-                <div style={{display}}>
-                    <GoalDetail addGoals={this.addGoals}/>
-                    </div>*/}
+              
             </div>
             </div>
             

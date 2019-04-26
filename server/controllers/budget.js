@@ -6,6 +6,12 @@ var Joi = require('joi');
  * @param req.body : all the details of 1 budget inserted as json object. */ 
 var createBudget= function (req, res) {
     // validates user input
+    if (req.body.isIncome !== "wants"){
+        {
+            req.body.preference = 1;
+        }
+       
+    }
     Joi.validate(req.body, schemas.budgetSchema)
         .then(
         // if validated, 
@@ -15,9 +21,7 @@ var createBudget= function (req, res) {
             
             "isIncome" :  item.isIncome,
             
-            "preference": item.preference,
-            "budgetedAmount": item.budgetedAmount
-            });
+            "preference": item.preference            });
             model.save();
             res.status(200).json(model);
         }
@@ -37,7 +41,7 @@ var suggestBudget = function(req, res)  {
     var statistic = Budget.aggregate([
         { $match : 
         {user: req.user._id,
-        isIncome: {$in : ["wants", "income"]}}
+        isIncome: "wants"}
         },
         {$lookup: 
             {
@@ -61,6 +65,27 @@ var suggestBudget = function(req, res)  {
             avg : {$avg : "$data.amountPerMonth"}
             }}    
         ]);
+    var avgIncome = Budget.aggregate([
+            { $match : 
+            {user: req.user._id,
+            isIncome: "income"
+            }},
+            {$lookup: 
+                {
+                "from" : "reports",
+                "localField" : "reportID",
+                "foreignField" : "_id",
+                "as" : "data"
+                } 
+            },
+            {
+                $unwind : "$data"
+            },
+            {$group : 
+                {_id : "$name",
+                avg : {$avg : "$data.amountPerMonth"}
+                }}    
+            ]);
       // sums all preferences on "wants".
     var sumPreference = Budget.aggregate([
             {$match: {
@@ -70,76 +95,58 @@ var suggestBudget = function(req, res)  {
             },
             {$group: {_id: "$isIncome", res: {$sum: "$preference"}}}
         ]);
-    console.log(req.user._id);
-    Promise.all([statistic, sumPreference]).then(function(values) {
-        var income_ctr = 0;
+    Promise.all([statistic, sumPreference, avgIncome]).then(function(values) {
         var avgIncome = 0;
-        for (var i = 0; i < values[0].length ; i++){
-            if (values[0][i]._id.isIncome === "income" ){
-                avgIncome = avgIncome + values[0][i].avg;
-                income_ctr = income_ctr +1; //buggy. should be distinct(month )
-               
-            }
-
+        for (var i = 0; i < values[2].length ; i++){
+            avgIncome = avgIncome + values[2][i].avg;
         }
-        avgIncome = avgIncome / income_ctr;
-        answer.push({avgIncome : avgIncome});
+        answer.push({averageIncome : avgIncome});
         
         // calculate amountPreference for each "wants":
         var i;
         for (i = 0; i < values[0].length ; i++){
-            if (values[0][i]._id.isIncome === "wants" ){
-                //method: var amountPreference = itemPreference/sumPreference * totalIncomeAvg*0.8;
-                var amountPreference = values[0][i]._id.preference /values[1][0].res * avgIncome*0.8;
-                var amount = 0; 
-                // if amountPreference within amountMax & amountMin of the item: 
-                if(amountPreference < values[0][i].amountMax && amountPreference > values[0][i].amountMin){
-                    amount = amountPreference;
+            //method: var amountPreference = itemPreference/sumPreference * totalIncomeAvg*0.8;
+            var amountPreference = values[0][i]._id.preference /values[1][0].res * avgIncome*0.8;
+            var amount = 0; 
+            // if amountPreference within amountMax & amountMin of the item: 
+            if(amountPreference < values[0][i].amountMax && amountPreference > values[0][i].amountMin){
+                amount = amountPreference;
                 
-                }
-                // if amountPreference outside amountMax & amountMin of the item: 
-                else{
-                   amount = values[0][i].amountMin;
-                   
-                } 
-               answer.push({id : values[0][i]._id.id, 
-                name : values[0][i]._id.name,
-                preference: values[0][i]._id.preference,
-                suggestedAmount: amount});
+            }
+            // if amountPreference outside amountMax & amountMin of the item: 
+            else{
+               amount = values[0][i].amountMin;
+               
+            } 
+            answer.push({id : values[0][i]._id.id, 
+            name : values[0][i]._id.name,
+            preference: values[0][i]._id.preference,
+            suggestedAmount: amount});
 
             }
             //
 
-        }
+        });
     res.send(answer);
 
 	
         
 
-    });
 
 
 };
 
 
-/** Checks on 1 budget or all budgets related to 1 user.
- * @param req.query.id : (optional) if provided, returns 1 user's budget specified by this id.  */  
+/** Checks on 1 budget or all budgets related to 1 user. */  
 var getBudget = function  (req, res) {
     // gives the related user's goal according to the query id. 
-
-    if (Object.keys(req.query).length !== 0){
-    	Budget.findOne({
-            _id: req.query.id,
-            user: req.user._id
-        })
-            .then(doc =>{
-                res.json(doc)
-            })
-            .catch(err =>{
-                res.status(500).json(err)
-            });
-        return;
+    if (req.body.isIncome !== "wants"){
+        {
+            req.body.preference = 1;
+        }
+       
     }
+ 
     
     // gives all of user's budgets if no query id defined. 
     Budget.find({
@@ -155,42 +162,39 @@ var getBudget = function  (req, res) {
 };
 
 
-/** Updates user's  budget (name/isIncome/preference/budgetedAmount).
- * @param req.query.id : (required) the budget's id to be updated.
+/** Updates user's  budget (/preference/budgetedAmount).
  * @param req.body:(required)  updated budget details provided in JSON object.  */  
 var updateBudget = function (req, res) {
+
   
-  Joi.validate(req.body, schemas.budgetSchema)
-    .then(item => {
-    	Budget.findOneAndUpdate({
-            _id: req.query.id,
-            user: req.user._id
-        },{ "user" : req.user._id,
-        "name": item.name,
-        "isIncome" :  item.isIncome,
-            
-            "preference": item.preference,
-            "budgetedAmount": item.budgetedAmount
-        } , {
-            new: true
-        }).then(doc =>{
-            res.status(200).json(doc); 
-        }).catch(err =>{
-            res.status(500).json(err)
-        })
-    })
-    .catch(
-      err =>{
-          res.json(err);
-    })
+    Joi.validate(req.body, schemas.budgetUpdateSchema).then(
+        item =>{
+            Budget.findOneAndUpdate({
+                name: req.body.name,
+                user: req.user._id
+            },{ "name": item.name,
+                "budgetedAmount": item.budgetedAmount,
+                "preference" : item.preference
+                } , {
+                    new: true
+                }).then(doc =>{
+                    res.status(200).json(doc); 
+                }).catch(err =>{
+                    res.status(500).json(err)
+                })
+        }
+       
+        
+    );
+
+   
 };
 
 /** Deletes 1 of user's  budgets based on the name.
- * @param req.query.id : (required) the budget's id that will be deleted.*/  
+ * @param req.body.name : (required) the budget's name that will be deleted.*/  
 var deleteBudget = function (req, res) {
     Budget.findOneAndDelete({
-        _id: req.query.id,
-        user: req.user._id
+        name: req.body.name    
     })
         .then(doc =>{
             res.json(doc)

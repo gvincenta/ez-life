@@ -28,9 +28,13 @@ module.exports = {
     budgetSchema : Joi.object().keys({
       name: Joi.string().lowercase().required().min(3),
       preference: Joi.number().min(1).max(10).required(),
-      budgetedAmount:Joi.number().min(1).required(),
       isIncome : Joi.string().lowercase().valid(["income", "needs", "wants"]).required()
 
+    }),
+    budgetUpdateSchema : Joi.object().keys({
+      name: Joi.string().lowercase().required().min(3),
+      preference: Joi.number().min(1).max(10).required(),
+      budgetedAmount : Joi.number().min(1).required()
     }),
     transactionUpdateSchema: Joi.object().keys({
     realAmount:Joi.number().min(1).required(),

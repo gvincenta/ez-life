@@ -23,8 +23,7 @@ var budgetSchema = mongoose.Schema({
             required: true
         },
         budgetedAmount:{
-            type : Number,
-            required: true
+            type : Number
         },
         transactionID: { type: schema.Types.ObjectId, 
             ref: 'transaction'        

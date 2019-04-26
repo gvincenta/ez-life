@@ -19,7 +19,7 @@ export default class Goals extends Component {
         type : this.props.value
       }; 
     axios.defaults.baseURL = '/api';
-    axios.defaults.headers.common['Authorization'] = "your user token";
+    axios.defaults.headers.common['Authorization'] =this.props.token;
   }
  
   handleRetrieval = (event) => {

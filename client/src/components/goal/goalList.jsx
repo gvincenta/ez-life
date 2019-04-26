@@ -36,7 +36,6 @@ export default class GoalList extends Component{
       event.preventDefault();
 
         this.setState({ [event.target.name]: event.target.value });
-        console.log(this.state);
 
     }
 
