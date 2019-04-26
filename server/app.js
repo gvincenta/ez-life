@@ -11,19 +11,30 @@ const PORT = process.env.PORT || 5000;
 
 // Routes setup
 var routes = require('./routes/routes.js');
-app.use('/',routes);
+app.use('/api',routes);
 
 //login route
 var users = require("./routes/users.js");
-app.use("/users",users);
+app.use("/api/users",users);
 
 //user's data transactions route
 var transactions = require('./routes/transaction.js');
-app.use("/transactions", transactions);
+app.use("/api/transactions", transactions);
 
 //user's goals route
 var goals = require('./routes/goals.js');
-app.use("/goals", goals);
+app.use("/api/goals", goals);
+
+
+//user's budget route
+var budget = require('./routes/budget.js');
+app.use("/api/budget", budget);
+
+//user's report route
+var report = require('./routes/report.js');
+app.use("/api/report", report);
+
+
 
 // Start the server
 app.listen(PORT,function(req,res){

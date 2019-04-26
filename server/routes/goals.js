@@ -7,16 +7,18 @@ var Joi = require('joi');
 
 
 /** Creates a new goal for the user. 
- * @param req.body : all the details of the goal inserted as json object. */ 
+ * @param req.query : all the details of the goal inserted as queries. */ 
 router.post('/', passport.authenticate("jwt", {session : false}) , (req, res) => {
     // validates user input
+    console.log("asdja");
     Joi.validate(req.body, schemas.goalSchema).then(
         // if validated, 
         item => {
             var model = new Goal({ "user" : req.user._id,
             "name": item.name,
             "due": item.due,
-            "amount": item.amount});
+            "amount": item.amount,
+        "preference": item.preference});
             model.save();
             res.status(200).json(model);
 
@@ -63,19 +65,15 @@ router.get('/', passport.authenticate("jwt", {session : false}) , (req, res) => 
 
 
 /** Updates user's  goal (name/due date/amount).
- * @param req.query.id : (required) the goal's id to be updated.
  * @param req.body:(required)  updated goal details provided in JSON object.  */  
 router.put('/',  passport.authenticate("jwt", {session : false}) ,(req, res) => {
   
-  Joi.validate(req.body, schemas.goalSchema)
-    .then(item => {
+    
         Goal.findOneAndUpdate({
-            _id: req.query.id,
-            user: req.user._id
-        },{ "user" : req.user._id,
-        "name": item.name,
-        "due": item.due,
-        "amount": item.amount
+            user: req.user._id,
+            name : req.body.name
+        },{ 
+            progress : req.body.progress
         } , {
             new: true
         }).then(doc =>{
@@ -83,29 +81,12 @@ router.put('/',  passport.authenticate("jwt", {session : false}) ,(req, res) => 
         }).catch(err =>{
             res.status(500).json(err)
         })
-    })
-    .catch(
-      err =>{
-          res.json(err);
-    })
+    
+    
   
    
    
 });
-/** Deletes 1 of user's  goals based on the name.
- * @param req.query.id : (required) the goal's id that will be deleted.*/  
-router.delete('/', passport.authenticate("jwt", {session : false}) ,(req, res) => {
-    Goal.findOneAndDelete({
-        _id: req.query.id,
-        user: req.user._id
-    })
-        .then(doc =>{
-            res.json(doc)
-        })
-        .catch(err =>{
-            res.status(500).json(err)
-        })
 
-})
 
 module.exports = router

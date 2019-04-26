@@ -19,6 +19,14 @@ var goalSchema = mongoose.Schema({
         due: {
             type: Date,
             required : true
+        },
+        preference: {
+            type : Number, 
+            required : true
+        },
+        progress: {
+            type : Number, 
+            required : true
         }
     }
 );

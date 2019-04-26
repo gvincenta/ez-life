@@ -22,4 +22,5 @@ mongoose.connect(process.env.MONGO_URL || "mongodb://localhost/test", options, f
 require('./person.js');
 require('./transaction.js');
 require('./goals.js');
-
+require('./report.js');
+require('./budget.js');
