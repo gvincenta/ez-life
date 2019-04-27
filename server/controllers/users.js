@@ -4,6 +4,38 @@ var JWT = require("jsonwebtoken");
 var {schemas}= require('../validators/validator');
 var Joi = require('joi');
 //code goes here. 
+var signUp =  async (req, res, next) => {
+    console.log("run");
+    const { email, password } = req.body;
+
+    // Check if there is a user with the same email
+    const foundUser = await Person.findOne({ "email": email });
+    if (foundUser) { 
+      return res.status(403).json({ error: 'Email is already in use'});
+      console.log("already used");
+    }
+
+    // Create a new user
+    const newUser = new Person({ 
+ 
+        email: email, 
+        password: password
+      
+    });
+
+    await newUser.save();
+
+    // Generate the token
+    const token = signToken(newUser);
+    // Respond with token
+    res.status(200).json({ token });
+  };
+
+var signIn = async (req, res, next) => {
+    // Generate token
+    const token = signToken(req.user);
+    res.status(200).json({ token });
+};
 
 /**sends token for acces to user. */
 var signToken = user => {
@@ -14,7 +46,7 @@ var signToken = user => {
         exp : new Date().setDate(new Date().getDate() +1 )
     }, process.env.JWT_SECRET 
     );    
-}
+};
 
 /**gets user data
  * @params req.user : user's details given from token. 
@@ -30,15 +62,7 @@ var getUserData = async function(req,res, next){
     });
 };
 
-/**login existing user
- * 
- */
-var login = async function(req,res, next){
-    // make token
-    var token = signToken(req.user);
-    //return token
-    res.status(200).json({token});
-};
+
 
 /**adds profile data to 1 user in db. 
  * @params req.body : new details of user in JSON format
@@ -74,6 +98,8 @@ var addUserData =  async function(req,res, next){
 
 
 /*exporting.. */
-module.exports.login = login;
+module.exports.signIn = signIn;
 module.exports.getUserData = getUserData;
 module.exports.addUserData = addUserData;
+
+module.exports.signUp = signUp;

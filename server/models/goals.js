@@ -25,8 +25,7 @@ var goalSchema = mongoose.Schema({
             required : true
         },
         progress: {
-            type : Number, 
-            required : true
+            type : Number
         }
     }
 );

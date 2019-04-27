@@ -45,14 +45,7 @@ export default class GoalList extends Component{
         })
     }
 
-   /* addGoals = (newGoals) => {
-        console.log("newgoals", newGoals);
-        const goals = this.state.goals;
-
-        goals.push(newGoals);
-        this.setState({goals});
-    }*/
-
+   
     handleAddClick = () => {
         this.setState({display: 'block'})
     }
@@ -61,6 +54,7 @@ export default class GoalList extends Component{
       event.preventDefault();
 
         console.log("event");
+        console.log(this.state.due);
     
           var self = this;
             axios.post('/goals', {
@@ -79,7 +73,6 @@ export default class GoalList extends Component{
     }
 
     handleLoad = ()=>{
-        console.log();
         var self = this; 
         axios.get('/goals')
       .then(function (response) {
@@ -124,6 +117,7 @@ export default class GoalList extends Component{
                         <th>Goal</th>
                         <th>Total Amount</th>
                         <th>Amount Saved So Far.. </th>
+                        <th>Preference </th>
 
                         </tr>
                     </thead>
@@ -152,9 +146,9 @@ export default class GoalList extends Component{
 
                 <label> Preference:</label><input type='text' name='preference' value={this.state.preference} 
                   onChange={this.handleChange}/>
-                <label > Due:</label><input type='text' name='due' value={this.state.due} 
+                <label > Due:</label><input type='date' name='due' value={this.state.due} 
                   onChange={this.handleChange}/>
-                  <label > Add Amount:</label><input type='text' name='progress' value={this.state.progress} 
+                  <label > Add Amount:</label><input type='number' name='progress' value={this.state.progress} 
                   onChange={this.handleChange}/>
 
                 <input type="submit" value="add new" onClick={this.handleAddNew}/> 

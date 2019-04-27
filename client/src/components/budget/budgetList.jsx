@@ -67,8 +67,9 @@ export default class BudgetList extends Component{
         this.setState({ [event.target.name]: event.target.value });
 
     }
-      handlePlan= () => {
-    
+      handlePlan= (event) => {
+        event.preventDefault();
+
           var self = this;
             axios.get('/budget/suggested')
           .then(function (response) {
@@ -79,6 +80,8 @@ export default class BudgetList extends Component{
           });
       }
       handleUpdate= (event) =>{
+        event.preventDefault();
+
         var self = this; 
         
         

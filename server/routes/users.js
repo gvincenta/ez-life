@@ -9,7 +9,10 @@ var passportConfiguration = require("../passport.js");
 user.get("/details",  passport.authenticate("jwt", {session : false}) , userController.getUserData);
 
 //sign in / login users
-user.post("/login",passport.authenticate('googleToken', {session : false}), userController.login);
+user.post("/signin",passport.authenticate("local", {session : false}) ,userController.signIn);
+
+//signup
+user.post("/signup",  userController.signUp);
 
 
 //add details optionally

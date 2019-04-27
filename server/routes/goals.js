@@ -10,10 +10,10 @@ var Joi = require('joi');
  * @param req.query : all the details of the goal inserted as queries. */ 
 router.post('/', passport.authenticate("jwt", {session : false}) , (req, res) => {
     // validates user input
-    console.log("asdja");
     Joi.validate(req.body, schemas.goalSchema).then(
         // if validated, 
         item => {
+
             var model = new Goal({ "user" : req.user._id,
             "name": item.name,
             "due": item.due,
@@ -30,13 +30,13 @@ router.post('/', passport.authenticate("jwt", {session : false}) , (req, res) =>
 });
 
 /** Checks on 1 goal or all goals related to 1 user.
- * @param req.query.id : (optional) if provided, returns 1 user's goal specified by this id.  */  
+ * @param req.body.name : (optional) if provided, returns 1 user's goal specified by this id.  */  
 router.get('/', passport.authenticate("jwt", {session : false}) , (req, res) => {
     // gives the related user's goal according to the query id. 
 
-    if (Object.keys(req.query).length !== 0){
+    if (Object.keys(req.body).length !== 0){
         Goal.findOne({
-            _id: req.query.id,
+            name: req.body.name,
             user: req.user._id
         })
             .then(doc =>{

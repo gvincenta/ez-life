@@ -1,10 +1,9 @@
 var passport = require("passport");
 var JWTStrategy = require("passport-jwt").Strategy;
 var ExtractJWT = require("passport-jwt").ExtractJwt;
-var GooglePlusTokenStrategy = require("passport-google-plus-token");
 var mongoose = require('mongoose');
 var Person = mongoose.model('person');
-
+var LocalStrategy = require('passport-local').Strategy;
 // JSON WEB TOKEN STRATEGY
 passport.use(new JWTStrategy({
     jwtFromRequest : ExtractJWT.fromHeader("authorization"),
@@ -16,40 +15,41 @@ passport.use(new JWTStrategy({
 
         //if user not defined ,handle:
         if (!user){
-            return done(null, false);
+            return done({error: "user does not exist, may sign up." }, false);
         }
         // return user
         return done(null, user);
     }
-    catch(error){
-        done(error, false);
+    catch(err){
+        done({error: err}, false);
     }
 }));
-//handle google tokens. 
-passport.use("googleToken", new GooglePlusTokenStrategy({
-    clientID :process.env.CLIENT_ID,
-    clientSecret : process.env.CLIENT_SECRET
-}, async(  accessToken, refreshToken, profile, done)=>{
-    try{
-        // check if user exists
-        var existingUser = await  Person.findOne({"id" : profile.id});
-        if (existingUser){
-            console.log("user alr exists in DB ");
-            return done(null, existingUser);
-        }
-        // if new account
-        console.log("user not exists in DB ");
-        var newUser = new Person ({
-            id : profile.id,
-            email: profile.emails[0].value
-        })
-         await newUser.save();
-        done(null, newUser);
+// LOCAL STRATEGY
+passport.use('local',  new LocalStrategy({
+    usernameField: 'email'
+  }, async (email, password, done) => {
+    try {
+        console.log('local run');
+      // Find the user given the email
+      const user = await Person.findOne({ "email": email });
+      
+      // If not, handle it
+      if (!user) {
+        return done(null, false);
+      }
+    
+      // Check if the password is correct
+      const isMatch = await user.isValidPassword(password);
+    
+      // If not, handle it
+      if (!isMatch) {
+
+        return done(null, false);
+      }
+
+      // Otherwise, return the user
+      done(null, user);
+    } catch(error) {
+      done(error, false);
     }
-    //catch errors:
-    catch(error){
-        
-        done(error, false, error.message); 
-    }
-   
-}));
+  }));
