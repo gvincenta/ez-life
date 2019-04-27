@@ -29,7 +29,11 @@ var budgetSchema = mongoose.Schema({
             ref: 'transaction'        
         },
         reportID: {type: schema.Types.ObjectId, 
-            ref: 'report'}
+            ref: 'report'},
+        ignored : {
+            type: Boolean,
+            required :true
+        }
     }
 );
 mongoose.model('budget',budgetSchema);

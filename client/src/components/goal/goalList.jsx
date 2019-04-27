@@ -3,6 +3,8 @@ import PubSub from 'pubsub-js';
 
 import GoalItem from './goalItem';
 import axios from 'axios';
+//handles user's goals
+
 export default class GoalList extends Component{
     constructor (props) {
     super(props);   
@@ -31,7 +33,7 @@ export default class GoalList extends Component{
     axios.defaults.headers.common['Authorization'] = this.props.token;
     this.handleLoad();
 
-}  
+}  //handles each input field's changes: 
     handleChange = (event) => {
       event.preventDefault();
 
@@ -45,16 +47,14 @@ export default class GoalList extends Component{
         })
     }
 
-   
+    
     handleAddClick = () => {
         this.setState({display: 'block'})
     }
-
+    //handles adding a new goal
     handleAddNew = (event) => {
       event.preventDefault();
 
-        console.log("event");
-        console.log(this.state.due);
     
           var self = this;
             axios.post('/goals', {
@@ -71,20 +71,21 @@ export default class GoalList extends Component{
             self.setState({error: err});
           });
     }
-
+    //handles loading all goals: 
     handleLoad = ()=>{
         var self = this; 
         axios.get('/goals')
       .then(function (response) {
-        console.log("get data:" );
         var d = response.data;
-        console.log(d );
         self.setState({goals: d });
       })
       .catch(function (error) {
-        console.log(error);
+        alert(error);
       });
     }
+
+    //handles updating a goal: 
+
     handleUpdate = (event) => {
         event.preventDefault();
 
@@ -99,11 +100,12 @@ export default class GoalList extends Component{
             self.handleLoad();
           })
           .catch(function (err) {
+            alert(err);
             self.setState({error: err});
 
           });
       }
-
+    //renders goal's input fields + goal's table: 
     render(){
         const {goals} = this.state
         const {display} = this.state

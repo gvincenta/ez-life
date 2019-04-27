@@ -35,10 +35,8 @@ personSchema.pre('save', async function(next) {
       const passwordHash = await bcrypt.hash(this.password, salt);
       // Re-assign hashed version over original, plain text password
       this.password = passwordHash;
-      console.log('exited');
       next();
     } catch(error) {
-      console.log("presave eror", error);
       next(error);
     }
   });
@@ -47,7 +45,6 @@ personSchema.methods.isValidPassword = async function(newPassword) {
     try {
       return await bcrypt.compare(newPassword, this.password);
     } catch(error) {
-      console.log("validate eror", error);
 
       throw new Error(error);
     }

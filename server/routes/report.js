@@ -16,8 +16,6 @@ router.get('/', passport.authenticate("jwt", {session : false}) , (req, res) => 
     var lowerBound = new Date(currYear, currMonth);
     // upperBound = this month's last date, e.g. 30th April. 
     var upperBound = new Date(currYear, currMonth+1);
-        console.log(lowerBound);
-    console.log(upperBound);
     // aggregates each income & expense category, then put it into report. 
     Budget.aggregate([{ $match : 
     {user: req.user._id}},
@@ -71,12 +69,12 @@ router.get('/', passport.authenticate("jwt", {session : false}) , (req, res) => 
             },
             {
                 $push : {reportID : model._id}
-            });
+            }, {new:true}).then ( (result) => {});
             answer.push({
                 name: doc[i]._id.name,
                 totalAmount: model.amountPerMonth,
-                isIncome:  doc[i]._id.isIncome
-            });
+                isIncome:  doc[i]._id.isIncome});
+            
 
             if (doc[i]._id.isIncome === "income" ){
                 sum = sum + doc[i].totalAmount;
@@ -86,13 +84,6 @@ router.get('/', passport.authenticate("jwt", {session : false}) , (req, res) => 
             }
         }
     
-    if (sum < 0){
-        console.log("losing money");
-    }
-    else{
-        console.log("gaining money");
-
-    }
     answer.push(sum);
     res.send(answer);
     });

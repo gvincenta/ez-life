@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {Switch, Route, NavLink } from 'react-router-dom';
 import axios from "axios";
+import './App.css';
 
 import Goals from "./Goals";
 import Transaction from "./Transaction";
 import Report from "./Report";
 import Budget from "./Budget";
-
 class App extends Component {
   constructor (props){
     super(props);
@@ -14,7 +14,7 @@ class App extends Component {
     username : "", 
     password : "",
     existingUser : false,
-    error : {} 
+    error : ""
     };
     axios.defaults.baseURL = '/api';
 
@@ -23,7 +23,6 @@ class App extends Component {
   handleChange = (event) => {
 
     this.setState({ [event.target.name]: event.target.value });  
-    console.log(this.state, "hanlde change");
 
   }
   handleLoad(){
@@ -36,7 +35,6 @@ class App extends Component {
     var path; 
     //for existing user, signin: 
     if (self.state.existingUser === true){
-      console.log("signin");
       path = "/users/signin";
       
     }
@@ -55,35 +53,37 @@ class App extends Component {
       self.setState({token: response.data.token });
       //catch any errors: 
     }).catch( (err)=> { 
-    
-      this.setState({error: err}); 
+      alert("password/username incorrect OR may already have signed up.");
+
     } );
 
     
   }
-  
+  // existing user or not: 
   isExistingUser = (event) =>{
     var negate = ! (this.state.existingUser ) ;
     this.setState({existingUser : negate});
 
 
   }
+  //renders login page, then dashboard page. 
     render() {
       var res;
       //first time up, ask for email/username and password: 
       if (this.state.token.length === 0 ){
-        
+        var err = this.state.error;
         res = (
           <div>
+
           <input type="checkbox" value="I am an existing user" onClick={this.isExistingUser}/>
           <label > I am an existing user  </label>
           <br/>
           <br/>
 
-          <label > email/username:  </label>
+          <label > email/username (not case sensitive):  </label>
           <input type="text" name="username" value = {this.state.username} onChange={this.handleChange}  />
           <br/>
-          <label > password:  </label>
+          <label > password (case sensitive):  </label>
           
           <input type="password" name="password" value = {this.state.password} onChange={this.handleChange}/>
           
@@ -93,30 +93,34 @@ class App extends Component {
           </div>
           );
       }
+     
 
       else{
         res  = (
           <div>
+
             <div className = "row">
-                <div className = "col-xs-offset-2 col-xs-8">
+                <div className = "col-s-offset-2 col-xs-8">
                     <div className = "page-header">
                         <h2>Dashboard</h2>
+                        <a href = "https://bit.ly/2PxitmU"> INSTRUCTIONS </a>
                     </div>              
                 </div>
             </div>
             
             <div className = "row">
               <div className="span4">
-              <div className = "col-xs-2 col-xs-offset-2">
-                  <div className = "list-group">
+              <div className = "col-xs-2 col-s-offset-2">
+                  <div className = "list">
                       <NavLink className = "list-group-item" to="/goal">Goal</NavLink>
                       <NavLink className = "list-group-item" to="/transaction">Transaction</NavLink>
                       <NavLink className = "list-group-item" to="/report">Report</NavLink>
                       <NavLink className = "list-group-item" to="/budget">Budgeting</NavLink>
+                      
                   </div>              
               </div>
               </div>
-              <div className = "col-xs-6">
+              <div className = "col-s-6">
                 <div className = "panel">
                     <div className = "panel-body">
                       <Switch>

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 export default class TransItem extends Component{
 
-
+//renders each cell for transaction table. 
     
 
     render(){

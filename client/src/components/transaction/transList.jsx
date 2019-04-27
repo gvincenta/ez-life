@@ -38,6 +38,7 @@ export default class TransList extends Component{
 
       })
       .catch(function (err) {
+        alert(err);
         self.setState({error: err});
       });
     }
@@ -64,10 +65,10 @@ export default class TransList extends Component{
         date : this.state.date
           })
           .then(function (response) {
-            console.log(response.data);
             self.handleLoad();
           })
           .catch(function (err) {
+            alert(err);
             self.setState({error : err });
           });
           
@@ -89,12 +90,8 @@ export default class TransList extends Component{
                         </tr>
                     </thead>
                     <tbody>
-                        {transactions.map((tran,index) => (
-                          
-                                     
-                                    <TransItem key={index} trans ={tran}/>
-                                   
-                            ))
+                        {transactions.map((tran,index) => 
+                          (<TransItem key={index} trans ={tran}/>))
                         }
                     </tbody>
                 </table>
@@ -107,8 +104,8 @@ export default class TransList extends Component{
             <div className="panel-body"> 
               <form>
               <label > Transaction: </label><input type="text" name="name" value = {this.state.name} onChange={this.handleChange}  />
-                  <label > Amount:</label><input type="text" name="amount" value = {this.state.amount} onChange={this.handleChange}  />
-                  <label> Date of Transaction:</label><input type="text" name="date" value = {this.state.date} onChange={this.handleChange}   />
+                  <label > Amount:</label><input type="number" name="amount" value = {this.state.amount} onChange={this.handleChange}  />
+                  <label> Date of Transaction:</label><input type="date" name="date" value = {this.state.date} onChange={this.handleChange}   />
                   
                   <input type="submit" value="add new" onClick={this.handleAddNew}/> 
                   

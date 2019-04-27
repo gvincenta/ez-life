@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 
 import BudgetItem from './budgetItem';
 import axios from 'axios';
-
+import PlanItem from './planItem';
+//handles making categories and budget planning
 export default class BudgetList extends Component{
     constructor(props) {
         super(props); // mandatory
@@ -18,13 +19,14 @@ export default class BudgetList extends Component{
               isIncome: "needs/wants/income",
               preference: "useful for wants, 1 to 10"}
           ],
-          error : {}
+          error : {},
+          response : 0
           }; 
           axios.defaults.baseURL = '/api';
           axios.defaults.headers.common['Authorization'] = this.props.token;
           this.handleLoad();
       }
-    
+    //handle item loading: 
     handleLoad = ()=>{
       var self = this; 
       axios.get('/budget')
@@ -40,7 +42,7 @@ export default class BudgetList extends Component{
 
 
    
-    
+    //handle adding more categories, 
     handleAddNew = (event) => {
         event.preventDefault();
        var self = this;
@@ -60,25 +62,27 @@ export default class BudgetList extends Component{
           
     }
       
-
+    //handles changes to each input field
     handleChange = (event) => {
       event.preventDefault();
 
         this.setState({ [event.target.name]: event.target.value });
 
     }
+    //handles budget planning for next month: 
       handlePlan= (event) => {
         event.preventDefault();
 
           var self = this;
             axios.get('/budget/suggested')
-          .then(function (response) {
-            self.handleLoad();
+          .then(function (res) {
+            self.setState({response : res.data});
           })
           .catch(function (err) {
             self.setState({error : err});
           });
       }
+      //handles updating budget amounts: 
       handleUpdate= (event) =>{
         event.preventDefault();
 
@@ -99,35 +103,32 @@ export default class BudgetList extends Component{
     
       
       }
-      handleDelete= (event) =>{
-        console.log("handleDelete");
-
-        var self = this; 
+      //handles deleting a  category: 
+      handleDelete = (event) => {
+        event.preventDefault();
+       var self = this;
         
-        axios.delete('/budget', {
-          name : self.state.name
-        })
-        .then(function (response) {
-          console.log("response");
-
-          console.log(response);
-          self.handleLoad();
-        })
-        .catch(function (err) {
-          console.log("err");
-          console.log(err);
-
-          self.setState({error : err});
-        });
-    
-      
-      }
+          axios.delete('/budget', {
+            data: 
+            {name : self.state.name}
+            
+          })
+          .then(function (response) {
+            self.handleLoad();
+          })
+          .catch(function (err) {
+            self.setState({error : err });
+          });
+          
+    }
+    // renders category table + category input's fields : 
     render = () =>{
-      console.log(this.state);
 
         const {budgets} = this.state
-       
-        return(
+       var res;
+
+       if (this.state.response === 0){
+          res = (
             <div>
                  <table className="table table-hover">
                     <thead>
@@ -180,6 +181,33 @@ export default class BudgetList extends Component{
             </div>
             </div>
             
-        )
+        );
+       }
+       else{
+         var plans = JSON.stringify(this.state.response);
+         res = (<div> 
+            <table className="table table-hover">
+                    <thead>
+                        <tr>
+                        <th>Name: </th>
+                        <th>Type: </th>
+                        <th>Preference (1 to 10): </th>
+                        <th>Suggested Amount: </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.response.map((res,index) => (
+                          
+                                     
+                                    <PlanItem key={index} result ={res}/>
+                                   
+                            ))
+                        }
+                    </tbody>
+                </table>
+         </div>);
+       }
+        return res; 
     }
 }

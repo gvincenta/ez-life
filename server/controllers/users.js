@@ -5,14 +5,12 @@ var {schemas}= require('../validators/validator');
 var Joi = require('joi');
 //code goes here. 
 var signUp =  async (req, res, next) => {
-    console.log("run");
     const { email, password } = req.body;
 
     // Check if there is a user with the same email
     const foundUser = await Person.findOne({ "email": email });
     if (foundUser) { 
       return res.status(403).json({ error: 'Email is already in use'});
-      console.log("already used");
     }
 
     // Create a new user

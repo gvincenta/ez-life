@@ -9,32 +9,47 @@ var Budget = mongoose.model("budget");
 var createNewTransaction = function (req, res) {
     Joi.validate(req.body, schemas.transactionCreateSchema)
         .then( item => {
-            var model = new TransactionModel({ 
-           
-            "date": item.date,
-            "realAmount": item.realAmount
-            } );
-            
-            
-            //save model. 
-            model.save();
-
-            //add this to Budget: 
-            Budget.updateOne({
+           // find if req.body.name exists on budget first: 
+            Budget.find({
                 user : req.user._id,
-                name : req.body.name
-            },
-            {
-                $push : {transactionID : model._id}
-            }).then(doc => {
-                res.json(doc) 
-            } ).catch(err =>{
-                res.status(500).json(err);
-             });
+                name : req.body.name,
+                ignored: false
+            }).limit(1).then(
+                ( result) => {
+                    //if found, put as a new model: 
+                    if (result.length >0){
+                        
+                        //make new model:                         
+                        var model = new TransactionModel({ 
+                        "date": item.date,
+                        "realAmount": item.realAmount
+                        } );
+
+                        model.save();
+                        //update to budget: 
+                        Budget.updateOne({_id : result[0]._id}, 
+                            {$push : {transactionID : model._id}},
+                        {new: true}).then(
+                            answer => {
+                                res.status(200).json(answer);
+                                return;
+                        });
+                    }
+                    // else, return cannot found error: 
+                    else{
+                        res.json({error: "item not found. please add it into budget category first. "});
+                        return;
+                    }
+                }
+            )
+
+            
         }).catch(err =>{
+            //catch any other errors: 
            res.status(500).json(err);
         })
-};
+
+    };
 
 /** Checks on  transactions of the month related to 1 user.
  * */ 
@@ -50,7 +65,8 @@ var findTransaction =  function (req, res) {
     
     Budget.aggregate([
         { $match : 
-        {user: req.user._id}
+        {user: req.user._id,
+        ignored : false}
         },
         {$lookup: 
             {
@@ -84,7 +100,7 @@ var findTransaction =  function (req, res) {
             doc =>{
                 res.json(doc);
             }
-        );
+        )
 };
 
 /** Updates user's  transaction (date/realAmount).
