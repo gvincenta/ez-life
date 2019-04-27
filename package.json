@@ -26,9 +26,9 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start" : "node server/app.js",
+    "start" : "node app.js",
     "heroku-postbuild": "cd client && npm install && npm run build",
-    "server-dev": "nodemon server/app.js",
+    "server-dev": "nodemon app.js",
     "client-dev": "npm start --prefix client",
     "start-dev": "concurrently \"npm run server-dev\" \"npm run client-dev\""
   },
