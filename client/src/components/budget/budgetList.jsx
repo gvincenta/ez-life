@@ -9,10 +9,10 @@ export default class BudgetList extends Component{
         super(props); // mandatory
         this.state = 
           {
-            name : "min. 3 characters", 
-            budgetedAmount : 1,
-            isIncome: "needs/wants/income",
-            preference: 0,
+            name : "", 
+            budgetedAmount : null,
+            isIncome: "",
+            preference: null,
             budgets: [
               {name : "min. 3 characters", 
               budgetedAmount : "minimum 1",
@@ -159,14 +159,14 @@ export default class BudgetList extends Component{
             <div className="panel-body"> 
               <form>
              
-        <label > Name: </label><input type='text' name='name' value={this.state.name} 
+        <label > Name: </label><input type='text' name='name' value={this.state.name} placeholder="min. 3 characters"
       onChange={this.handleChange}/>
-        <label > Type:</label><input type='text' name='isIncome' value={this.state.type} 
+        <label > Type:</label><input type='text' name='isIncome' value={this.state.type} placeholder=""
       onChange={this.handleChange}/>
 
-        <label> Preference:</label><input type='text' name='preference' value={this.state.preference} 
+        <label> Preference:</label><input type='text' name='preference' value={this.state.preference} placeholder="1 to 10"
       onChange={this.handleChange}/>
-        <label> Budget Amount:</label><input type='text' name='budgetedAmount' value={this.state.budgetedAmount} 
+        <label> Budget Amount:</label><input type='text' name='budgetedAmount' value={this.state.budgetedAmount} placeholder="minimum 1"
       onChange={this.handleChange}/>
 
           <input type="submit" value="update existing" onClick={this.handleUpdate}/>
