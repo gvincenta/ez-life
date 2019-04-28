@@ -19,7 +19,9 @@ router.get('/', passport.authenticate("jwt", {session : false}) , (req, res) => 
     var upperBound = new Date(currYear, currMonth+1);
 
     //check if user already make report or nah: 
-    Report.find({month: {
+    Report.find({
+        user: req.user._id,
+        month: {
         $gt: lowerBound,
         $lte: upperBound
       

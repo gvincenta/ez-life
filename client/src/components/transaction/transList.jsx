@@ -12,8 +12,8 @@ export default class TransList extends Component{
         this.state = 
           {
             name : "", 
-            date : "",
-            amount: "",
+            date : "YYYY-MM-DD",
+            amount: "at least 1",
             transactions: [
               {
                   name:"empty" ,
@@ -104,8 +104,8 @@ export default class TransList extends Component{
             <div className="panel-body"> 
               <form className="form-horizontal">
               <label > Transaction: </label><input type="text" name="name" value = {this.state.name} placeholder ="min. 3 characters" onChange={this.handleChange}  />
-                  <label > Amount:</label><input type="number" name="amount" value = {this.state.amount} placeholder="YYYY-MM-DD"onChange={this.handleChange}  />
-                  <label> Date of Transaction:</label><input type="date" name="date" value = {this.state.date} placeholder="at least 1" onChange={this.handleChange}   />
+                  <label > Amount:</label><input type="number" name="amount" value = {this.state.amount} onChange={this.handleChange}  />
+                  <label> Date of Transaction:</label><input type="date" name="date" value = {this.state.date} onChange={this.handleChange}   />
                   
                   <input type="submit" value="add new" onClick={this.handleAddNew}/> 
                   

@@ -9,11 +9,11 @@ export default class GoalList extends Component{
     constructor (props) {
     super(props);   
     this.state = {
-        name : "",
-        amount : "",
-        preference :"",
-        due : "",
-        progress : "",
+        name : "at least 3 characters",
+        amount : "at least > 1",
+        preference :"1 to 5 ",
+        due : "YYYY-MM-DD",
+        progress : "at least > 1 for updating",
         goals: [
             {
                 name:"empty" ,
@@ -142,16 +142,16 @@ export default class GoalList extends Component{
             <div className="panel-body"> 
               <form>
                 <label > Name: </label><input type='text' name='name' value={this.state.name} 
-                  placeholder="at least 3 characters" onChange={this.handleChange}/>
+                  onChange={this.handleChange}/>
                 <label > Total Amount:</label><input type='number' name='amount' value={this.state.amount} 
-                  placeholder="at least > 1" onChange={this.handleChange}/>
+                  onChange={this.handleChange}/>
 
                 <label> Preference:</label><input type='text' name='preference' value={this.state.preference} 
-                  placeholder="1 to 5" onChange={this.handleChange}/>
+                  onChange={this.handleChange}/>
                 <label > Due:</label><input type='date' name='due' value={this.state.due} 
-                  placeholder="YYYY-MM-DD" onChange={this.handleChange}/>
+                  onChange={this.handleChange}/>
                   <label > Add Amount:</label><input type='number' name='progress' value={this.state.progress} 
-                  placeholder="at least > 1 for updating" onChange={this.handleChange}/>
+                  onChange={this.handleChange}/>
 
                 <input type="submit" value="add new" onClick={this.handleAddNew}/> 
                 <input type="submit" value="update existing" onClick={this.handleUpdate}/>
