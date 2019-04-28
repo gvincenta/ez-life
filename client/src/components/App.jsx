@@ -73,36 +73,36 @@ class App extends Component {
       //first time up, ask for email/username and password: 
       if (this.state.token.length === 0 ){
         var err = this.state.error;
-        // res = (
-      //     <div>
-      //             <Header />
+        res = (
+          <div>
+                  <Header />
 
 
-      //     <input type="checkbox" value="I am an existing user" onClick={this.isExistingUser}/>
+          <input type="checkbox" value="I am an existing user" onClick={this.isExistingUser}/>
         
-      //     <label > I am an existing user  </label>
-      //     <br/>
-      //     <br/>
+          <label > I am an existing user  </label>
+          <br/>
+          <br/>
    
           
 
-      //       <label > email/username:  </label>
-      //       <input type="text" name="username" value = {this.state.username} onChange={this.handleChange}  placeholder="not case sensitive" />
-      //       <br/>
-      //       <label > password:  </label>
+            <label > email/username:  </label>
+            <input type="text" name="username" value = {this.state.username} onChange={this.handleChange}  placeholder="not case sensitive" />
+            <br/>
+            <label > password:  </label>
             
-      //       <input type="password" name="password" value = {this.state.password} onChange={this.handleChange} placeholder="case sensitive"/>
+            <input type="password" name="password" value = {this.state.password} onChange={this.handleChange} placeholder="case sensitive"/>
             
-      //       <input type="submit" value="login" onClick={this.handleLogIn}/>
+            <input type="submit" value="login" onClick={this.handleLogIn}/>
             
          
       
-      //     </div>
-      //     );
-      // }
+          </div>
+          );
+      }
      
 
-      // else{
+      else{
         res  = (
           <div>
                   <Header />
