@@ -101,7 +101,7 @@ router.get('/', passport.authenticate("jwt", {session : false}) , (req, res) => 
                    var answer = []; 
                    for (let i = 0; i < doc.length; i++){
                         var model = new Report({ 
-                        
+                            "user": req.user._id,
                             "amountPerMonth": doc[i].totalAmount,
                             "month" : new Date(doc[i]._id.year,doc[i]._id.month)
                             
