@@ -17,6 +17,12 @@ var createBudget= function (req, res) {
         .then(
         // if validated, 
         item => {
+            if (item.isIncome !== "wants"){
+                {
+                    req.body.preference = 1;
+                }
+               
+            }
             var model = new Budget({ "user" : req.user._id,
             "name": item.name,
             
@@ -146,12 +152,7 @@ var suggestBudget = function(req, res)  {
 var getBudget = function  (req, res) {
     // gives the related user's goal according to the query id. 
 
-    if (req.body.isIncome !== "wants"){
-        {
-            req.body.preference = 1;
-        }
-       
-    }
+   
  
     
     // gives all of user's budgets if no query id defined. 
@@ -202,6 +203,7 @@ var updateBudget = function (req, res) {
 var deleteBudget = function (req, res) {
     //basically ignore this budget.
     Budget.findOneAndUpdate({
+        user : req.user._id,
         name: req.body.name    
     }, { "ignored": true
     }, {new : true})
