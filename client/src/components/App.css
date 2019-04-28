@@ -12,6 +12,10 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+.Header{
+  background-color: #f4a464;
+
+}
 
 .App-link {
   color: #61dafb;

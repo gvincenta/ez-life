@@ -27,17 +27,14 @@ export default class Goals extends Component {
 
     axios.get('/goals')
       .then(function (response) {
-        console.log("get data:" );
         var d = response.data;
-        console.log(d );
         this.setState({d });
       })
       .catch(function (error) {
-        console.log(error);
+        alert(error);
       });
   }
   handleUpdate = (event) => {
-    console.log("upd event");
     var self = this;
 
     
@@ -54,11 +51,9 @@ export default class Goals extends Component {
         console.log(error);
       });
       this.setState({ submitted: true });
-      console.log(self.state.res);
   }
 
   handleAddNew = (event) => {
-    console.log("event");
 
       var self = this;
         axios.post('/goals', {

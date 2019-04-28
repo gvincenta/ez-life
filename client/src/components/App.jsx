@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import {Switch, Route, NavLink } from 'react-router-dom';
+import {Switch, Route } from 'react-router-dom';
 import axios from "axios";
 import './App.css';
-
+import Header from "./Header";
 import Goals from "./Goals";
 import Transaction from "./Transaction";
 import Report from "./Report";
 import Budget from "./Budget";
+import SideBar from './sidebar';
 class App extends Component {
   constructor (props){
     super(props);
@@ -74,22 +75,28 @@ class App extends Component {
         var err = this.state.error;
         res = (
           <div>
+                  <Header />
+
 
           <input type="checkbox" value="I am an existing user" onClick={this.isExistingUser}/>
+        
           <label > I am an existing user  </label>
           <br/>
           <br/>
+   
+          
 
-          <label > email/username (not case sensitive):  </label>
-          <input type="text" name="username" value = {this.state.username} onChange={this.handleChange}  />
-          <br/>
-          <label > password (case sensitive):  </label>
-          
-          <input type="password" name="password" value = {this.state.password} onChange={this.handleChange}/>
-          
-          <input type="submit" value="login" onClick={this.handleLogIn}/>
-          
-          
+            <label > email/username:  </label>
+            <input type="text" name="username" value = {this.state.username} onChange={this.handleChange}  placeholder="not case sensitive" />
+            <br/>
+            <label > password:  </label>
+            
+            <input type="password" name="password" value = {this.state.password} onChange={this.handleChange} placeholder="case sensitive"/>
+            
+            <input type="submit" value="login" onClick={this.handleLogIn}/>
+            
+         
+      
           </div>
           );
       }
@@ -98,28 +105,15 @@ class App extends Component {
       else{
         res  = (
           <div>
+                  <Header />
 
+            <SideBar token = {this.state.token} />
             <div className = "row">
-                <div className = "col-s-offset-2 col-xs-8">
-                    <div className = "page-header">
-                        <h2>Dashboard</h2>
-                        <a href = "https://bit.ly/2PxitmU"> INSTRUCTIONS </a>
-                    </div>              
-                </div>
-            </div>
+           <div className="col-s-offset-2 col-xs-8" > </div>
+           <div className="page-header" > </div>
+           </div> 
             
-            <div className = "row">
-              <div className="span4">
-              <div className = "col-xs-2 col-s-offset-2">
-                  <div className = "list">
-                      <NavLink className = "list-group-item" to="/goal">Goal</NavLink>
-                      <NavLink className = "list-group-item" to="/transaction">Transaction</NavLink>
-                      <NavLink className = "list-group-item" to="/report">Report</NavLink>
-                      <NavLink className = "list-group-item" to="/budget">Budgeting</NavLink>
-                      
-                  </div>              
-              </div>
-              </div>
+            
               <div className = "col-s-6">
                 <div className = "panel">
                     <div className = "panel-body">
@@ -134,7 +128,7 @@ class App extends Component {
                 </div>
               </div>
             </div>
-          </div>
+         
         
         );
       }
