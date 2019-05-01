@@ -6,13 +6,6 @@ var Joi = require('joi');
  * @param req.body : all the details of 1 budget inserted as json object. */ 
 var createBudget= function (req, res) {
 
-    // validates user input
-    if (req.body.isIncome !== "wants"){
-        {
-            req.body.preference = 1;
-        }
-       
-    }
     Joi.validate(req.body, schemas.budgetSchema)
         .then(
         // if validated, 
@@ -204,7 +197,8 @@ var deleteBudget = function (req, res) {
     //basically ignore this budget.
     Budget.findOneAndUpdate({
         user : req.user._id,
-        name: req.body.name    
+        name: req.body.name,
+        ignored: false    
     }, { "ignored": true
     }, {new : true})
         .then(doc =>{
