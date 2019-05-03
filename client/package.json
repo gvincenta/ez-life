@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material/textfield": "^1.1.1",
+    "antd": "^3.16.6",
     "axios": "^0.18.0",
     "gapi-client": "0.0.3",
     "pubsub-js": "^1.7.0",
