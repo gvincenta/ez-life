@@ -16,7 +16,6 @@ module.exports = {
 
     realAmount:Joi.number().min(1).required(),
     date: Joi.date().required().max('now')
-
     }),
     loginSchema: Joi.object().keys({
      

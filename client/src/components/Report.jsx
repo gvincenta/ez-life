@@ -3,13 +3,33 @@ import axios from "axios";
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import Goals from './Goals';
+import {Bar,Line,Pie} from 'react-chartjs-2';
 /**Handles monthly report for client. */
+var gravityData = {
+  label: 'Gravity of Planet (m/s2)',
+  data: [15000,15000, 14500, 13000, 14500, 13000,15000, 14500, 13000, 15000, 14500, 13000],
+  backgroundColor: 'rgba(67,116,135, 0.6)',
+  borderWidth: 0
+};
+var densityData = {
+  label: 'Density of Planet (kg/m3)',
+  data: [10000, 10000, 9000, 17000, 9000,10000, 9000, 17000, 17000,10000, 9000, 17000],
+  backgroundColor: 'rgba(244,164,100, 0.6)',
+  borderWidth: 0
+};
 class Report extends Component {
 
   constructor (props){
     super(props); // mandatory
     this.state = 
-    {res : {} }; 
+    {res : {},
+    
+    
+    data: {
+      labels: ['January', 'February', 'March', "April", "May", "June", "July", "August", "Sept","Oct","Nov","Dec"],
+      datasets: [densityData, gravityData]
+  }
+   }; 
     axios.defaults.baseURL = '/api';
     axios.defaults.headers.common['Authorization'] = this.props.token;
   }
@@ -20,26 +40,29 @@ class Report extends Component {
     axios.get('/report')
     .then(function (response) {
       var d = response.data;
-      self.setState({res : d});
-    })
+      self.setState({res : d});})
+
     .catch(function (error) {
       alert(error);
-    });
+    })
   }
 
 
 
   render() {
-    var res;
+    //var res;
+    var res = <Line data={this.state.data} />
+    
     //displays button if not yet clicked: 
-      res = (<div> 
+    
+      /*res = (<div> 
         
 
   <input type="submit" value="get" onClick={this.handleRetrieval.bind(this)}/> 
   
 
 
-      </div>);
+      </div>);*/
 
     //displays spending per category, net income, and instructions on what to do with goals: 
     if (Object.keys(this.state.res).length !== 0 ){
@@ -86,7 +109,7 @@ class Report extends Component {
           </div> );
         }
     }
-      
+    
       
       return res; 
   
