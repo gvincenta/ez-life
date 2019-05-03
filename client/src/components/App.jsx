@@ -137,3 +137,51 @@ class App extends Component {
   }
   
   export default App;
+
+
+
+/* Update Layout */ 
+
+// import React, {Component} from 'react';
+// import {Switch, Route, Redirect,NavLink}from 'react-router-dom'
+// import { Layout } from "antd";
+
+// import Goal from './goal/goal'
+//import Transaction from "./Transaction";
+// import SideBar from './sidebar';
+
+// import 'antd/dist/antd.css';
+// import './app.css';
+
+// const { Header, Footer, Sider, Content } = Layout;
+
+
+// export default class App extends Component{
+
+    
+//       render() {
+//         return (
+            
+          
+//           <Layout>
+           
+//                 <Sidebar/>
+
+//                 <Header style={{ background: '#f4a464', padding: 0}}>
+//                 </Header>
+
+//                 <Content style={{
+//                     margin: '24px 16px', padding: 24, background: '#fff', height: '85vh'
+//                 }}
+//                 >
+//                     <Switch>
+//                         <Route path='/goal' component ={Goal}></Route>
+//                         <Route path='/transaction' component ={Transaction}></Route>
+//                         <Redirect to ='/goal'></Redirect>
+//                       </Switch>
+//                 </Content>
+            
+//           </Layout>
+//         );
+//       }
+// }
