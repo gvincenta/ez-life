@@ -1,7 +1,12 @@
 .App {
   text-align: center;
 }
-
+body {
+  background: whitesmoke no-repeat fixed center;
+}
+div {
+  background: whitesmoke no-repeat fixed center;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -12,9 +17,8 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-.Header{
+.Header {
   background-color: #f4a464;
-
 }
 
 .App-link {
@@ -29,7 +33,6 @@
     transform: rotate(360deg);
   }
 }
-
 
 html,
 body {
@@ -98,21 +101,18 @@ body {
 }
 th {
   text-align: center;
-  border-bottom: 1px solid #ddd;
-
+  border-bottom: 1px solid #d1d1d1b6;
+  background-color: #dddddd;
 }
-td{
+td {
   text-align: center;
   border-bottom: 1px solid #ddd;
-}
-/* UPDATE LAYOUT
-.ant-layout{
-  height: 100%;
+  border-right: 5px;
 }
 
-.ant-layout-header {
-  height: 96px;
-  padding: 0 50px;
-  line-height: 96px;
-  background: #001529;
-}*/
+tr:nth-child(even) {
+  background-color: #f4f5fa;
+}
+tr:nth-child(odd) {
+  background-color: #baccd1;
+}

@@ -1,27 +1,24 @@
 // sidebar.js
 
-import React from 'react';
-import './sidebar.css';
-import { slide as Menu } from 'react-burger-menu';
+import React from "react";
+import "./sidebar.css";
+import { slide as Menu } from "react-burger-menu";
 import { Icon } from "react-icons-kit";
 import { dashboard } from "react-icons-kit/fa/dashboard";
-import {graph} from 'react-icons-kit/iconic/graph'
-import {bullseye} from 'react-icons-kit/ikons/bullseye'
-import {ic_attach_money} from 'react-icons-kit/md/ic_attach_money'
-import {ic_forum} from 'react-icons-kit/md/ic_forum'
-import {NavLink } from 'react-router-dom';
+import { graph } from "react-icons-kit/iconic/graph";
+import { bullseye } from "react-icons-kit/ikons/bullseye";
+import { ic_attach_money } from "react-icons-kit/md/ic_attach_money";
+import { ic_forum } from "react-icons-kit/md/ic_forum";
+import { NavLink } from "react-router-dom";
 
 import Header from "./Header";
-export default class SideBar extends React.Component{
-  handleClick = (event)=>{
+export default class SideBar extends React.Component {
+  handleClick = event => {
     event.preventDefault();
-  }
-    render(){
+  };
+  render() {
     return (
-    
-      
-<Menu >
-
+      <Menu>
         <div>
           <h1>Ez-Life</h1>
         </div>
@@ -56,13 +53,11 @@ export default class SideBar extends React.Component{
           <Icon id="icon" icon={ic_forum} />
           Forum
         </NavLink>
-        <a  className="menu-item" href = "https://bit.ly/2PxitmU"> 
-        <Icon id="icon" icon={ic_forum} />
-        Instructions </a>
-
+        <a className="menu-item" href="https://bit.ly/2PxitmU">
+          <Icon id="icon" icon={ic_forum} />
+          Instructions{" "}
+        </a>
       </Menu>
-
     );
-  }  
+  }
 }
-

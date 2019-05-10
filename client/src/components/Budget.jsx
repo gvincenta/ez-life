@@ -1,46 +1,30 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 import axios from "axios";
-import BudgetList  from './budget/budgetList.jsx';
+import BudgetList from "./budget/budgetList.jsx";
 
 export default class Budget extends Component {
-
-  constructor (props){
+  constructor(props) {
     super(props); // mandatory
-    this.state = 
-      {
-        submitted : false, 
-        name : "",
-        amount: 0,
-        preference: 0,
-        due : "YYYY-MM-DD",
-        progress : 0,
-        res : {} ,
-        type : this.props.value
-      }; 
-    axios.defaults.baseURL = '/api';
-    axios.defaults.headers.common['Authorization'] = this.props.token;
+    this.state = {
+      submitted: false,
+      name: "",
+      amount: 0,
+      preference: 0,
+      due: "YYYY-MM-DD",
+      progress: 0,
+      res: {},
+      type: this.props.value
+    };
+    axios.defaults.baseURL = "/api";
+    axios.defaults.headers.common["Authorization"] = this.props.token;
   }
- 
 
-
-  
-
-  
-  handleChange (event) {
+  handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
-    
-
-
   }
- 
-  
-
 
   render() {
-    
-    
-  
-    return <BudgetList  token = {this.props.token}/>;
+    return <BudgetList token={this.props.token} />;
   }
 }

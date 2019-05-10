@@ -3,27 +3,41 @@ import React from "react";
 import "./newTransactionList.css";
 import "antd/dist/antd.css";
 
-import CategoryOptions from './defaultOptions'
-import moment from 'moment'
+import CategoryOptions from "./defaultOptions";
+import moment from "moment";
 
-import { Table, Input, Divider, Button, notification, Form, DatePicker, Cascader, InputNumber, Popconfirm, Modal} from "antd";
+import {
+  Table,
+  Input,
+  Divider,
+  Button,
+  notification,
+  Form,
+  DatePicker,
+  Cascader,
+  InputNumber,
+  Popconfirm,
+  Modal
+} from "antd";
 
 class TransList extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isRowOpen: false, 
-
+      isRowOpen: false,
 
       dataSource: [
         {
-          key: '0',
-          date: {dateValue: '2019-05-01', display:moment('2019-05-01')}, // "dateValue" is to display on the table as a string, "display" is to display on the selector as defaultValue  
+          key: "0",
+          date: { dateValue: "2019-05-01", display: moment("2019-05-01") }, // "dateValue" is to display on the table as a string, "display" is to display on the selector as defaultValue
           amount: 120,
-          category: {cateValue: 'Home Service / Water', display: ['Home Service', 'Water']},
-          tag: 'September',
-          type: "view"  // each transaction has 3 type: new(when u add it), edit(when u edit), view(display on the table)
+          category: {
+            cateValue: "Home Service / Water",
+            display: ["Home Service", "Water"]
+          },
+          tag: "September",
+          type: "view" // each transaction has 3 type: new(when u add it), edit(when u edit), view(display on the table)
         }
       ],
       count: 0, // for key
@@ -34,7 +48,6 @@ class TransList extends React.Component {
     // table columns
     // each columns has it render for different input type
     this.columns = [
-
       // date - inputType: datePicker(moment)
       // defaultValue: either the date u select(edit trans) or the current day(add a new trans)
       // disabled: the future date (tmrw and beyond)
@@ -45,20 +58,22 @@ class TransList extends React.Component {
         dataIndex: "date",
         render: (date, record) => {
           return record.type !== "view" ? (
-              <DatePicker
-                  format="YYYY-MM-DD"
-                  defaultValue={record.date.display || moment(new Date())}
-                  onChange ={e => this.dateChange(e, record)}
-                  disabledDate={current => { return current.isAfter(new Date());}}
-                  dateRender={(current) => { return (
-                          <div className="ant-calendar-date" >
-                              {current.date()}
-                          </div>
-                      );
-                  }}
-              />
-          )
-          : record.date.dateValue
+            <DatePicker
+              format="YYYY-MM-DD"
+              defaultValue={record.date.display || moment(new Date())}
+              onChange={e => this.dateChange(e, record)}
+              disabledDate={current => {
+                return current.isAfter(new Date());
+              }}
+              dateRender={current => {
+                return (
+                  <div className="ant-calendar-date">{current.date()}</div>
+                );
+              }}
+            />
+          ) : (
+            record.date.dateValue
+          );
         }
       },
 
@@ -71,13 +86,15 @@ class TransList extends React.Component {
         dataIndex: "category",
         render: (category, record) => {
           return record.type !== "view" ? (
-            <Cascader 
+            <Cascader
               defaultValue={record.category.display}
               options={CategoryOptions}
               placeholder="Please select a Category"
-              onChange ={e => this.categoryChange(e, record)}/>
-          )
-          : record.category.cateValue
+              onChange={e => this.categoryChange(e, record)}
+            />
+          ) : (
+            record.category.cateValue
+          );
         }
       },
 
@@ -96,8 +113,9 @@ class TransList extends React.Component {
               defaultValue={record.tag}
               onChange={e => this.tagChange(e, record)}
             />
-          )
-          : record.tag
+          ) : (
+            record.tag
+          );
         }
       },
 
@@ -106,16 +124,18 @@ class TransList extends React.Component {
       // onChange: collect the change data pass to editCacheData
       {
         title: "Amount",
-        key: "amount", 
+        key: "amount",
         render: record => {
           return record.type !== "view" ? (
             <InputNumber
-                defaultValue={record.amount}
-                onChange={e => this.amountChange(e, record)}
-                min={1}
-                formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                style={{width: '110px'}}
+              defaultValue={record.amount}
+              onChange={e => this.amountChange(e, record)}
+              min={1}
+              formatter={value =>
+                `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+              parser={value => value.replace(/\$\s?|(,*)/g, "")}
+              style={{ width: "110px" }}
             />
           ) : (
             record.amount
@@ -126,7 +146,7 @@ class TransList extends React.Component {
       // the operation option for different record type is different
       {
         title: "Operation",
-        key:"operation",
+        key: "operation",
         render: record => (
           <span>
             {record.type === "new" && (
@@ -157,15 +177,14 @@ class TransList extends React.Component {
                   Edit
                 </a>
                 <Divider type="vertical" />
-                {
-                  this.state.dataSource.length >= 1
-                  ? (
-                    <Popconfirm title="Sure to delete?" onConfirm={() => this.delete(record)}>
-                      <a href={"javascript:;"}>Delete</a>
-                    </Popconfirm>
-                  )
-                  : null
-                } 
+                {this.state.dataSource.length >= 1 ? (
+                  <Popconfirm
+                    title="Sure to delete?"
+                    onConfirm={() => this.delete(record)}
+                  >
+                    <a href={"javascript:;"}>Delete</a>
+                  </Popconfirm>
+                ) : null}
               </span>
             )}
           </span>
@@ -187,49 +206,43 @@ class TransList extends React.Component {
     this.updateDataSource(data);
   }
   // -------------------------------------- Receive Data Changing on the table for each coloumn -----------------------------------------------
-  
+
   // if date is null, give a warning message
   // otherwise, pass the data to editCacheData
   dateChange(e, record) {
-    if(e === null){
+    if (e === null) {
       Modal.warning({
-        title: 'This is a warning message',
-        content: 'Your Date is empty',
+        title: "This is a warning message",
+        content: "Your Date is empty"
       });
 
       // remove the record data
       let newState = Object.assign({}, this.state);
       newState.editCacheData.date = {};
       this.setState(newState);
-   
     } else {
-
-      const dateValue =  e.format("YYYY-MM-DD");
+      const dateValue = e.format("YYYY-MM-DD");
       const display = moment(dateValue);
-      this.updateEditCacheData(record, { date: {dateValue,display}});
+      this.updateEditCacheData(record, { date: { dateValue, display } });
     }
-    
   }
 
   // if category is null, give a warning message
   // otherwise, pass the data to editCacheData
   categoryChange(e, record) {
-
-    if(e.length === 0){
+    if (e.length === 0) {
       Modal.warning({
-        title: 'This is a warning message',
-        content: 'Your Category is empty',
+        title: "This is a warning message",
+        content: "Your Category is empty"
       });
       // remove the record data
       let newState = Object.assign({}, this.state);
       newState.editCacheData.category = {};
       this.setState(newState);
-
     } else {
-
-      const cateValue = `${e[e.length -2 ]} / ${e[e.length -1]}`
+      const cateValue = `${e[e.length - 2]} / ${e[e.length - 1]}`;
       const display = e;
-      this.updateEditCacheData(record, { category: {cateValue,display}});
+      this.updateEditCacheData(record, { category: { cateValue, display } });
     }
   }
 
@@ -240,11 +253,10 @@ class TransList extends React.Component {
   amountChange(e, record) {
     this.updateEditCacheData(record, { amount: e });
   }
-// ---------------------------------------------- updata EditCacheData and Datasource -----------------------------------------------
+  // ---------------------------------------------- updata EditCacheData and Datasource -----------------------------------------------
 
   // record: each row, obj: the changing data of columns
   updateEditCacheData(record, obj) {
-
     let { editCacheData } = this.state;
 
     // change that data only and keep the rest
@@ -260,7 +272,6 @@ class TransList extends React.Component {
   // each time can only open one row
   // when add a new transaction, the '+ Add' button disable
   updateDataSource(newData, isAddDisabled) {
-
     let isRowOpen =
       typeof isAddDisabled == "boolean"
         ? isAddDisabled
@@ -268,33 +279,32 @@ class TransList extends React.Component {
 
     this.setState({
       isRowOpen,
-      dataSource: newData,
+      dataSource: newData
     });
   }
 
-// ---------------------------------------------- Operation -----------------------------------------------
+  // ---------------------------------------------- Operation -----------------------------------------------
 
   // validation of date and category
-  isValid(){
+  isValid() {
     let { dataSource, editCacheData } = this.state;
 
     const dateValid = editCacheData.date;
     const cateValid = editCacheData.category;
 
-    if(cateValid  === undefined || Object.keys(cateValid).length === 0){
+    if (cateValid === undefined || Object.keys(cateValid).length === 0) {
       Modal.error({
-        title: 'This is an error message',
-        content: 'Please select a Category',
+        title: "This is an error message",
+        content: "Please select a Category"
       });
 
       return false;
     }
 
-    if(dateValid === undefined || Object.keys(dateValid).length === 0){
-  
+    if (dateValid === undefined || Object.keys(dateValid).length === 0) {
       Modal.error({
-        title: 'This is an error message',
-        content: 'Please select a Date',
+        title: "This is an error message",
+        content: "Please select a Date"
       });
       return false;
     }
@@ -302,72 +312,69 @@ class TransList extends React.Component {
     return true;
   }
 
-  // when add a row, check if the Date and Category is valid. 
+  // when add a row, check if the Date and Category is valid.
   // If yes, pass the data to dataSource
   addSubmit(record) {
     let { dataSource, editCacheData } = this.state;
 
-    if (this.isValid() === true){
+    if (this.isValid() === true) {
       setTimeout(res => {
         editCacheData.type = "view";
         let index = dataSource.findIndex(item => item.key === record.key);
         dataSource.splice(index, 1);
-          let i = this.checkDate()
-          //dataSource.pop();
-          //dataSource.push(editCacheData);
-          if(i === undefined){
-            i=dataSource.length
-          }
-          dataSource.splice(i, 0,editCacheData);
-          
-          this.updateDataSource(dataSource);
-          this.setState({editCacheData: []})
+        let i = this.checkDate();
+        //dataSource.pop();
+        //dataSource.push(editCacheData);
+        if (i === undefined) {
+          i = dataSource.length;
+        }
+        dataSource.splice(i, 0, editCacheData);
 
-          notification["success"]({ message: "Add Success！",duration: 1});
+        this.updateDataSource(dataSource);
+        this.setState({ editCacheData: [] });
+
+        notification["success"]({ message: "Add Success！", duration: 1 });
       }, 500);
     }
   }
 
   // sorting date when add or edit
-  checkDate(editCacheDate){
+  checkDate(editCacheDate) {
     let { dataSource, editCacheData } = this.state;
     const dateNow = editCacheData.date.display;
     for (let i = 0; i < dataSource.length; i++) {
       const dateBef = dataSource[i].date.display;
-      console.log(dateNow-dateBef)
-      if((dateNow - dateBef) > 0){
+      console.log(dateNow - dateBef);
+      if (dateNow - dateBef > 0) {
         return i;
-      } 
+      }
     }
   }
 
   cancelAdd(record) {
-
-    let { dataSource} = this.state;
+    let { dataSource } = this.state;
     dataSource.pop();
 
     this.updateDataSource(dataSource);
-
   }
 
-  // when edit a row, check if the Date and Category is valid. 
+  // when edit a row, check if the Date and Category is valid.
   // If yes, pass the data to dataSource
   editSubmit(record) {
     let { dataSource, editCacheData } = this.state;
 
-    if (this.isValid() === true){
+    if (this.isValid() === true) {
       setTimeout(res => {
-
         let index = dataSource.findIndex(item => item.key === record.key);
         dataSource.splice(index, 1);
-          let i = this.checkDate()
-          //dataSource.pop();
-          //dataSource.push(editCacheData);
-          if(i === undefined){
-            i=dataSource.length
-          }
-          dataSource.splice(i, 0,editCacheData);
-        
+        let i = this.checkDate();
+        //dataSource.pop();
+        //dataSource.push(editCacheData);
+        if (i === undefined) {
+          i = dataSource.length;
+        }
+        dataSource.splice(i, 0, editCacheData);
+
         let newData = dataSource.map(item => {
           if (item.key === editCacheData.key) {
             item = Object.assign({}, editCacheData);
@@ -376,18 +383,17 @@ class TransList extends React.Component {
           return item;
         });
 
-      console.log(record)
+        console.log(record);
 
         this.updateDataSource(newData);
 
-        notification["success"]({ message: "Edit Success！",duration: 1 });
-      },500);
+        notification["success"]({ message: "Edit Success！", duration: 1 });
+      }, 500);
     }
   }
 
-
   cancelEdit(record) {
-    let { dataSource} = this.state;
+    let { dataSource } = this.state;
 
     let editRow = dataSource.find(item => item.key === record.key);
     editRow.type = "view";
@@ -399,28 +405,25 @@ class TransList extends React.Component {
   delete(record) {
     let { dataSource } = this.state;
     setTimeout(res => {
-
       let index = dataSource.findIndex(item => item.key === record.key);
       dataSource.splice(index, 1);
 
       this.updateDataSource(dataSource);
 
-      notification["success"]({ message: "Delet Success！",duration: 1 });
-    },500);
+      notification["success"]({ message: "Delet Success！", duration: 1 });
+    }, 500);
   }
 
   // change the type to "edit", to change operation opation
   edit(record) {
-    let {dataSource } = this.state;
+    let { dataSource } = this.state;
 
     // find the record in dataSource
-    let newData = dataSource.filter((item) => {
+    let newData = dataSource.filter(item => {
       if (item.key === record.key) {
-
         item.type = "edit";
         return item;
       } else if (item.type !== "new") {
-
         item.type = "view";
         return item;
       }
@@ -428,32 +431,31 @@ class TransList extends React.Component {
 
     this.updateDataSource(newData, true);
   }
-// ---------------------------------------------- Add Row -----------------------------------------------
+  // ---------------------------------------------- Add Row -----------------------------------------------
 
   // func for "+ Add a New Transaction" button
   addRow = () => {
-    let { dataSource,count} = this.state;
+    let { dataSource, count } = this.state;
 
-    let currDate = moment(new Date())
+    let currDate = moment(new Date());
     let newRecord = {
-      key: (count+1).toString(),
-      date: {dateValue: currDate.format('YYYY-MM-DD'), display:currDate},
+      key: (count + 1).toString(),
+      date: { dateValue: currDate.format("YYYY-MM-DD"), display: currDate },
       amount: 1,
       category: {},
-      tag: '',
+      tag: "",
       type: "new"
     };
-    this.setState({count: this.state.count+1})
+    this.setState({ count: this.state.count + 1 });
 
     dataSource.push(newRecord);
     this.updateDataSource(dataSource);
-    
   };
 
-// ---------------------------------------------- Render -----------------------------------------------
+  // ---------------------------------------------- Render -----------------------------------------------
   render() {
     const { dataSource, isRowOpen } = this.state;
-  
+
     return (
       <div className="trans">
         <div className="transWrap">
@@ -474,7 +476,6 @@ class TransList extends React.Component {
             pagination={false}
           />
         </div>
-        
       </div>
     );
   }
@@ -482,4 +483,3 @@ class TransList extends React.Component {
 
 const EditableFormTable = Form.create()(TransList);
 export default EditableFormTable;
-
