@@ -7,15 +7,15 @@ var path = require('path');
 
 // Database setup
 require('./server/models/db.js');
-const PORT = process.env.PORT || 5000; 
+const PORT = process.env.PORT || 5000;
 
 // Routes setup
 var routes = require('./server/routes/routes.js');
-app.use('/api',routes);
+app.use('/api', routes);
 
 //login route
 var users = require("./server/routes/users.js");
-app.use("/api/users",users);
+app.use("/api/users", users);
 
 //user's data transactions route
 var transactions = require('./server/routes/transaction.js');
@@ -39,10 +39,10 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname+'/client/build/index.html'));
-  });
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
 
 // Start the server
-app.listen(PORT,function(req,res){
-	console.log(`Express listening on port ${PORT}`);
+app.listen(PORT, function(req, res) {
+    console.log(`Express listening on port ${PORT}`);
 });
