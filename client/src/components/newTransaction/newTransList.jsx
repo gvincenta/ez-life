@@ -227,7 +227,7 @@ class TransList extends React.Component {
 
     } else {
 
-      const cateValue = `${e[0]} / ${e[1]}`
+      const cateValue = `${e[e.length -2 ]} / ${e[e.length -1]}`
       const display = e;
       this.updateEditCacheData(record, { category: {cateValue,display}});
     }
@@ -280,7 +280,6 @@ class TransList extends React.Component {
 
     const dateValid = editCacheData.date;
     const cateValid = editCacheData.category;
-    console.log(editCacheData)
 
     if(cateValid  === undefined || Object.keys(cateValid).length === 0){
       Modal.error({
@@ -311,14 +310,34 @@ class TransList extends React.Component {
     if (this.isValid() === true){
       setTimeout(res => {
         editCacheData.type = "view";
-        
-          dataSource.pop();
-          dataSource.push(editCacheData);
+        let index = dataSource.findIndex(item => item.key === record.key);
+        dataSource.splice(index, 1);
+          let i = this.checkDate()
+          //dataSource.pop();
+          //dataSource.push(editCacheData);
+          if(i === undefined){
+            i=dataSource.length
+          }
+          dataSource.splice(i, 0,editCacheData);
+          
           this.updateDataSource(dataSource);
           this.setState({editCacheData: []})
 
           notification["success"]({ message: "Add Success！",duration: 1});
       }, 500);
+    }
+  }
+
+  // sorting date when add or edit
+  checkDate(editCacheDate){
+    let { dataSource, editCacheData } = this.state;
+    const dateNow = editCacheData.date.display;
+    for (let i = 0; i < dataSource.length; i++) {
+      const dateBef = dataSource[i].date.display;
+      console.log(dateNow-dateBef)
+      if((dateNow - dateBef) > 0){
+        return i;
+      } 
     }
   }
 
@@ -338,6 +357,16 @@ class TransList extends React.Component {
 
     if (this.isValid() === true){
       setTimeout(res => {
+
+        let index = dataSource.findIndex(item => item.key === record.key);
+        dataSource.splice(index, 1);
+          let i = this.checkDate()
+          //dataSource.pop();
+          //dataSource.push(editCacheData);
+          if(i === undefined){
+            i=dataSource.length
+          }
+          dataSource.splice(i, 0,editCacheData);
         
         let newData = dataSource.map(item => {
           if (item.key === editCacheData.key) {
@@ -346,6 +375,8 @@ class TransList extends React.Component {
           }
           return item;
         });
+
+      console.log(record)
 
         this.updateDataSource(newData);
 
