@@ -146,12 +146,12 @@ class App extends Component {
 // import {Switch, Route, Redirect,NavLink}from 'react-router-dom'
 // import { Layout } from "antd";
 
-// import Goal from './goal/goal'
-//import Transaction from "./Transaction";
+// import Goal from "./Goals";
+// import Transaction from "./Transaction";
 // import SideBar from './sidebar';
 
 // import 'antd/dist/antd.css';
-// import './app.css';
+// import './App.css';
 
 // const { Header, Footer, Sider, Content } = Layout;
 
@@ -165,7 +165,7 @@ class App extends Component {
           
 //           <Layout>
            
-//                 <Sidebar/>
+//                 <SideBar/>
 
 //                 <Header style={{ background: '#f4a464', padding: 0}}>
 //                 </Header>
@@ -177,7 +177,7 @@ class App extends Component {
 //                     <Switch>
 //                         <Route path='/goal' component ={Goal}></Route>
 //                         <Route path='/transaction' component ={Transaction}></Route>
-//                         <Redirect to ='/goal'></Redirect>
+//                         <Redirect to ='/transaction'></Redirect>
 //                       </Switch>
 //                 </Content>
             
