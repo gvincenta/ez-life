@@ -89,7 +89,6 @@ export default class Goals extends Component {
   render() {
     console.log(this.props);
     var res;
-    console.log("alphabetagamma: ", this.state.submitted);
 
     res = (
       <div>

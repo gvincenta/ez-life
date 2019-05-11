@@ -6,7 +6,10 @@ body {
 }
 div {
   background: whitesmoke no-repeat fixed center;
+  font-size : 12pt;
+  
 }
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -18,7 +21,7 @@ div {
   color: white;
 }
 .Header {
-  background-color: #f4a464;
+  background-color: lightgray;
 }
 
 .App-link {
@@ -41,7 +44,7 @@ body {
 
 #App {
   font-family: sans-serif;
-  height: 100vh;
+  font-size: 15pt;
 }
 
 #page-wrap {
@@ -115,4 +118,8 @@ tr:nth-child(even) {
 }
 tr:nth-child(odd) {
   background-color: #baccd1;
+}
+button{
+  background-color: #172f3f;
+  color : whitesmoke;
 }

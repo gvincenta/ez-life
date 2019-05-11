@@ -25,6 +25,8 @@ export default class TransList extends Component {
     };
     axios.defaults.baseURL = "/api";
     axios.defaults.headers.common["Authorization"] = this.props.token;
+    console.log("frontend", axios.defaults.headers.common["Authorization"]);
+
     this.handleLoad();
   }
   handleLoad = () => {
@@ -55,7 +57,7 @@ export default class TransList extends Component {
   handleAddNew = event => {
     event.preventDefault();
     var self = this;
-
+    console.log("frontend", this.state);
     axios
       .post("/transactions", {
         name: this.state.name,

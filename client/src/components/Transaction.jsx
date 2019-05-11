@@ -7,7 +7,7 @@ export default class Transaction extends Component {
   render() {
     return (
       <div>
-        <TransList />
+        <TransList token = {this.props.token}/>
       </div>
     );
   }

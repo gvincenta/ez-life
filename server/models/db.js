@@ -1,26 +1,28 @@
 // Create database
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 const options = {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false
-  };
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false
+};
 
 // connect....
-mongoose.connect(process.env.MONGO_URL || "mongodb://localhost/test", options, function(err) {
+mongoose.connect(
+  process.env.MONGO_URL || "mongodb://localhost/test",
+  options,
+  function(err) {
     // Check error in initial connection. There is no 2nd param to the callback.
-    if (err){
+    if (err) {
       console.log("Failed to connect to DB");
       process.exit(1);
+    } else {
+      console.log("DB connected.");
     }
-    else{
-        console.log("DB connected.");
-    }
- 
-});
+  }
+);
 // require db.
-require('./person.js');
-require('./transaction.js');
-require('./goals.js');
-require('./report.js');
-require('./budget.js');
+require("./person.js");
+require("./transaction.js");
+require("./goals.js");
+require("./report.js");
+require("./budget.js");

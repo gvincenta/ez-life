@@ -3,11 +3,12 @@ import { Switch, Route } from "react-router-dom";
 import axios from "axios";
 import "./App.css";
 import Header from "./Header";
-import Goals from "./Goals";
-import Transaction from "./Transaction";
 import Report from "./Report";
 import Budget from "./Budget";
 import SideBar from "./sidebar";
+import TransList from "./transaction/transList";
+import GoalList from "./goal/goalList";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -63,7 +64,7 @@ class App extends Component {
     if (this.state.token.length === 0) {
       var err = this.state.error;
       res = (
-        <div>
+        <div >
           <Header />
 
           <input
@@ -95,7 +96,8 @@ class App extends Component {
             placeholder="case sensitive"
           />
 
-          <input type="submit" value="login" onClick={this.handleLogIn} />
+          <button name = "login" type="button" class="btn btn-secondary" onClick = {this.handleLogIn}> Log In </button>
+
         </div>
       );
     } else {
@@ -116,11 +118,11 @@ class App extends Component {
                   <Route
                     exact
                     path="/transaction"
-                    render={() => <Transaction token={this.state.token} />}
+                    render={() => <TransList token={this.state.token} />}
                   />
                   <Route
                     path="/goal"
-                    render={() => <Goals token={this.state.token} />}
+                    render={() => <GoalList token={this.state.token} />}
                   />
                   <Route
                     path="/report"
@@ -142,46 +144,3 @@ class App extends Component {
 }
 
 export default App;
-
-/* Update Layout */
-
-// import React, {Component} from 'react';
-// import {Switch, Route, Redirect,NavLink}from 'react-router-dom'
-// import { Layout } from "antd";
-
-// import Goal from "./Goals";
-// import Transaction from "./Transaction";
-// import SideBar from './sidebar';
-
-// import 'antd/dist/antd.css';
-// import './App.css';
-
-// const { Header, Footer, Sider, Content } = Layout;
-
-// export default class App extends Component{
-
-//       render() {
-//         return (
-
-//           <Layout>
-
-//                 <SideBar/>
-
-//                 <Header style={{ background: '#f4a464', padding: 0}}>
-//                 </Header>
-
-//                 <Content style={{
-//                     margin: '24px 16px', padding: 24, background: '#fff', height: '85vh'
-//                 }}
-//                 >
-//                     <Switch>
-//                         <Route path='/goal' component ={Goal}></Route>
-//                         <Route path='/transaction' component ={Transaction}></Route>
-//                         <Redirect to ='/transaction'></Redirect>
-//                       </Switch>
-//                 </Content>
-
-//           </Layout>
-//         );
-//       }
-// }
