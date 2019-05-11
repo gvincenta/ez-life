@@ -57,11 +57,12 @@ var monthlyTransaction = function(req, res) {
         });
 
         return;
-      } else {
+      } 
+       else {
         //make this month's report for each category from the list of transactions:
         Budget.aggregate([
           { $match: { user: req.user._id, ignored: false } },
-          {
+         {
             $lookup: {
               from: "transactions",
               localField: "transactionID",
@@ -137,7 +138,7 @@ var monthlyTransaction = function(req, res) {
     });
   
 }
-
+//get yearly spending report for graph
 var yearlyTransaction = function(req, res) {
     // get distinct values of transaction
     var currMonth = new Date();
@@ -147,10 +148,11 @@ var yearlyTransaction = function(req, res) {
     var lowerBound = new Date(currYear-1, currMonth-1);
     // upperBound = last month's last date, e.g. 2019/05/30.
     var upperBound = new Date(currYear, currMonth);
-    console.log("yearly", lowerBound, upperBound);
 
     Budget.aggregate([
+        //get matching user ID
         { $match: { user: req.user._id } },
+        //populate with reportID
         {
         $lookup: {
             from: "reports",
@@ -158,6 +160,7 @@ var yearlyTransaction = function(req, res) {
             foreignField: "_id",
             as: "data"}
         },
+        //flatten data
         {
         $unwind: "$data"
         },
@@ -167,23 +170,26 @@ var yearlyTransaction = function(req, res) {
             $lte: upperBound
             }
         }},
+        //group based on isIncome type for each month.
         {
             $group: {
               _id: {
-                id: "$_id",
-                month: { $month: "$data.date" },
-                year: { $year: "$data.date" },
-                isIncome: "$isIncome"
+                month:{ $dateToString: {
+                    date: "$data.month", 
+                    format: "%Y-%m",
+                } },
+                income : "$isIncome"
               },
               totalAmount: {
-                $sum: "$data.realAmount"
+                $sum: "$data.amountPerMonth"
               }}},
+        //make it friendlier for frontend
         {
-        $project: {
-            labels:{month: "$_id.month" ,
-            year: "$_id.year"},
-            totalAmount: "$totalAmount",
-            isIncome: "$_id.isIncome"}
+            $project:{
+                month: "$_id.month",
+                label: "$_id.income",
+                data: "$totalAmount"
+            }
         }
     ]).then(doc => {
         res.send(doc);

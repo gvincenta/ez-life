@@ -126,7 +126,7 @@ var suggestBudget = function(req, res) {
         name: values[0][i]._id.name,
         isIncome: "wants",
         preference: values[0][i]._id.preference,
-        suggestedAmount: amount
+        budgetedAmount: amount
       });
     }
 

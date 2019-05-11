@@ -4,10 +4,10 @@ import axios from "axios";
 import "./App.css";
 import Header from "./Header";
 import Report from "./Report";
-import Budget from "./Budget";
 import SideBar from "./sidebar";
 import TransList from "./transaction/transList";
 import GoalList from "./goal/goalList";
+import BudgetList from "./budget/budgetList.jsx";
 
 class App extends Component {
   constructor(props) {
@@ -66,18 +66,18 @@ class App extends Component {
       res = (
         <div >
           <Header />
+          <form>
+            <input
+              type="checkbox"
+              value="I am an existing user"
+              onClick={this.isExistingUser}
+            />< label> I am an existing user </label> <br /><br />
+            <h2>Sign Up / Sign In </h2>
+            
+            <div class="input-container">
+                <i class="fa fa-envelope icon"></i>
 
-          <input
-            type="checkbox"
-            value="I am an existing user"
-            onClick={this.isExistingUser}
-          />
-
-          <label> I am an existing user </label>
-          <br />
-          <br />
-
-          <label> email/username: </label>
+    <label> email/username: </label>
           <input
             type="text"
             name="username"
@@ -85,7 +85,10 @@ class App extends Component {
             onChange={this.handleChange}
             placeholder="not case sensitive"
           />
-          <br />
+          </div>
+
+  <div class="input-container">
+    <i class="fa fa-key icon"></i>
           <label> password: </label>
 
           <input
@@ -96,9 +99,18 @@ class App extends Component {
             placeholder="case sensitive"
           />
 
-          <button name = "login" type="button" class="btn btn-secondary" onClick = {this.handleLogIn}> Log In </button>
+  </div>
 
-        </div>
+  <button name = "login" type="button" class="btn btn-secondary" onClick = {this.handleLogIn}> Log In </button>
+  
+          </form></div>
+
+          
+
+          
+
+          
+
       );
     } else {
       res = (
@@ -130,7 +142,7 @@ class App extends Component {
                   />
                   <Route
                     path="/budget"
-                    render={() => <Budget token={this.state.token} />}
+                    render={() => <BudgetList token={this.state.token} />}
                   />
                 </Switch>
               </div>

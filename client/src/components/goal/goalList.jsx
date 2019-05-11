@@ -50,7 +50,6 @@ export default class GoalList extends Component {
     for (var i = 0; i < this.state.goals.length; i++){
 
       if (this.state.goals[i].name === goal){
-        console.log(goal, "found match");
         this.setState({
           name: this.state.goals[i].name,
           amount : this.state.goals[i].amount,

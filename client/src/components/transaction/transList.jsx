@@ -80,12 +80,15 @@ export default class TransList extends Component {
     const { transactions } = this.state;
     return (
       <div>
-        <table className="table table-hover">
+        <h1> Transaction Logs </h1>
+
+        <table className="table responsive">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Amount</th>
-              <th>Date</th>
+              <th width={120}>Name</th>
+              <th width={120}>Amount</th>
+              <th width={120}>Date</th>
+              <th width={50}> Update/Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -95,9 +98,7 @@ export default class TransList extends Component {
           </tbody>
         </table>
         <div className="panel panel-default">
-          <div className="panel-heading">
-            <h3 className="panel-title">Transaction</h3>
-          </div>
+          
           <div className="panel-body">
             <form className="form-horizontal">
               <label> Transaction: </label>

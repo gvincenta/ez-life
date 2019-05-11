@@ -8,6 +8,7 @@
     "body-parser": "^1.18.3",
     "circular-json": "^0.5.9",
     "concurrently": "^4.1.0",
+    "cron": "^1.7.1",
     "express": "^4.16.4",
     "express-promise-router": "^3.0.3",
     "fs": "0.0.1-security",

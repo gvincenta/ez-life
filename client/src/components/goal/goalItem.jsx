@@ -2,20 +2,13 @@ import React, { Component } from "react";
 
 export default class GoalItem extends Component {
 
-  constructor(props){
-      super(props);
-      this.state = {
-          mode: "read"
-      }
-
-  }
+  
    formatDate = (date) => {
     var d = new Date(date).toDateString();
     return d;
    }
        
    handleDisplay = event => {
-      console.log(this.props.goals.name, "setUpdate from child");
       this.props.setUpdate(this.props.goals.name);
   }
   
