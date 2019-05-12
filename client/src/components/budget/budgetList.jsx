@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 
 import BudgetItem from "./budgetItem";
-import axios from "axios";
 //handles making categories and budget planning
 export default class BudgetList extends Component {
   constructor(props) {
     super(props); // mandatory
+    
     this.state = {
       mode : "read",
       name: "",
@@ -23,14 +23,12 @@ export default class BudgetList extends Component {
       error: {},
       response: 0
     };
-    axios.defaults.baseURL = "/api";
-    axios.defaults.headers.common["Authorization"] = this.props.token;
     this.handleLoad();
   }
   //handle item loading:
   handleLoad = () => {
     var self = this;
-    axios
+    this.props.axios
       .get("/budget")
       .then(function(response) {
         var d = response.data;
@@ -63,7 +61,7 @@ export default class BudgetList extends Component {
     event.preventDefault();
     var self = this;
 
-    axios
+    this.props.axios
       .post("/budget", {
         name: self.state.name,
         isIncome: self.state.isIncome,
@@ -88,7 +86,7 @@ export default class BudgetList extends Component {
     event.preventDefault();
 
     var self = this;
-    axios
+    this.props.axios
       .get("/budget/suggested")
       .then(function(res) {
         self.setState({ response: res.data });
@@ -106,7 +104,7 @@ export default class BudgetList extends Component {
     event.preventDefault();
 
 
-    axios
+    this.props.axios
       .put("/budget", {
         name: self.state.name,
         budgetedAmount: self.state.budgetedAmount,
@@ -153,7 +151,7 @@ export default class BudgetList extends Component {
   handleDelete = budget => {
     var self = this;
 
-    axios
+    this.props.axios
       .delete("/budget", {
         data: { name: budget }
       })

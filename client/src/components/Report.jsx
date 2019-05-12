@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Collapse from 'react-bootstrap/Collapse'
@@ -42,15 +41,13 @@ class Report extends Component {
         datasets: [incomeData, needsData, wantsData]
       }
     };
-    axios.defaults.baseURL = "/api";
-    axios.defaults.headers.common["Authorization"] = this.props.token;
   }
   /**Generates monthly report from backend. */
 
   handleReportRetrieval = (event) =>{
     event.preventDefault();
     var self = this;
-    axios
+    this.props.axios
       .get("/report/monthly")
       .then(function(response) {
         var d = response.data;
@@ -65,7 +62,7 @@ class Report extends Component {
   handleGraphRetrieval = event=> {
 
     var self = this;
-    axios
+    this.props.axios
       .get("/report/graph")
       .then(function(response) {
         var d = response.data;

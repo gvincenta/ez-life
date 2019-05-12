@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PubSub from "pubsub-js";
 
 import GoalItem from "./goalItem";
-import axios from "axios";
 
 
 //handles user's goals
@@ -29,8 +28,6 @@ export default class GoalList extends Component {
       mode: "read",
       error: {}
     };
-    axios.defaults.baseURL = "/api";
-    axios.defaults.headers.common["Authorization"] = this.props.token;
     this.handleLoad();
   } //handles each input field's changes:
 
@@ -71,7 +68,7 @@ export default class GoalList extends Component {
     event.preventDefault();
 
     var self = this;
-    axios
+    this.props.axios
       .post("/goals", {
         name: this.state.name,
         amount: this.state.amount,
@@ -88,7 +85,7 @@ export default class GoalList extends Component {
   //handles loading all goals:
   handleLoad = () => {
     var self = this;
-    axios
+    this.props.axios
       .get("/goals")
       .then(function(response) {
         var d = response.data;
@@ -134,7 +131,7 @@ export default class GoalList extends Component {
 
     var self = this;
 
-    axios
+    this.props.axios
       .put("/goals", {
         name: this.state.name,
 

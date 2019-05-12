@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import TransItem from "./transItem";
-import axios from "axios";
 /**TransList, a class to render all transaction's lists.  */
 export default class TransList extends Component {
   /** init object
@@ -23,15 +22,11 @@ export default class TransList extends Component {
       ],
       error: {}
     };
-    axios.defaults.baseURL = "/api";
-    axios.defaults.headers.common["Authorization"] = this.props.token;
-    console.log("frontend", axios.defaults.headers.common["Authorization"]);
-
     this.handleLoad();
   }
   handleLoad = () => {
     var self = this;
-    axios
+    this.props.axios
       .get("/transactions")
       .then(function(response) {
         var d = response.data;
@@ -58,7 +53,7 @@ export default class TransList extends Component {
     event.preventDefault();
     var self = this;
     console.log("frontend", this.state);
-    axios
+    this.props.axios
       .post("/transactions", {
         name: this.state.name,
         realAmount: this.state.amount,

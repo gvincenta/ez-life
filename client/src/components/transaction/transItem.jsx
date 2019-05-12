@@ -7,7 +7,6 @@ export default class TransItem extends Component {
     return d;
    }
    handleDisplay = event => {
-    //this.props.setUpdate();
   }
 
   render() {

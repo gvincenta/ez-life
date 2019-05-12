@@ -8,18 +8,45 @@ import SideBar from "./sidebar";
 import TransList from "./transaction/transList";
 import GoalList from "./goal/goalList";
 import BudgetList from "./budget/budgetList.jsx";
+import UserProfile from './UserProfile';
+import browserstore from "browser-session-store"
 
 class App extends Component {
+  
   constructor(props) {
     super(props);
+    const { cookies } = this.props;
+    
     this.state = {
-      token: "",
+      token :"",
+      axios: "",
       username: "",
       password: "",
       existingUser: false,
       error: ""
     };
-    axios.defaults.baseURL = "/api";
+    this.setToken()
+    
+  }
+   setToken(){
+     var self = this;
+    //console.log(UserProfile.getName(), "First init");
+    browserstore.get("ezLife", function (err,val){
+      console.log(err);
+      // handle error or nonexistence token:
+      if(err || (val == null)){
+        self.setState({token : ""});
+        return;
+      }
+      // init axios,token to this existing token: 
+
+      axios.defaults.headers.common["Authorization"] = val; 
+      self.setState({token : val});
+      return;
+      
+    })
+    
+    
   }
   /**sets token */
   handleChange = event => {
@@ -46,12 +73,26 @@ class App extends Component {
       .then(response => {
         //set token:
         self.setState({ token: response.data.token });
+        //setup axios: 
+        axios.defaults.headers.common["Authorization"] = response.data.token; 
+        //make token persists: 
+        browserstore.put("ezLife", response.data.token);
+        //reload page after logging in:
+        window.location.reload();
         //catch any errors:
       })
       .catch(err => {
         alert("password/username incorrect OR may already have signed up.");
       });
   };
+  handleLogOut = event =>{
+    //remove persisting token: 
+    browserstore.remove("ezLife");
+    //reset state, reload page: 
+    this.setToken();
+    window.location.reload();
+  }
+
   // existing user or not:
   isExistingUser = event => {
     var negate = !this.state.existingUser;
@@ -117,32 +158,30 @@ class App extends Component {
         <div>
           <Header />
 
-          <SideBar token={this.state.token} />
-          <div className="row">
-            <div className="col-s-offset-2 col-xs-8"> </div>
-            <div className="page-header"> </div>
-          </div>
+          <SideBar/>
+         
+          <button name = "logout" type="button" class="btn btn-secondary" onClick = {this.handleLogOut}> Log Out </button>
 
-          <div className="col-s-6">
+          <div className="col-xs-6">
             <div className="panel">
               <div className="panel-body">
                 <Switch>
                   <Route
                     exact
                     path="/transaction"
-                    render={() => <TransList token={this.state.token} />}
+                    render={() => <TransList axios={axios} />}
                   />
                   <Route
                     path="/goal"
-                    render={() => <GoalList token={this.state.token} />}
+                    render={() => <GoalList axios={axios} />}
                   />
                   <Route
                     path="/report"
-                    render={() => <Report token={this.state.token} />}
+                    render={() => <Report axios={axios} />}
                   />
                   <Route
                     path="/budget"
-                    render={() => <BudgetList token={this.state.token} />}
+                    render={() => <BudgetList axios={axios} />}
                   />
                 </Switch>
               </div>

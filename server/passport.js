@@ -4,6 +4,7 @@ var ExtractJWT = require("passport-jwt").ExtractJwt;
 var mongoose = require("mongoose");
 var Person = mongoose.model("person");
 var LocalStrategy = require("passport-local").Strategy;
+
 // JSON WEB TOKEN STRATEGY
 passport.use(
   new JWTStrategy(
@@ -47,11 +48,11 @@ passport.use(
 
         // Check if the password is correct
         const isMatch = await user.isValidPassword(password);
-
         // If not, handle it
         if (!isMatch) {
           return done(null, false);
         }
+        
 
         // Otherwise, return the user
         done(null, user);
@@ -59,5 +60,5 @@ passport.use(
         done(error, false);
       }
     }
-  )
-);
+  ));
+ 
