@@ -74,9 +74,7 @@ class App extends Component {
         //set token:
         self.setState({ token: response.data.token });
         //setup axios: 
-        axios.defaults.headers.common["Authorization"] = response.data.token; 
-        //make token persists: 
-        browserstore.put("ezLife", response.data.token);
+        UserProfile.setName(response.data.token);
         //reload page after logging in:
         window.location.reload();
         //catch any errors:
