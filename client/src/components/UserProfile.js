@@ -32,7 +32,6 @@ var UserProfile = (function() {
 
   var setName = function(token) {
     // Also set this in cookie/localStorage
-    axios.defaults.headers.common["Authorization"] = token; 
     browserstore.put("ezLife", token);
     
   };

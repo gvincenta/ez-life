@@ -75,6 +75,8 @@ class App extends Component {
         self.setState({ token: response.data.token });
         //setup axios: 
         UserProfile.setName(response.data.token);
+        axios.defaults.headers.common["Authorization"] = response.data.token; 
+
         //reload page after logging in:
         window.location.reload();
         //catch any errors:
@@ -160,7 +162,7 @@ class App extends Component {
          
           <button name = "logout" type="button" class="btn btn-secondary" onClick = {this.handleLogOut}> Log Out </button>
 
-          <div className="col-xs-6">
+          <div className="col-s-6">
             <div className="panel">
               <div className="panel-body">
                 <Switch>
@@ -175,7 +177,7 @@ class App extends Component {
                   />
                   <Route
                     path="/report"
-                    render={() => <Report axios={axios} />}
+                    render={() => <Report axios = {axios} />}
                   />
                   <Route
                     path="/budget"

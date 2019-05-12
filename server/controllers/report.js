@@ -190,6 +190,8 @@ var yearlyTransaction = function(req, res) {
                 label: "$_id.income",
                 data: "$totalAmount"
             }
+        },{
+          $sort :{ month : 1 }
         }
     ]).then(doc => {
         res.send(doc);

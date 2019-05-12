@@ -4,25 +4,24 @@ import "react-table/react-table.css";
 import Collapse from 'react-bootstrap/Collapse'
 import Button from 'react-bootstrap/Button'
 import GoalList from "./goal/goalList";
-
 import { Line } from "react-chartjs-2";
 /**Handles monthly report for client. */
 var incomeData = {
   label: "income",
   data: [],
-  backgroundColor: "rgba(67,116,135, 0.6)",
+  borderColor: "rgba(67,116,135, 0.6)",
   borderWidth: 0
 };
 var needsData = {
   label: "needs",
   data: [],
-  backgroundColor: "rgba(244,164,100, 0.6)",
+  borderColor: "rgba(244,164,100, 0.6)",
   borderWidth: 0
 };
 var wantsData = {
   label: "wants",
   data: [],
-  backgroundColor: "rgba(100,164,100, 0.6)",
+  borderColor: "rgba(100,164,100, 0.6)",
   borderWidth: 0
 };
 class Report extends Component {
@@ -41,14 +40,14 @@ class Report extends Component {
         datasets: [incomeData, needsData, wantsData]
       }
     };
+
   }
   /**Generates monthly report from backend. */
 
   handleReportRetrieval = (event) =>{
     event.preventDefault();
     var self = this;
-    this.props.axios
-      .get("/report/monthly")
+    this.props.axios.get("/report/monthly")
       .then(function(response) {
         var d = response.data;
         self.setState({ res: d });
@@ -62,8 +61,7 @@ class Report extends Component {
   handleGraphRetrieval = event=> {
 
     var self = this;
-    this.props.axios
-      .get("/report/graph")
+    this.props.axios.get("/report/graph")
       .then(function(response) {
         var d = response.data;
         self.processData(d);
@@ -161,7 +159,7 @@ class Report extends Component {
         </Button>
         <Collapse in={this.state.openGoal}>
           <div id="example-collapse-text">
-            <GoalList token={this.props.token} />
+            <GoalList axios={this.props.axios} />
           </div>
         </Collapse>
 
@@ -176,60 +174,60 @@ class Report extends Component {
 
 
 
-    // if (Object.keys(this.state.res).length !== 0) {
-    //   var cols = [
-    //     { Header: "Name", accessor: "name" },
-    //     { Header: "Total Amount Spent/Received", accessor: "totalAmount" },
-    //     { Header: "Type", accessor: "isIncome" }
-    //   ];
-    //   var len = this.state.res.document.length - 1;
-    //   console.log(this.state.res.document);
-    //   var arr = this.state.res.document;
+    if (Object.keys(this.state.res).length !== 0) {
+      var cols = [
+        { Header: "Name", accessor: "name" },
+        { Header: "Total Amount Spent/Received", accessor: "totalAmount" },
+        { Header: "Type", accessor: "isIncome" }
+      ];
+      var len = this.state.res.document.length - 1;
+      console.log(this.state.res.document);
+      var arr = this.state.res.document;
 
-    //   if (this.state.res.found === false) {
-    //     arr = this.state.res.document.slice(0, len);
-    //     var remain = this.state.res.document[len];
+      if (this.state.res.found === false) {
+        arr = this.state.res.document.slice(0, len);
+        var remain = this.state.res.document[len];
 
-    //     var msg = "Neither loses or savings made. here are your goals: ";
-    //     if (remain > 0) {
-    //       msg = "Nice save! please assign these remaining to your goals:";
-    //     } else if (remain < 0) {
-    //       msg =
-    //         "OH no! you've made losses! please accomodate these losses by taking away your long term saving or emergency funds:";
-    //     }
-    //     res = (
-    //       <div>
-    //         <ReactTable data={arr} columns={cols} minRows={len} />
-    //         <br />
-    //         <h2>
-    //           {" "}
-    //           Your Remaining Balance For this{" "}
-    //           {new Intl.DateTimeFormat("en-US", { month: "long" }).format(
-    //             new Date()
-    //           )}{" "}
-    //           : {remain}{" "}
-    //         </h2>
-    //         <br />
-    //         <h2> {msg} </h2>
-    //         <Goals token={this.props.token} />
-    //       </div>
-    //     );
-    //   } else {
-    //     res = (
-    //       <div>
-    //         <ReactTable data={arr} columns={cols} minRows={len} />
-    //         <br />
-    //         <h2>
-    //           {" "}
-    //           {"You've made report for this "}
-    //           {new Intl.DateTimeFormat("en-US", { month: "long" }).format(
-    //             new Date()
-    //           )}{" "}
-    //         </h2>
-    //       </div>
-    //     );
-    //   }
-    // }
+        var msg = "Neither loses or savings made. here are your goals: ";
+        if (remain > 0) {
+          msg = "Nice save! please assign these remaining to your goals:";
+        } else if (remain < 0) {
+          msg =
+            "OH no! you've made losses! please accomodate these losses by taking away your long term saving or emergency funds:";
+        }
+        res = (
+          <div>
+            <ReactTable data={arr} columns={cols} minRows={len} />
+            <br />
+            <h2>
+              {" "}
+              Your Remaining Balance For this{" "}
+              {new Intl.DateTimeFormat("en-US", { month: "long" }).format(
+                new Date()
+              )}{" "}
+              : {remain}{" "}
+            </h2>
+            <br />
+            <h2> {msg} </h2>
+            <GoalList axios={this.props.axios} />
+          </div>
+        );
+      } else {
+        res = (
+          <div>
+            <ReactTable data={arr} columns={cols} minRows={len} />
+            <br />
+            <h2>
+              {" "}
+              {"You've made report for this "}
+              {new Intl.DateTimeFormat("en-US", { month: "long" }).format(
+                new Date()
+              )}{" "}
+            </h2>
+          </div>
+        );
+      }
+    }
 
     return res;
   }
