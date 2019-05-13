@@ -6,8 +6,6 @@ export default class TransItem extends Component {
     var d = new Date(date).toDateString();
     return d;
    }
-   handleDisplay = event => {
-  }
 
   render() {
     const trans = this.props.trans;

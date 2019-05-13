@@ -11,7 +11,6 @@ import { ic_attach_money } from "react-icons-kit/md/ic_attach_money";
 import { ic_forum } from "react-icons-kit/md/ic_forum";
 import { NavLink } from "react-router-dom";
 
-import Header from "./Header";
 export default class SideBar extends React.Component {
   handleClick = event => {
     event.preventDefault();
@@ -19,12 +18,7 @@ export default class SideBar extends React.Component {
   render() {
     return (
       <Menu>
-        <div>
-          <h1>Ez-Life</h1>
-        </div>
-        <div>
-          <h4>Welcome, User</h4>
-        </div>
+        
         <NavLink className="menu-item" href="/">
           <Icon id="icon" icon={dashboard} />
           Dashboard

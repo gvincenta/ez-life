@@ -38,6 +38,7 @@ export default class BudgetList extends Component {
         self.setState({ error: err });
       });
   };
+  //ready to update 1 budget: 
   setUpdate = (budget) => {
     for (var i = 0; i < this.state.budgets.length; i++){
 
@@ -119,6 +120,7 @@ export default class BudgetList extends Component {
         self.setState({ error: err });
       });
   };
+  //state management: 
   handleDisplay= event=>{
 
     if (event.target.name === "cancel"){
@@ -140,6 +142,12 @@ export default class BudgetList extends Component {
     }
     else if (event.target.name === "add"){
       this.setState({mode: "add"});
+      return;
+
+    }
+    else if (event.target.name === "plan"){
+      this.setState({mode: "add"});
+      this.handlePlan(event);
       return;
 
     }
@@ -177,6 +185,7 @@ export default class BudgetList extends Component {
                 <th width={120}>Name: </th>
                 <th width={200}>Type: </th>
                 <th width={200}>Preference (1 to 10): </th>
+                <th width={200}>Budget Amount: </th>
                 <th width={50}> Update </th>
                 <th width={50}> Delete </th>
               </tr>
@@ -188,22 +197,20 @@ export default class BudgetList extends Component {
             </tbody>
           </table>
           <button name = "add" type="button" class="btn btn-secondary" onClick = {this.handleDisplay}>
-            Add New Goals
+            add new category
           </button>
           <button name = "plan" type="button" class="btn btn-secondary" onClick = {this.handleDisplay}>
             plan for next month
           </button>
           
-          <label class="switch">
-    <input type="checkbox" />
-  <span class="slider round"></span>
-            </label>
         </div>
       );
     } 
+    // add new budget:   
     else if (this.state.mode === "add"){
       
       res = (<div>
+          <h1> Budget Categories </h1>
           <table className="table responsive">
             <thead>
               <tr>
@@ -251,13 +258,14 @@ export default class BudgetList extends Component {
 
           </form>
           <button name = "submit_add" type="button" class="btn btn-secondary" onClick = {this.handleDisplay}>
-            Submit
+            submit
           </button>
           <button name = "cancel" type="button" class="btn btn-secondary" onClick = {this.handleDisplay}>
-            Cancel
+            cancel
           </button>
         </div>);
     }
+    //updating budget amount: 
     else if (this.state.mode === "update" && this.state.isIncome === "wants"){
       res = (<div>
           <table className="table responsive">
@@ -269,7 +277,6 @@ export default class BudgetList extends Component {
                 <th width={200}>Budget Amount: </th>
                 <th width={50}> Update </th>
                 <th width={50}> Delete </th>
-
               </tr>
             </thead>
             <tbody>
@@ -301,36 +308,37 @@ export default class BudgetList extends Component {
 
           </form>
           <button name = "submit_update" type="button" class="btn btn-secondary" onClick = {this.handleDisplay}>
-            Submit
+            submit
           </button>
           <button name = "cancel" type="button" class="btn btn-secondary" onClick = {this.handleDisplay}>
-            Cancel
+            cancel
           </button>
         </div>);
     }
+    //plan for next month: 
     else {
       var plans = JSON.stringify(this.state.response);
       res = (
         <div>
-          <table className="table table-hover">
+          <table className="table responsive">
             <thead>
               <tr>
-                <th>Name: </th>
-                <th>Type: </th>
-                <th>Preference (1 to 10): </th>
-                <th>Suggested Amount: </th>
-                <th width={50}> Confirm / Change </th>
-
+                <th width={120}>Name: </th>
+                <th width={200}>Type: </th>
+                <th width={200}>Preference (1 to 10): </th>
+                <th width={200}>Budget Amount: </th>
+                <th width={50}> Update </th>
+                <th width={50}> Delete </th>
               </tr>
             </thead>
             <tbody>
-              {this.state.response.map((res, index) => (
-                <BudgetItem key={index} result={res} />
+              {budgets.map((budget, index) => (
+                <BudgetItem key={index} budget={budget}  setUpdate = {this.setUpdate} handleDelete ={this.handleDelete}/>
               ))}
             </tbody>
           </table>
           <button name = "add" type="button" class="btn btn-secondary" onClick = {this.handleDisplay}>
-            Add New Goals
+          add new category
           </button>
         </div>
       );

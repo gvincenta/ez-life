@@ -1,10 +1,16 @@
-import React, { Component } from "react";
-import { Switch, Route, NavLink } from "react-router-dom";
-import NavBar from './NavBar';
-export default class Header extends Component {
+import React, { Component } from 'react';
+import "./navbar.css"
+
+class NavBar extends Component {
   render() {
     return (
-      <NavBar/>
-    );
+        <div class="header">
+        <div class="header-right">
+        {this.props.signedIn === true ? <a class="active" onClick={this.props.logout}>Log Out</a>: <div> </div>}
+        <a href="#default" class="logo">Ez Life</a>
+        </div>
+      </div>
+    )
   }
 }
+export default NavBar;

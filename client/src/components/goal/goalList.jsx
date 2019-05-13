@@ -31,7 +31,7 @@ export default class GoalList extends Component {
     this.handleLoad();
   } //handles each input field's changes:
 
-  
+  //change attribute based on inputs: 
   handleChange = event => {
     event.preventDefault();
 
@@ -43,6 +43,7 @@ export default class GoalList extends Component {
       this.setState({ display });
     });
   }
+  //ready for updating 1 item: 
   setUpdate = (goal) => {
     for (var i = 0; i < this.state.goals.length; i++){
 
@@ -95,6 +96,7 @@ export default class GoalList extends Component {
         alert(error);
       });
   };
+  //state management
   handleDisplay= event=>{
 
     if (event.target.name === "cancel"){

@@ -123,14 +123,14 @@ var monthlyTransaction = function(req, res) {
               isIncome: doc[i]._id.isIncome
             });
 
-            if (doc[i]._id.isIncome === "income") {
+            /*if (doc[i]._id.isIncome === "income") {
               sum = sum + doc[i].totalAmount;
             } else {
               sum = sum - doc[i].totalAmount;
-            }
+            }*/
           }
 
-          answer.push(sum);
+          //answer.push(sum);
           res.send({ document: answer, found: false });
           return;
         });

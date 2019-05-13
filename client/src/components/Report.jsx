@@ -7,21 +7,29 @@ import GoalList from "./goal/goalList";
 import { Line } from "react-chartjs-2";
 /**Handles monthly report for client. */
 var incomeData = {
+  fill: false,
+  backgroundColor: "rgb(0,0,240)",
+
   label: "income",
   data: [],
-  borderColor: "rgba(67,116,135, 0.6)",
+  borderColor: "rgb(0,0,240)",
   borderWidth: 0
 };
 var needsData = {
+  fill: false,
+  backgroundColor: "rgb(244,0,0)",
+
   label: "needs",
   data: [],
-  borderColor: "rgba(244,164,100, 0.6)",
+  borderColor: "rgb(244,0,0)",
   borderWidth: 0
 };
 var wantsData = {
+  fill: false,
+  backgroundColor:"rgb(254,0,250)",
   label: "wants",
   data: [],
-  borderColor: "rgba(100,164,100, 0.6)",
+  borderColor: "rgb(254,0,250)",
   borderWidth: 0
 };
 class Report extends Component {
@@ -58,6 +66,7 @@ class Report extends Component {
         alert(error);
       });
   }
+  /** gets yearly graph report:*/
   handleGraphRetrieval = event=> {
 
     var self = this;
@@ -71,8 +80,8 @@ class Report extends Component {
         alert(error);
       });
   }
+    /** process garph report:*/
   processData(data){
-    console.log(data, "pcoressing");
     //clean all arrays: 
     incomeData.data = []
     wantsData.data = []
@@ -96,6 +105,7 @@ class Report extends Component {
         }
     }
 
+
     // now, put back to state: 
     var newData = {labels: month_label, datasets: [incomeData, wantsData, needsData] }
     this.setState({data: newData});
@@ -106,16 +116,19 @@ class Report extends Component {
   }
 
   render() {
-    //var res;
     var res;
-
+    var cols = [
+      { Header: "Name", accessor: "name" },
+      { Header: "Total Amount Spent/Received", accessor: "totalAmount" },
+      { Header: "Type", accessor: "isIncome" }
+    ];
 
     //displays button if not yet clicked:
     if(this.state.mode === "unclicked"){
       res = (<div> 
         
 
-        <input type="date"  onClick={this.handleChange}/> 
+      {/* for later, allow report of any date(s): <input type="date"  onClick={this.handleChange}/> */}
         <button name = "add" type="button" class="btn btn-secondary" onClick = {this.handleReportRetrieval}> Get This Month's Report</button>
             </div>);
       
@@ -123,40 +136,55 @@ class Report extends Component {
     else{
       const { openGraph, openReport, openGoal } = this.state;
       res = (<div> 
-       <Button
-          onClick={() => this.setState({ openGraph: !openGraph })}
+        
+        <table > 
+          <tr>
+            <td><Button
+          onClick={() => this.setState({ openGraph: !openGraph,openReport: false,  openGoal:false })}
           aria-controls="example-collapse-text"
           aria-expanded={openGraph}
         >
-          Click to View Graph
-        </Button>
-        <Collapse in={this.state.openGraph}>
-          <div id="example-collapse-text">
-            <Line data={this.state.data} />
-          </div>
-        </Collapse>
-        <hr />
+          1a. View Graph
+        </Button></td>
+        <td>
         <Button
-          onClick={() => this.setState({ openReport: !openReport })}
+          onClick={() => this.setState({ openGraph: false,openReport: !openReport,  openGoal:false})}
           aria-controls="example-collapse-text"
           aria-expanded={openReport}
         >
-          Click to View Report
-        </Button>
-        <Collapse in={this.state.openReport}>
-          <div id="example-collapse-text">
-            <p> hi 1 </p>
-          </div>
-        </Collapse>
-        <hr />
 
+          1b. View Report
+        </Button>
+        
+        </td>
+        <td> 
         <Button
-          onClick={() => this.setState({ openGoal: !openGoal })}
+          onClick={() => this.setState({ openGraph: false,openReport: false,  openGoal: !openGoal})}
           aria-controls="example-collapse-text"
           aria-expanded={openGoal}
         >
-          Click to View Goal
+        
+          2. Alter Your Goal
         </Button>
+        </td>
+          </tr>
+          </table>
+       
+        <Collapse in={this.state.openGraph}>
+          <div id="example-collapse-text">
+          <h1>Graph on Annual Report: </h1>
+            <Line data={this.state.data} />
+          </div>
+        </Collapse>
+        
+        <Collapse in={this.state.openReport}>
+          <div id="example-collapse-text">
+          <h1>Report of the Month: </h1>
+          <ReactTable data={this.state.res.document} columns={cols} />
+          </div>
+        </Collapse>
+
+        
         <Collapse in={this.state.openGoal}>
           <div id="example-collapse-text">
             <GoalList axios={this.props.axios} />
@@ -174,60 +202,6 @@ class Report extends Component {
 
 
 
-    if (Object.keys(this.state.res).length !== 0) {
-      var cols = [
-        { Header: "Name", accessor: "name" },
-        { Header: "Total Amount Spent/Received", accessor: "totalAmount" },
-        { Header: "Type", accessor: "isIncome" }
-      ];
-      var len = this.state.res.document.length - 1;
-      console.log(this.state.res.document);
-      var arr = this.state.res.document;
-
-      if (this.state.res.found === false) {
-        arr = this.state.res.document.slice(0, len);
-        var remain = this.state.res.document[len];
-
-        var msg = "Neither loses or savings made. here are your goals: ";
-        if (remain > 0) {
-          msg = "Nice save! please assign these remaining to your goals:";
-        } else if (remain < 0) {
-          msg =
-            "OH no! you've made losses! please accomodate these losses by taking away your long term saving or emergency funds:";
-        }
-        res = (
-          <div>
-            <ReactTable data={arr} columns={cols} minRows={len} />
-            <br />
-            <h2>
-              {" "}
-              Your Remaining Balance For this{" "}
-              {new Intl.DateTimeFormat("en-US", { month: "long" }).format(
-                new Date()
-              )}{" "}
-              : {remain}{" "}
-            </h2>
-            <br />
-            <h2> {msg} </h2>
-            <GoalList axios={this.props.axios} />
-          </div>
-        );
-      } else {
-        res = (
-          <div>
-            <ReactTable data={arr} columns={cols} minRows={len} />
-            <br />
-            <h2>
-              {" "}
-              {"You've made report for this "}
-              {new Intl.DateTimeFormat("en-US", { month: "long" }).format(
-                new Date()
-              )}{" "}
-            </h2>
-          </div>
-        );
-      }
-    }
 
     return res;
   }

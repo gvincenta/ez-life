@@ -2,21 +2,19 @@ import React, { Component } from "react";
 
 export default class GoalItem extends Component {
 
-  
+    //format date:
    formatDate = (date) => {
     var d = new Date(date).toDateString();
     return d;
    }
-       
+  //ready for update 1 row:    
    handleDisplay = event => {
       this.props.setUpdate(this.props.goals.name);
   }
   
   
 
-  handleChange = event => {
-    this.setState({[event.target.name] : event.target.value});
-  }
+  
   render() {
 
     var goal = this.props.goals;

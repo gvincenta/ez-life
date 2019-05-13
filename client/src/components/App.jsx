@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 import axios from "axios";
 import "./App.css";
-import Header from "./Header";
+import NavBar from "./Header";
 import Report from "./Report";
 import SideBar from "./sidebar";
 import TransList from "./transaction/transList";
@@ -15,7 +15,6 @@ class App extends Component {
   
   constructor(props) {
     super(props);
-    const { cookies } = this.props;
     
     this.state = {
       token :"",
@@ -52,7 +51,6 @@ class App extends Component {
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
-  handleLoad() {}
   /** login a user */
   handleLogIn = event => {
     this.setState({ error: {} });
@@ -85,6 +83,7 @@ class App extends Component {
         alert("password/username incorrect OR may already have signed up.");
       });
   };
+  //user log out: 
   handleLogOut = event =>{
     //remove persisting token: 
     browserstore.remove("ezLife");
@@ -106,14 +105,14 @@ class App extends Component {
       var err = this.state.error;
       res = (
         <div >
-          <Header />
+          <NavBar signedIn = {false}/>
           <form>
             <input
               type="checkbox"
               value="I am an existing user"
               onClick={this.isExistingUser}
             />< label> I am an existing user </label> <br /><br />
-            <h2>Sign Up / Sign In </h2>
+            <h2>Sign Up / Log In </h2>
             
             <div class="input-container">
                 <i class="fa fa-envelope icon"></i>
@@ -156,15 +155,14 @@ class App extends Component {
     } else {
       res = (
         <div>
-          <Header />
+          <NavBar signedIn = {true} logout= {this.handleLogOut}/>
 
           <SideBar/>
-         
-          <button name = "logout" type="button" class="btn btn-secondary" onClick = {this.handleLogOut}> Log Out </button>
+          <div class = "panel-body">
 
-          <div className="col-s-6">
-            <div className="panel">
-              <div className="panel-body">
+          <div class = "row">
+          <div className="col-xs-2"></div>
+          <div className="col-xs-9">
                 <Switch>
                   <Route
                     exact
@@ -184,8 +182,10 @@ class App extends Component {
                     render={() => <BudgetList axios={axios} />}
                   />
                 </Switch>
-              </div>
-            </div>
+              
+          </div>
+
+          </div>
           </div>
         </div>
       );
