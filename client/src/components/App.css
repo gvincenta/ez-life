@@ -101,7 +101,7 @@ body {
   background: rgba(0, 0, 0, 0.3);
 }
 th {
-  text-align: center;
+  text-align: center!important;
   background-color: #dddddd;
 }
 td {
@@ -117,7 +117,15 @@ tr:nth-child(odd) {
 }
 button{
   background-color: #172f3f;
-  color : whitesmoke;
+  color : whitesmoke!important;
+  padding: 100px;
 }
 
+button:hover{
+  color: rgb(92.9%, 63.5%, 38%)!important;
+}
+
+form{
+  text-align:center;
+}
 
