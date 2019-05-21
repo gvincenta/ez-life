@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 
 import TransItem from "./transItem";
+import introJs from 'intro.js'
+import 'intro.js/introjs.css';
+
 /**TransList, a class to render all transaction's lists.  */
 export default class TransList extends Component {
   /** init object
@@ -20,9 +23,21 @@ export default class TransList extends Component {
           _id: "s"
         }
       ],
-      error: {}
+      error: {},
+      
     };
     this.handleLoad();
+  }
+  componentDidMount(){
+    if (RegExp('multipage=2', 'gi').test(window.location.search)) {
+
+      introJs().setOption('doneLabel', 'Next page')
+      .start().oncomplete(function() {
+        window.location.href = 'goal?multipage=3';
+      });
+    };
+    
+     
   }
   handleLoad = () => {
     var self = this;
@@ -67,15 +82,24 @@ export default class TransList extends Component {
         self.setState({ error: err });
       });
   };
+ 
+   
+
+
   /** mandatory render:
    * renders table to reflect backend's storage + renders field for user's  input
    * @params this.state : user enters input, stored into the state of the object.
    */
   render() {
     const { transactions } = this.state;
+    
     return (
+      
       <div>
-        <h1> Transaction Logs </h1>
+        
+        <h1  data-step='1' data-intro='Record your Transaction!'> Transaction Logs </h1>
+        
+        <button className = 'btn btn-large'  onClick={()=>introJs().start()}>intro</button>
 
         <table className="table responsive">
           <thead>
@@ -120,6 +144,8 @@ export default class TransList extends Component {
               />
 
               <input
+                data-step = '2'
+                data-intro = "Add a new transaction"
                 type="submit"
                 value="add new"
                 onClick={this.handleAddNew}

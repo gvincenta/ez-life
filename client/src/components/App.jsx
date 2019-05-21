@@ -156,7 +156,6 @@ class App extends Component {
       res = (
         <div>
           <NavBar signedIn = {true} logout= {this.handleLogOut}/>
-
           <SideBar/>
           <div class = "panel-body">
 

@@ -5,6 +5,8 @@ import Collapse from 'react-bootstrap/Collapse'
 import Button from 'react-bootstrap/Button'
 import GoalList from "./goal/goalList";
 import { Line } from "react-chartjs-2";
+import introJs from 'intro.js'
+import 'intro.js/introjs.css';
 /**Handles monthly report for client. */
 var incomeData = {
   fill: false,
@@ -49,6 +51,15 @@ class Report extends Component {
       }
     };
 
+  }
+
+  componentDidMount(){
+    if (RegExp('multipage=4', 'gi').test(window.location.search)) {
+      
+      introJs().start().oncomplete(function() {
+        window.location.href = 'report';
+      });
+    }
   }
   /**Generates monthly report from backend. */
 
@@ -129,7 +140,7 @@ class Report extends Component {
         
 
       {/* for later, allow report of any date(s): <input type="date"  onClick={this.handleChange}/> */}
-        <button name = "add" type="button" class="btn btn-secondary" onClick = {this.handleReportRetrieval}> Get This Month's Report</button>
+        <button name = "add" type="button" class="btn btn-secondary" onClick = {this.handleReportRetrieval} data-step="1" data-intro="123"> Get This Month's Report</button>
             </div>);
       
     }

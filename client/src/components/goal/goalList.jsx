@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PubSub from "pubsub-js";
-
+import introJs from 'intro.js'
+import 'intro.js/introjs.css';
 import GoalItem from "./goalItem";
 
 
@@ -42,6 +43,12 @@ export default class GoalList extends Component {
     PubSub.subscribe("displayChange", (msg, display) => {
       this.setState({ display });
     });
+    if (RegExp('multipage=3', 'gi').test(window.location.search)){
+      introJs().setOption('doneLabel', 'Next page')
+      .start().oncomplete(function() {
+        window.location.href = 'report?multipage=4';
+      });
+    }
   }
   //ready for updating 1 item: 
   setUpdate = (goal) => {
@@ -147,16 +154,21 @@ export default class GoalList extends Component {
         self.setState({ error: err });
       });
   };
+ 
+
+
   //renders goal's input fields + goal's table:
   render() {
 
     const { goals } = this.state;
     var res;
+  
     // just view
     if (this.state.mode === "read"){
       res = (
         <div className="table responsive">
-          <h1> Goals </h1>
+         
+          <h1 data-step='1' data-intro='Record your Transaction!' > Goals </h1>
           <table class="table">
             <thead>
               <tr>
@@ -174,7 +186,7 @@ export default class GoalList extends Component {
               ))}
             </tbody>
           </table>
-          <button name = "add" type="button" class="btn btn-secondary" onClick = {this.handleDisplay}>
+          <button name = "add" type="button" class="btn btn-secondary" data-step='2' data-intro ="add new Goal" onClick = {this.handleDisplay}>
             Add New Goals
           </button>
         </div>);
@@ -183,7 +195,7 @@ export default class GoalList extends Component {
     else if (this.state.mode === "add"){
       res = (
         <div>
-        <h1> Goals </h1>
+        <h1 > Goals </h1>
         <div className="table responsive">
           <table class="table">
             <thead>
@@ -323,6 +335,8 @@ export default class GoalList extends Component {
 
         </div>);
     }
+    
+   
     return res;
   }
 }

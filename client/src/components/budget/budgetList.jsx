@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-
+import introJs from 'intro.js'
+import 'intro.js/introjs.css';
 import BudgetItem from "./budgetItem";
 //handles making categories and budget planning
 export default class BudgetList extends Component {
@@ -24,6 +25,20 @@ export default class BudgetList extends Component {
       response: 0
     };
     this.handleLoad();
+  }
+
+  componentDidMount(){
+    // if (RegExp('multipage', 'gi').test(window.location.search)){
+    //   introJs().start();
+    // }
+    if (RegExp('multipage', 'gi').test(window.location.search)) {
+     
+        introJs().setOption('doneLabel', 'Next page',)
+          .start().oncomplete(function() {
+            window.location.href = 'transaction?multipage=2';
+        });
+    };
+    
   }
   //handle item loading:
   handleLoad = () => {
@@ -178,7 +193,7 @@ export default class BudgetList extends Component {
     if (this.state.mode === "read") {
       res = (
         <div>
-          <h1> Budget Categories </h1>
+          <h1 id="startButton" data-step='1' data-intro="hello budget"> Budget Categories </h1>
           <table className="table responsive">
             <thead>
               <tr>
@@ -196,7 +211,7 @@ export default class BudgetList extends Component {
               ))}
             </tbody>
           </table>
-          <button name = "add" type="button" class="btn btn-secondary" onClick = {this.handleDisplay}>
+          <button name = "add" type="button" className="btn btn-secondary" onClick = {this.handleDisplay} data-step='2' data-intro="add new">
             add new category
           </button>
           <button name = "plan" type="button" class="btn btn-secondary" onClick = {this.handleDisplay}>
