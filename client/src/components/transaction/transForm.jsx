@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Form, Input, DatePicker, InputNumber,Cascader,Button,Modal} from 'antd';
 import PubSub from 'pubsub-js'
 
-import CategoryOptions from './defaultOptions.jsx'
 import moment from 'moment'
 const FormItem = Form.Item;
 
@@ -27,7 +26,7 @@ class TransForm extends Component {
     
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { visible, onCancel, onCreate, form, item } = this.props;
+        const { visible, onCancel, onCreate, form, item, categoryOption} = this.props;
        
         const formItemLayout = {
             labelCol: {
@@ -51,10 +50,10 @@ class TransForm extends Component {
             initialValue: item.category,
             rules: [{ type: 'array', required: true, message: 'Please select category!' }],
         };
-        const TagConfig = {
-          initialValue: item.tag,
-          rules: [{ type: 'string'}],
-      };
+    //     const nameConfig = {
+    //       initialValue: item.name,
+    //       rules: [{ type: 'string', required: true, message: 'Please enter name!' }],
+    //   };
         
       
       return (
@@ -84,15 +83,15 @@ class TransForm extends Component {
 
             <Form.Item label="Category">
             {getFieldDecorator('category', CategConfig)(
-                <Cascader options={CategoryOptions} placeholder="Please select" />,
+                <Cascader options={categoryOption} placeholder="Please select" />,
             )}
             </Form.Item>
 
-            <Form.Item label="Tag">
-            {getFieldDecorator('tag',TagConfig)(
+            {/* <Form.Item label="Name">
+            {getFieldDecorator('name',nameConfig)(
                 <Input placeholder="Transaction Detail"/>
             )}
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item label="Amount">
             {getFieldDecorator('amount',amountConfig)(

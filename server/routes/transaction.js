@@ -25,4 +25,11 @@ router.put(
   transactionController.updateTransaction
 );
 
+/**distinct budget category.*/
+router.get(
+  "/cat",
+  passport.authenticate("jwt", { session: false }),
+  transactionController.getDistinctName
+);
+
 module.exports = router;
