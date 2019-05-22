@@ -101,7 +101,7 @@ body {
   background: rgba(0, 0, 0, 0.3);
 }
 th {
-  text-align: center;
+  text-align: center!important;
   background-color: #dddddd;
 }
 td {
@@ -116,8 +116,21 @@ tr:nth-child(odd) {
   background-color: #baccd1;
 }
 button{
+<<<<<<< HEAD
   background-color: #0b9afa6b;
   color: white;
+=======
+  background-color: #172f3f;
+  color : whitesmoke!important;
+  padding: 100px;
 }
 
+button:hover{
+  color: rgb(92.9%, 63.5%, 38%)!important;
+>>>>>>> 9cf08e3ecd69a1d4d7c3037e6e31c14f7ec76630
+}
+
+form{
+  text-align:center;
+}
 
