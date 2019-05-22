@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import axios from "axios";
 import "./App.css";
 import NavBar from "./Header";
-import Report from "./Report";
+import Report from "./ReportNew";
 import SideBar from "./sidebar";
 import TransList from "./transaction/transList";
 import GoalList from "./goal/goalList";

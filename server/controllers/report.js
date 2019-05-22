@@ -49,7 +49,8 @@ var monthlyTransaction = function(req, res) {
             $project: {
               name: "$name",
               totalAmount: "$data.amountPerMonth",
-              isIncome: "$isIncome"
+              isIncome: "$isIncome",
+              preference : "$preference"
             }
           }
         ]).then(doc => {
