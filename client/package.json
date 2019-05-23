@@ -26,7 +26,8 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "^3.0.1",
     "react-table": "^6.10.0",
-    "sessionstorage": "^0.1.0"
+    "sessionstorage": "^0.1.0",
+    "simple-statistics": "^7.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

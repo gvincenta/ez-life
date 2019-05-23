@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import introJs from 'intro.js'
 import 'intro.js/introjs.css';
 import BudgetItem from "./budgetItem";
+import "./budget.css";
 //handles making categories and budget planning
 export default class BudgetList extends Component {
   constructor(props) {
@@ -28,9 +29,7 @@ export default class BudgetList extends Component {
   }
 
   componentDidMount(){
-    // if (RegExp('multipage', 'gi').test(window.location.search)){
-    //   introJs().start();
-    // }
+    
     if (RegExp('multipage', 'gi').test(window.location.search)) {
      
         introJs().setOption('doneLabel', 'Next page',)
@@ -97,20 +96,7 @@ export default class BudgetList extends Component {
 
     this.setState({ [event.target.name]: event.target.value });
   };
-  //handles budget planning for next month:
-  handlePlan = event => {
-    event.preventDefault();
-
-    var self = this;
-    this.props.axios
-      .get("/budget/suggested")
-      .then(function(res) {
-        self.setState({ response: res.data });
-      })
-      .catch(function(err) {
-        self.setState({ error: err });
-      });
-  };
+  
   //handles updating budget amounts:
   handleUpdate = event => {
     console.log("handling update");
@@ -214,9 +200,7 @@ export default class BudgetList extends Component {
           <button name = "add" type="button" className="btn btn-secondary" onClick = {this.handleDisplay} data-step='2' data-intro="add new">
             add new category
           </button>
-          <button name = "plan" type="button" class="btn btn-secondary" onClick = {this.handleDisplay}>
-            plan for next month
-          </button>
+          
           
         </div>
       );

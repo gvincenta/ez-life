@@ -4,7 +4,7 @@ import introJs from 'intro.js'
 import 'intro.js/introjs.css';
 import GoalItem from "./goalItem";
 
-
+import "./goal.css";
 //handles user's goals
 
 export default class GoalList extends Component {

@@ -4,12 +4,9 @@ import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import axios from "axios";
 import "./App.css";
 import NavBar from "./Header";
-<<<<<<< HEAD
 import Report from "./ReportNew";
-=======
 import SignIn from "./SignIn";
-import Report from "./Report";
->>>>>>> 9cf08e3ecd69a1d4d7c3037e6e31c14f7ec76630
+
 import SideBar from "./sidebar";
 import TransList from "./transaction/transList";
 import GoalList from "./goal/goalList";

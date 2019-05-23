@@ -1,0 +1,13 @@
+
+tr:nth-child(even) {
+  background-color: #f4f5fa;
+}
+tr:nth-child(odd) {
+  background-color: #baccd1;
+}
+button{
+
+  background-color: #172f3f;
+  color : whitesmoke!important;
+  padding: 100px;
+}

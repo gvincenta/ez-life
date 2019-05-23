@@ -6,15 +6,14 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 import Typography from '@material-ui/core/Typography';
-import { Line ,Chart, Doughnut} from "react-chartjs-2";
+import { Line , Doughnut} from "react-chartjs-2";
 import GoalList from "./goal/goalList";
 import "bootstrap-directional-buttons";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+
+import SuggestFurther from "./SuggestFurther";
+import BudgetItem from "./budget/budgetItem";
+import BudgetSuggest from "./BudgetSuggest";
+import BudgetList from "./budget/budgetList";
 
 var income = [];
 var needs= [];
@@ -30,63 +29,97 @@ var idx_above_wants = [];
 var idx_above_income = [];
 var run_span = 0; 
 var maxWants, minWants;
+function CheckWants(){
+  return (
+    
+    <div> 
+      <p class="mx-5 mb-5"> Your huge spending was on : {maxWants.name}, as much as : {maxWants.totalAmount}, with preference of: {maxWants.preference}</p>
+    <p class="mx-5 mb-5">Your smallest spending was on :  {minWants.name}, as much as : {minWants.totalAmount}, with preference of: {minWants.preference}</p> 
+    
+    { (maxWants.preference < minWants.preference)
+      ? <p> You may want to re-prioritise your preferences for your wants' categories. </p>
+      : <p> Your wants' preference seem to be sorted out. Keep up the good work! </p>
+    }
+    </div>
+  )
+}
 function Suggest(props) {
-  SpanningTable(props);
-
+  var data = props.daily; 
   var myPieChart = {
     labels : ["income","needs","wants"],
-    datasets : [{ label :["income","needs","wants"], backgroundColor: ["rgb(120,230,240)","rgb(200,121,210)","rgb(10,200,21)"], data : [ 5 , 30,75 ]}]
-  }
-  /**Generates monthly report from backend. */
-  if (wants.length > 0){
-
-    wantsAvg =  wantsTotal / wants.length;
-    
-    
-    if (income.length > 0){
-      incomeAvg =  incomeTotal / income.length;
-      
-    }
-    if (needs.length > 0){
-      needsAvg =  needsTotal / needs.length;
-    }
-    console.log("rummm");
-    console.log(maxWants.preference, maxWants);
-    return (<div class="jumbotron card card-image" >
-    <Doughnut data = {myPieChart}/>
-  <div class="text-white text-center py-5 px-4">
-    <div>
-    <p class="mx-5 mb-5"> Your huge spending was on : {maxWants.name}, as much as : {maxWants.totalAmount}, with preference of: {maxWants.preference}</p>
-      <p class="mx-5 mb-5">Your smallest spending was on :  {minWants.name}, as much as : {minWants.totalAmount}, with preference of: {minWants.preference}</p>
-      { (maxWants.preference < minWants.preference)
-        ? <p> You may want to re-prioritise your preferences for your wants' categories. </p>
-        : <p> Your wants' preference seem to be sorted out. Keep up the good work! </p>
-      }
-    </div>
+    datasets : [{ label :["income","needs","wants"], backgroundColor: ["rgb(120,230,240)","rgb(200,121,210)","rgb(10,200,21)"], data : [ incomeTotal - needsTotal - wantsTotal , needsTotal ,wantsTotal ]}]};
+  return (<div class="jumbotron card card-image" >
+  <Line data = {data}/>
+  {(incomeTotal - needsTotal - wantsTotal >= 0 ) 
+    ? <Doughnut data = {myPieChart}/>
+    : <hr/>}
+<div class="text-white text-center py-5 px-4">
+  <div>
+  {(incomeTotal - needsTotal - wantsTotal >= 0 ) 
+    ? <p class="mx-5 mb-5">You've gained {incomeTotal - needsTotal - wantsTotal} this month. Great job! Don't forget to plan your goals and for next month.  </p>
+    : <p class="mx-5 mb-5">You've lost {( incomeTotal - needsTotal - wantsTotal) * -1} this month. re-budgeting and re-planning goals is strongly recommended. </p>}
+  
+  { (wants.length > 0)
+  ? <CheckWants />
+  : <p class="mx-5 mb-5">Congratulations! You have endured your temptation on "wants"-list this month!</p>}
   </div>
+</div>
 </div>);
-  }
+}  
+function processDaily(daily){
+    var data = daily;
     
+  var incomeData = {
+    fill: false,
+    backgroundColor: "rgb(0,0,240)",
   
+    label: "income",
+    data: [],
+    borderColor: "rgb(0,0,240)",
+    borderWidth: 0
+  };
+  var needsData = {
+    fill: false,
+    backgroundColor: "rgb(244,0,0)",
   
-
-  else{
-    return (<div class="jumbotron card card-image" >
-      <Doughnut data = {myPieChart}/>
-    <div class="text-white text-center py-5 px-4">
-      <div>
-        <h2 class="card-title h1-responsive pt-3 mb-5 font-bold"><strong>No Non-Obligatory Spending this month!</strong></h2>
-        <p class="mx-5 mb-5">Congratulations! You have endured your temptation this month!</p>
-      </div>
-    </div>
-  </div>);
+    label: "needs",
+    data: [],
+    borderColor: "rgb(244,0,0)",
+    borderWidth: 0
+  };
+  var wantsData = {
+    fill: false,
+    backgroundColor:"rgb(254,0,250)",
+    label: "wants",
+    data: [],
+    borderColor: "rgb(254,0,250)",
+    borderWidth: 0
+  };
+  
+  var daily_label = [] 
+  //append to each array: 
+  for (var i = 0; i <data.length; i++){
+      if (data[i].isIncome === "income"){
+        incomeData.data.push(data[i].amount);
+      }
+      //bug: will they always be sorted? 
+      else if (data[i].isIncome === "needs"){
+        needsData.data.push(data[i].amount);
+      }
+      else if (data[i].isIncome === "wants"){
+        wantsData.data.push(data[i].amount);
+      }
+      //add label, if not yet added: 
+      if(daily_label.includes(data[i].date ) === false){
+        daily_label.push(data[i].date );
+      }
   }
-  
+  // now, put back to state: 
+  var newData = {labels: daily_label, datasets: [incomeData, wantsData, needsData] }
+  return newData;
 
-
-  
   }
-  function compareAvg(){
+  /*function compareAvg(){
   
     for (var i = 0; i < wants.length ; i++){
       if (needsAvg > 0  && wants[i] > needsAvg){
@@ -101,10 +134,42 @@ function Suggest(props) {
 
       }
     }
-  }
+  }*/
 
 
+function MonthlyTable(props){
+return ( <div>{(props.item.length > 0)
+ ? <div className="table responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th width = {120}> {props.children} Category</th>
+              <th width = {200}>Total Amount</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+          {props.item.map((item, index) => (
+             
+             <tr>
+               
+             <td  >{item.name}</td>
+             <td >{item.totalAmount}</td>
+           </tr>
+           ))}
 
+            <tr>
+                <td> SubTotal : </td>
+                <td> {props.subtotal}</td>
+            </tr>
+
+          </tbody>
+        </table>
+        <hr/>
+
+      </div>
+:  <div> No {props.children} found for this Month <hr/> </div>} </div>)
+}
  function SpanningTable(props) {
  /**Generates monthly report from backend. */
  var d =   props.res.document;
@@ -141,92 +206,18 @@ function Suggest(props) {
 
   
     
-    return ( <Paper >
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell align="left">Income Category </TableCell>
-            
-            <TableCell align="right">Amount</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-       
-        {income.map((item, index) => (
-             
-              <TableRow>
-                
-              <TableCell align="left" >{item.name}</TableCell>
-              <TableCell align="right">{item.totalAmount}</TableCell>
-            </TableRow>
-            ))}
-        <TableRow>
-
-                <TableCell align="right">Subtotal</TableCell>
-                <TableCell align="right">{incomeTotal}</TableCell>
-        </TableRow>
-
-      </TableBody></Table>
-      <Table >
-        <TableHead>
-          <TableRow>
-            <TableCell align="left">Needs Category </TableCell>
-            
-            <TableCell align="right">Amount</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-       
-        {needs.map((item, index) => (
-             
-              <TableRow>
-                
-              <TableCell align="left">{item.name}</TableCell>
-              <TableCell align="right">{item.totalAmount}</TableCell>
-            </TableRow>
-            ))}
-        <TableRow>
-
-                <TableCell align="right">Subtotal</TableCell>
-                <TableCell align="right">{needsTotal}</TableCell>
-        </TableRow> </TableBody>
-      </Table>
-        <Table >
-        <TableHead>
-          <TableRow>
-            <TableCell align="left">Wants Category </TableCell>
-            <TableCell align="left">Preference </TableCell>
-
-            <TableCell align="right">Amount</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-       
+    return (<div>
+      <h1 > Monthly Report </h1>
       
+
+      <MonthlyTable item = {income} subtotal = {incomeTotal}> Income </MonthlyTable>
+      <MonthlyTable item = {needs} subtotal = {needsTotal}> Needs </MonthlyTable>
+      <MonthlyTable item = {wants} subtotal = {wantsTotal}> Wants </MonthlyTable>
+      <div class="text-white text-center py-5 px-4">
+
+  <p class="mx-5 mb-5"> Total : {incomeTotal - needsTotal - wantsTotal} </p> </div>
       
-       {wants.map((item, index) => (
-             
-             <TableRow>
-             <TableCell align="left">{item.name}</TableCell>
-             <TableCell align="right">{item.preference}</TableCell>
-             <TableCell align="right">{item.totalAmount}</TableCell>
-           </TableRow>
-           ))}
-       <TableRow>
-       <TableCell ></TableCell>
-               <TableCell align="right">Subtotal</TableCell>
-               <TableCell align="right">{wantsTotal}</TableCell>
-       </TableRow>
-          
-         
-        </TableBody>
-      </Table>
-      <Table>
-        <TableHead>
-          <TableCell align="right"> Net: </TableCell>
-          <TableCell align="right"> {incomeTotal - wantsTotal - needsTotal}</TableCell>
-          </TableHead></Table>
-</Paper>);
+      </div>);
 /*const { classes } = props;
 
 );*/
@@ -242,22 +233,59 @@ function TabContainer(props) {
 }
 
 function Graph(props) {
-  //console.log(props.axios);
-  var data = handleGraphRetrieval(props); 
+
+  console.log(props.yearly);
+
     
   return (
     <div>
-      <Line data={data} />
+      <Line data={props.yearly} />
     </div>
   );
 }
-/** gets yearly graph report:*/
-var handleGraphRetrieval = (props)=> {
 
-  props.axios.get("/report/graph")
+
+
+class Report extends Component {
+  constructor(props) {
+    super(props); // mandatory
+    this.handleSelect = this.handleSelect.bind(this);
+
+
+    this.state = {
+      value: 3,
+      openGraph: false,
+      openReport: false,
+      openGoal: false,
+      index: 0,
+      direction: null,
+
+      mode:"unclicked",
+      res: {},
+      daily:{},
+      yearly :{},
+
+      data: {
+        labels: [],
+      }
+    };
+    this.handleReportRetrieval();
+    this.handleDailyRetrieval();
+    this.handleGraphRetrieval();
+    console.log(this.state.yearly, "yearly");
+    
+    
+    
+    
+  }
+  /** gets yearly graph report:*/
+ handleGraphRetrieval = ()=> {
+  var self = this;
+  this.props.axios.get("/report/graph")
     .then(function(response) {
       var d = response.data;
-      processData(d);
+      self.processData(d);
+      
     })
 
     .catch(function(error) {
@@ -265,7 +293,7 @@ var handleGraphRetrieval = (props)=> {
     });
 }
   /** process garph report:*/
-var processData = data =>{
+ processData = data =>{
   var incomeData = {
     fill: false,
     backgroundColor: "rgb(0,0,240)",
@@ -312,44 +340,22 @@ var processData = data =>{
       }
   }
   // now, put back to state: 
-  var newData = {labels: month_label, datasets: [incomeData, wantsData, needsData] }
-  return newData;
+  var newData = {labels: month_label, datasets: [incomeData, wantsData, needsData] };
+  
+  this.setState({yearly:newData });
+  console.log(this.state.yearly);
+
 
 }
 
-class Report extends Component {
-  constructor(props) {
-    super(props); // mandatory
-    this.handleSelect = this.handleSelect.bind(this);
-
-
-    this.state = {
-      value: 3,
-      openGraph: false,
-      openReport: false,
-      openGoal: false,
-      index: 0,
-      direction: null,
-
-      mode:"unclicked",
-      res: {},
-
-      data: {
-        labels: [],
-      }
-    };
-    this.handleReportRetrieval();
-
-  }
-
-  handleReportRetrieval = (event) =>{
-    console.log("finish");
+  handleReportRetrieval = () =>{
 
     var self = this;
     this.props.axios.get("/report/monthly")
       .then(function(response) {
         var d = response.data;
         self.setState({ res: d });
+        SpanningTable({res : self.state.res});
       })
 
       .catch(function(error) {
@@ -361,6 +367,19 @@ class Report extends Component {
       index: selectedIndex,
       direction: e.direction,
     });
+  }
+  handleDailyRetrieval = () => {
+    var self =this;
+    console.log("asking for daily");
+
+    this.props.axios.get("/report/daily")
+      .then(function(response) {
+        var d = response.data;
+        var res = processDaily(d);
+        self.setState({daily : res});
+      }).catch(function(error) {
+        alert(error);
+      });
   }
   handleTabChange = (event, value) => {
     this.setState({ value });
@@ -390,15 +409,22 @@ class Report extends Component {
           </Tabs>
         </AppBar>
        
-        {value === 0 && <Graph axios = {this.props.axios}>Item 1</Graph>}
-        {value === 1 && <Suggest  res = {this.state.res}/>}
+        {value === 0 && <SuggestFurther axios = {this.props.axios} />}
+        {value === 1 && <Suggest daily = {this.state.daily} res = {this.state.res}/>}
         {value === 2 && <SpanningTable res = {this.state.res}/>}
-        {/** 
-        {value === 3 && <Graph axios = {this.props.axios}>Item 1</Graph>}
+        
+        {value === 3 &&<Graph yearly = {this.state.yearly}>Item 1</Graph>}
         {value === 4 && <GoalList axios = {this.props.axios}/>}
-        {value === 5 && <TabContainer>Item Three</TabContainer>}
+        {value === 5 && 
+        <div>
+        <BudgetSuggest axios = {this.props.axios}/>
+        <div className="col-s-6">
+        <BudgetList axios = {this.props.axios}/>
+        </div>
+        
+        </div>}
         {value === 6 && <Graph axios = {this.props.axios}>Item 1</Graph>}
-        */}
+        
    
       </div>);
     

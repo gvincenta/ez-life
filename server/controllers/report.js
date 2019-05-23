@@ -1,7 +1,106 @@
 var mongoose = require("mongoose");
 var Report = mongoose.model("report");
 var Budget = mongoose.model("budget");
+var oneCategory = function(req, res) {
+  // get distinct values of transaction
+  var currMonth = new Date();
+  var currYear = currMonth.getFullYear();
+  currMonth = currMonth.getMonth();
+  // lowerBound = last year's previous 2 months, e.g. 2018/03/31.
+  var lowerBound = new Date(currYear-1, currMonth-1);
+  // upperBound = this month's last date, e.g. 2019/05/30.
+  var upperBound = new Date(currYear, currMonth+1);
+  Budget.aggregate([
+    //get matching user ID
+    { $match: { user: req.user._id , ignored: false, name: req.body.name} },
+    //populate with reportID
+    {
+    $lookup: {
+        from: "reports",
+        localField: "reportID",
+        foreignField: "_id",
+        as: "data"}
+    },
+    //flatten data
+    {
+    $unwind: "$data"
+    },
+    {$match: {
+        "data.month": {
+        $gt: lowerBound,
+        $lte: upperBound
+        }
+    }},{
+      $project: {
+        amount: "$data.amountPerMonth",
+        month:{ $dateToString: {
+          date: "$data.month", 
+          format: "%Y-%m",
+      } }
 
+      }
+    },{
+      $sort :{ "month" : 1 }
+    }
+  ]).then(doc => {
+    res.send(doc);
+  });
+
+
+
+}
+
+var dailyTransaction = function(req, res) {
+  // get distinct values of transaction
+  var currMonth = new Date();
+  var currYear = currMonth.getFullYear();
+  currMonth = currMonth.getMonth();
+  // lowerBound = last month's last date, e.g. 31st March.
+  var lowerBound = new Date(currYear, currMonth);
+  // upperBound = this month's last date, e.g. 30th April.
+  var upperBound = new Date(currYear, currMonth + 1);
+  Budget.aggregate([
+    { $match: { user: req.user._id, ignored: false } },
+    {
+      $lookup: {
+        from: "transactions",
+        localField: "transactionID",
+        foreignField: "_id",
+        as: "data"
+      }
+    },
+    {
+      $unwind: "$data"
+    },
+    {
+      $match: {
+        "data.date": {
+          $gt: lowerBound,
+          $lte: upperBound
+        }
+      }
+    }, {
+      $group: {
+        _id: {
+          date:{ $dateToString: {
+              date: "$data.date", 
+              format: "%Y-%m-%d",
+          } },
+          income : "$isIncome"
+        },
+        totalAmount: {
+          $sum: "$data.realAmount"
+        }}},{$project:{
+      date: "$_id.date",
+      amount: "$totalAmount",
+      isIncome: "$_id.income"
+      
+  }},{
+      $sort :{ "date" : 1 }
+    }]).then(doc => {
+    res.send(doc);
+    });
+}
 // aggregates each income & expense category, then put it into report.
 
 var monthlyTransaction = function(req, res) {
@@ -124,11 +223,7 @@ var monthlyTransaction = function(req, res) {
               isIncome: doc[i]._id.isIncome
             });
 
-            /*if (doc[i]._id.isIncome === "income") {
-              sum = sum + doc[i].totalAmount;
-            } else {
-              sum = sum - doc[i].totalAmount;
-            }*/
+           
           }
 
           //answer.push(sum);
@@ -148,7 +243,7 @@ var yearlyTransaction = function(req, res) {
     // lowerBound = last year's previous 2 months, e.g. 2018/03/31.
     var lowerBound = new Date(currYear-1, currMonth-1);
     // upperBound = last month's last date, e.g. 2019/05/30.
-    var upperBound = new Date(currYear, currMonth);
+    var upperBound = new Date(currYear, currMonth+1);
 
     Budget.aggregate([
         //get matching user ID
@@ -205,3 +300,5 @@ var yearlyTransaction = function(req, res) {
 
 module.exports.monthlyTransaction = monthlyTransaction;
 module.exports.yearlyTransaction = yearlyTransaction;
+module.exports.dailyTransaction = dailyTransaction;
+module.exports.oneCategory = oneCategory;

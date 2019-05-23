@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 export default class GoalItem extends Component {
 
     //format date:
@@ -19,7 +18,7 @@ export default class GoalItem extends Component {
 
     var goal = this.props.goals;
     var date = this.formatDate(goal.due);
-    var res = (<tr>
+    var res = (<tr className = "goal">
             <td width={120}> {date} </td>
             <td width={200}>{goal.name} </td>
             <td width={200}> {goal.amount} </td>
