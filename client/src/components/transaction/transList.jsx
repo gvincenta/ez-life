@@ -275,8 +275,7 @@ class EditableTable extends React.Component {
                     onClick={() => introJs().start()}
                 >
                     intro
-                </button>
-                <h2>Transaction Log</h2>
+                </button> &nbsp;
                 <Button
                     data-step="2"
                     data-intro="Add a new transaction"

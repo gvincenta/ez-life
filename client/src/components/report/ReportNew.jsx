@@ -9,10 +9,12 @@ import Typography from "@material-ui/core/Typography";
 import { Line, Doughnut } from "react-chartjs-2";
 import GoalList from "../goal/goalList";
 import "bootstrap-directional-buttons";
+import { withStyles } from '@material-ui/styles';
 
 import SuggestFurther from "./SuggestFurther";
 import BudgetSuggest from "./BudgetSuggest";
 import BudgetList from "../budget/budgetList";
+
 
 var income = [];
 var needs = [];
@@ -443,15 +445,19 @@ class Report extends Component {
     handleTabChange = (event, value) => {
         this.setState({ value });
     };
+   
 
     render() {
         var value = this.state.value;
         var res = this.state.res;
         return (
+          
             <div>
+          
+
                 <AppBar position="static" style={{ background: "#437487" }}>
                     <Tabs
-                        style={{ background: "#437487", fontSize: 30 }}
+                      
                         value={value}
                         onChange={this.handleTabChange}
                         variant="scrollable"
@@ -459,43 +465,36 @@ class Report extends Component {
                         indicatorColor="inherit"
                         textColor="inherit"
                     >
-                        <Tab
-                            label="Tell Me Further"
-                            class="btn btn-info btn-arrow-left"
+                      <Tab
+                            label="Report Graph"
                         />
-                        <Tab
-                            label="Suggestion"
-                            class="btn btn-info btn-arrow-left"
-                        />
-                        <Tab
+                      <Tab
                             label="Monthly Report Details"
-                            class="btn btn-info btn-arrow-left"
                             onActive={this.handleReportRetrieval}
                         />
                         <Tab
-                            label="Report Graph"
-                            class="btn btn-info btn-arrow-left"
+                            label="Suggestion"
                         />
-
+                        <Tab 
+                            label="Tell Me Further"
+                        />
+               
                         <Tab
                             label="Change Goals"
-                            class="btn btn-info btn-arrow-right"
                         />
                         <Tab
                             label="Plan My Budget"
-                            class="btn btn-info btn-arrow-right"
-                        />
-                        <Tab label="Compare" class="btn btn-info btn-arrow" />
+                       />
                     </Tabs>
                 </AppBar>
 
-                {value === 0 && <SuggestFurther axios={this.props.axios} />}
-                {value === 1 && (
+                {value === 3 && <SuggestFurther axios={this.props.axios} />}
+                {value === 2 && (
                     <Suggest daily={this.state.daily} res={this.state.res} />
                 )}
-                {value === 2 && <SpanningTable res={this.state.res} />}
+                {value === 1 && <SpanningTable res={this.state.res} />}
 
-                {value === 3 && (
+                {value === 0 && (
                     <Graph yearly={this.state.yearly}>Item 1</Graph>
                 )}
                 {value === 4 && <GoalList axios={this.props.axios} />}
@@ -512,5 +511,5 @@ class Report extends Component {
         );
     }
 }
-
 export default Report;
+ 

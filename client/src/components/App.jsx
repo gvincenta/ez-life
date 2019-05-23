@@ -28,6 +28,7 @@ class App extends Component {
         };
         this.setToken();
     }
+    
     setToken() {
         var self = this;
         //console.log(UserProfile.getName(), "First init");
