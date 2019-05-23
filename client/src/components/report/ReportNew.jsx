@@ -7,13 +7,12 @@ import Tab from '@material-ui/core/Tab';
 
 import Typography from '@material-ui/core/Typography';
 import { Line , Doughnut} from "react-chartjs-2";
-import GoalList from "./goal/goalList";
+import GoalList from "../goal/goalList";
 import "bootstrap-directional-buttons";
 
 import SuggestFurther from "./SuggestFurther";
-import BudgetItem from "./budget/budgetItem";
 import BudgetSuggest from "./BudgetSuggest";
-import BudgetList from "./budget/budgetList";
+import BudgetList from "../budget/budgetList";
 
 var income = [];
 var needs= [];

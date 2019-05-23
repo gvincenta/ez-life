@@ -4,10 +4,10 @@ import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import axios from "axios";
 import "./App.css";
 import NavBar from "./Header";
-import Report from "./ReportNew";
+import Report from "./report/ReportNew";
 import SignIn from "./SignIn";
 
-import SideBar from "./sidebar";
+import SideBar from "./sidebar/sidebar";
 import TransList from "./transaction/transList";
 import GoalList from "./goal/goalList";
 import BudgetList from "./budget/budgetList.jsx";
