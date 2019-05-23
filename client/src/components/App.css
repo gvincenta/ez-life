@@ -1,116 +1,116 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 body {
-  background: whitesmoke no-repeat fixed center;
+    background: whitesmoke no-repeat fixed center;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 html,
 body {
-  margin: 0;
+    margin: 0;
 }
 
 #App {
-  font-family: sans-serif;
-  font-size: 15pt;
+    font-family: sans-serif;
+    font-size: 15pt;
 }
 
 #page-wrap {
-  text-align: center;
-  overflow: auto;
+    text-align: center;
+    overflow: auto;
 }
 
 .bm-item {
-  display: inline-block;
-  text-decoration: none;
-  margin-bottom: 10px;
-  color: #d1d1d1b6;
-  transition: color 0.2s;
+    display: inline-block;
+    text-decoration: none;
+    margin-bottom: 10px;
+    color: #d1d1d1b6;
+    transition: color 0.2s;
 }
 
 .bm-item:hover {
-  color: white;
+    color: white;
 }
 
 .bm-item:focus {
-  outline: none;
+    outline: none;
 }
 
 .bm-burger-button {
-  position: fixed;
-  width: 36px;
-  height: 30px;
-  left: 36px;
-  top: 36px;
+    position: fixed;
+    width: 36px;
+    height: 30px;
+    left: 36px;
+    top: 36px;
 }
 
 .bm-burger-bars {
-  background: #373a47;
+    background: #373a47;
 }
 
 .bm-cross-button {
-  height: 24px;
-  width: 24px;
+    height: 24px;
+    width: 24px;
 }
 
 .bm-cross {
-  background: #bdc3c7;
+    background: #bdc3c7;
 }
 
 .bm-menu {
-  background: #172f3f;
-  padding: 2.5em 1.5em 0;
-  font-size: 1.15em;
+    background: #172f3f;
+    padding: 2.5em 1.5em 0;
+    font-size: 1.15em;
 }
 
 .bm-morph-shape {
-  fill: #373a47;
+    fill: #373a47;
 }
 
 .bm-item-list {
-  color: #b8b7ad;
+    color: #b8b7ad;
 }
 
 .bm-overlay {
-  background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.3);
 }
 th {
-  text-align: center !important;
-  background-color: #dddddd;
+    text-align: center !important;
+    background-color: #dddddd;
 }
 td {
-  text-align: center;
-  border-right: 5px;
+    text-align: center;
+    border-right: 5px;
 }
 
 button:hover {
-  color: rgb(92.9%, 63.5%, 38%) !important;
+    color: rgb(92.9%, 63.5%, 38%) !important;
 }
 
 form {
-  text-align: center;
+    text-align: center;
 }

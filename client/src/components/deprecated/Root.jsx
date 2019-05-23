@@ -4,9 +4,9 @@ import App from "../App";
 import { CookiesProvider } from "react-cookie";
 
 export default function Root() {
-  return (
-    <CookiesProvider>
-      <App />
-    </CookiesProvider>
-  );
+    return (
+        <CookiesProvider>
+            <App />
+        </CookiesProvider>
+    );
 }

@@ -1,39 +1,39 @@
 @media all and (min-width: 480px) {
-  .SignIn {
-    padding: 60px 0;
-  }
+    .SignIn {
+        padding: 60px 0;
+    }
 
-  .SignIn form {
-    margin: 0 auto;
-    max-width: 320px;
-    font-size: 20px;
-  }
+    .SignIn form {
+        margin: 0 auto;
+        max-width: 320px;
+        font-size: 20px;
+    }
 }
 
 .NoAccount {
-  text-align: center;
+    text-align: center;
 }
 .SignInTitle {
-  padding-top: 30px;
-  font-size: 5vw;
-  text-align: center;
-  font-family: sans-serif;
+    padding-top: 30px;
+    font-size: 5vw;
+    text-align: center;
+    font-family: sans-serif;
 }
 
 .checkbox {
-  text-align: center;
+    text-align: center;
 }
 
 #SignInBox {
-  padding: 20px;
-  margin: 60px auto;
-  max-width: 40%;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 20px;
+    margin: 60px auto;
+    max-width: 40%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 @media only screen and (max-width: 768px) {
-  /* For mobile phones: */
-  [class*="SignInBox"] {
-    max-width: 100%;
-  }
+    /* For mobile phones: */
+    [class*="SignInBox"] {
+        max-width: 100%;
+    }
 }

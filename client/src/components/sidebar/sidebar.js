@@ -12,45 +12,45 @@ import { ic_forum } from "react-icons-kit/md/ic_forum";
 import { NavLink } from "react-router-dom";
 
 export default class SideBar extends React.Component {
-  handleClick = event => {
-    event.preventDefault();
-  };
-  render() {
-    return (
-      <Menu>
-        <NavLink className="menu-item" href="/">
-          <Icon id="icon" icon={dashboard} />
-          Dashboard
-        </NavLink>
+    handleClick = event => {
+        event.preventDefault();
+    };
+    render() {
+        return (
+            <Menu>
+                <NavLink className="menu-item" href="/">
+                    <Icon id="icon" icon={dashboard} />
+                    Dashboard
+                </NavLink>
 
-        <NavLink className="menu-item" to="/budget">
-          <Icon id="icon" icon={ic_attach_money} />
-          Budget Plan
-        </NavLink>
+                <NavLink className="menu-item" to="/budget">
+                    <Icon id="icon" icon={ic_attach_money} />
+                    Budget Plan
+                </NavLink>
 
-        <NavLink className="menu-item" to="/goal">
-          <Icon id="icon" icon={bullseye} />
-          Goals
-        </NavLink>
+                <NavLink className="menu-item" to="/goal">
+                    <Icon id="icon" icon={bullseye} />
+                    Goals
+                </NavLink>
 
-        <NavLink className="menu-item" to="/report">
-          <Icon id="icon" icon={graph} />
-          Reports
-        </NavLink>
-        <NavLink className="menu-item" to="/transaction">
-          <Icon id="icon" icon={graph} />
-          Transaction
-        </NavLink>
+                <NavLink className="menu-item" to="/report">
+                    <Icon id="icon" icon={graph} />
+                    Reports
+                </NavLink>
+                <NavLink className="menu-item" to="/transaction">
+                    <Icon id="icon" icon={graph} />
+                    Transaction
+                </NavLink>
 
-        <NavLink className="menu-item" href="/">
-          <Icon id="icon" icon={ic_forum} />
-          Forum
-        </NavLink>
-        <a className="menu-item" href="https://bit.ly/2PxitmU">
-          <Icon id="icon" icon={ic_forum} />
-          Instructions{" "}
-        </a>
-      </Menu>
-    );
-  }
+                <NavLink className="menu-item" href="/">
+                    <Icon id="icon" icon={ic_forum} />
+                    Forum
+                </NavLink>
+                <a className="menu-item" href="https://bit.ly/2PxitmU">
+                    <Icon id="icon" icon={ic_forum} />
+                    Instructions{" "}
+                </a>
+            </Menu>
+        );
+    }
 }
