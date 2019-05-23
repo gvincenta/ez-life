@@ -1,0 +1,15 @@
+.no-expand .ant-table-row-expand-icon {
+    display: none;
+    width: 17px;
+    height: 17px;
+    line-height: 14px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+
+}

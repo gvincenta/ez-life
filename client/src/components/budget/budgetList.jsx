@@ -1,305 +1,287 @@
-import React, { Component } from "react";
+import React from 'react';
+
+import 'antd/dist/antd.css';
+import './budgetList.css'
+
 import introJs from "intro.js";
 import "intro.js/introjs.css";
-import BudgetItem from "./budgetItem";
-import "./budget.css";
-//handles making categories and budget planning
-export default class BudgetList extends Component {
-    constructor(props) {
-        super(props); // mandatory
 
-        this.state = {
-            mode: "read",
-            name: "",
-            budgetedAmount: 1,
-            isIncome: "needs/wants/income",
-            preference: 1,
-            budgets: [
-                {
-                    name: "min. 3 characters",
-                    budgetedAmount: "minimum 1",
-                    isIncome: "needs/wants/income",
-                    preference: "useful for wants, 1 to 10"
-                }
-            ],
-            error: {},
-            response: 0
-        };
-        this.handleLoad();
-    }
 
-    componentDidMount() {
-        if (RegExp("multipage", "gi").test(window.location.search)) {
-            introJs()
-                .setOption("doneLabel", "Next page")
-                .start()
-                .oncomplete(function() {
-                    window.location.href = "transaction?multipage=2";
-                });
+
+import {Table, Button, Popconfirm, Form,Divider,Icon} from 'antd';
+
+import BudgetFormTable from './budgetForm'
+
+
+class EditableTable extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    // talble columns
+    this.columns =
+      [{
+        title: 'Type',
+        dataIndex: 'type',
+        render: (type,record) => {
+          return `${record.isIncome}`
         }
-    }
-    //handle item loading:
-    handleLoad = () => {
-        var self = this;
-        this.props.axios
-            .get("/budget")
-            .then(function(response) {
-                var d = response.data;
-                self.setState({ budgets: d });
-            })
-            .catch(function(err) {
-                self.setState({ error: err });
-            });
-    };
-    //ready to update 1 budget:
-    setUpdate = budget => {
-        for (var i = 0; i < this.state.budgets.length; i++) {
-            if (this.state.budgets[i].name === budget) {
-                this.setState({
-                    name: this.state.budgets[i].name,
-                    budgetedAmount: this.state.budgets[i].budgetedAmount,
-                    isIncome: this.state.budgets[i].isIncome,
-                    preference: this.state.budgets[i].preference
-                });
-                this.setState({ mode: "update" });
-                break;
-            }
-        }
-    };
-
-    //handle adding more categories,
-    handleAddNew = event => {
-        event.preventDefault();
-        var self = this;
-
-        this.props.axios
-            .post("/budget", {
-                name: self.state.name,
-                isIncome: self.state.isIncome,
-                preference: self.state.preference
-            })
-            .then(function(response) {
-                self.handleLoad();
-            })
-            .catch(function(err) {
-                self.setState({ error: err });
-            });
-    };
-
-    //handles changes to each input field
-    handleChange = event => {
-        event.preventDefault();
-
-        this.setState({ [event.target.name]: event.target.value });
-    };
-
-    //handles updating budget amounts:
-    handleUpdate = event => {
-        console.log("handling update");
-        var self = this;
-
-        console.log(
-            self.state.name,
-            self.state.budgetedAmount,
-            self.state.preference
-        );
-        event.preventDefault();
-
-        this.props.axios
-            .put("/budget", {
-                name: self.state.name,
-                budgetedAmount: self.state.budgetedAmount,
-                preference: self.state.preference
-            })
-            .then(function(response) {
-                console.log(response);
-
-                self.handleLoad();
-            })
-            .catch(function(err) {
-                self.setState({ error: err });
-            });
-    };
-    //state management:
-    handleDisplay = event => {
-        if (event.target.name === "cancel") {
-            this.setState({ mode: "read" });
-            return;
-        } else if (event.target.name === "submit_update") {
-            this.setState({ mode: "read" });
-            this.handleUpdate(event);
-            return;
-        } else if (event.target.name === "submit_add") {
-            this.setState({ mode: "read" });
-            this.handleAddNew(event);
-
-            return;
-        } else if (event.target.name === "add") {
-            this.setState({ mode: "add" });
-            return;
-        } else if (event.target.name === "plan") {
-            this.setState({ mode: "add" });
-            this.handlePlan(event);
-            return;
-        }
-    };
-    //handles deleting a  category:
-    handleDelete = budget => {
-        var self = this;
-
-        this.props.axios
-            .delete("/budget", {
-                data: { name: budget }
-            })
-            .then(function(response) {
-                self.handleLoad();
-            })
-            .catch(function(err) {
-                self.setState({ error: err });
-            });
-    };
-    // renders category table + category input's fields :
-    render = () => {
-        const { budgets, mode } = this.state;
-        return (
+      }, {
+        title: 'Name',
+        dataIndex: 'name',
+      }, {
+        title: 'Operation',
+        dataIndex: 'operation',
+        width: '20%',
+        render: (text, record) => {
+          const { editingKey } = this.state;
+          return(
             <div>
-            <h1
-                id="startButton"
-                data-step="1"
-                data-intro="hello budget"
-            >
-                {" "}
-                Budget Categories{" "}
-            </h1>
-            <table className="table responsive">
-                <thead>
-                    <tr>
-                        <th width={120}>Name: </th>
-                        <th width={200}>Type: </th>
-                        <th width={200}>Preference (1 to 10): </th>
-                        <th width={200}>Budget Amount: </th>
-                        <th width={50}> Update </th>
-                        <th width={50}> Delete </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {budgets.map((budget, index) => (
-                        <BudgetItem
-                            key={index}
-                            budget={budget}
-                            setUpdate={this.setUpdate}
-                            handleDelete={this.handleDelete}
-                        />
-                    ))}
-                </tbody>
-            </table>
-            {(() => {
-                     switch(mode) {
-                        case 'read':
-                            return (
-                                <button
-                        name="add"
-                        type="button"
-                        className="btn btn-secondary"
-                        onClick={this.handleDisplay}
-                        data-step="2"
-                        data-intro="add new"
-                    >
-                        add new category
-                    </button>
-                            ); 
-                        case 'add':
-                            return (<div ><h3>  add new budget: </h3>
-                                <div class="col-xs-3">
-                                <label for="ex1" > Name: </label>
-                                <input className="form-control" id="ex1"
-                                    type="text"
-                                    name="name"
-                                    placeholder="min. 3 characters"
-                                    value={this.state.name}
-                                    onChange={this.handleChange}
-                                /></div>
-                                <div class="col-xs-3">
-                                <label for="ex2" >  Type:</label>
-                                <input className="form-control" id="ex2"
-                                    type="text"
-                                    name="isIncome"
-                                    placeholder="income/needs/wants"
-                                    value={this.state.isIncome}
-                                    onChange={this.handleChange}
-                                /></div>
-                                 
-                                {this.state.isIncome === "wants" ? (
-                                     <div class="col-xs-2">
-                                     <label for="ex3" >  Preference:</label>
-                                        <input  className="form-control" id="ex3"
-                                            type="number"
-                                            name="preference"
-                                            placeholder="1 to 10"
-                                            value={this.state.preference}
-                                            onChange={this.handleChange}
-                                        />
-                                    </div>
-                                ) : (
-                                    <div />
-                                )}<br/>
-                            <button
-                                name="submit_add"
-                                type="button"
-                                class="btn btn-secondary"
-                                onClick={this.handleDisplay}
-                            >
-                                submit
-                            </button>&nbsp;
-                            <button
-                                name="cancel"
-                                type="button"
-                                class="btn btn-secondary"
-                                onClick={this.handleDisplay}
-                            >
-                                cancel
-                            </button></div>);
-                        case 'update':
-                            return (<div ><h3>   Updating {this.state.name} </h3>
-                                
-                                <div class="col-xs-2">
-                                     <label for="ex4" >  Preference:</label>
-                                <input className="form-control" id="ex4"
-                                    type="number"
-                                    name="preference"
-                                    value={this.state.preference}
-                                    onChange={this.handleChange}
-                                /></div>
-                                 <div class="col-xs-2">
-                                     <label for="ex5" > Budget Amount:</label>
-                                <input className="form-control" id="ex5"
-                                    type="number"
-                                    name="budgetedAmount"
-                                    value={this.state.budgetedAmount}
-                                    onChange={this.handleChange}
-                                /></div><br/>
-                      
-                            <button
-                                name="submit_update"
-                                type="button"
-                                class="btn btn-secondary"
-                                onClick={this.handleDisplay}
-                            >
-                                submit
-                            </button>&nbsp;
-                            <button
-                                name="cancel"
-                                type="button"
-                                class="btn btn-secondary"
-                                onClick={this.handleDisplay}
-                            >
-                                cancel
-                            </button></div>)
-                        default:
-                            return null;
-                        }
-                    })()}</div>
-        );
+              <span>
+                { record.isIncome === "wants" ? 
+                    (<a disabled={editingKey !== "-1"} onClick={() => this.edit(record._id)}>Edit</a>)
+                    : null
+                   
+                }
+                { record.isIncome === "wants" ? 
+                    <Divider type="vertical" /> : null
+                }
+                {
+                  this.state.budgets.length >= 1
+                  ? (
+                    <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.name)}>
+                      <a href={"javascript:;"}>Delete</a>
+                    </Popconfirm>
+                  )
+                  : null
+                } 
+              </span>
+            </div>
+          )}
+      }];
 
+    this.state = {
+      budgets: [
+        {
+          name: "",
+          budgetedAmount: 1,
+          isIncome: "needs/wants/income",
+          preference: 1,
+        }
+      ],
+      error: {},
+      count: 0,
+      visible: false,
+      onfirmLoading: false,
+      editingKey: "-1" ,
     };
+  }
+
+  componentDidMount(){
+    // TODO handleload()
+    this.handleLoad();
+
+    // introJs
+    if (RegExp("multipage", "gi").test(window.location.search)) {
+        introJs()
+            .setOption("doneLabel", "Next page")
+            .start()
+            .oncomplete(function() {
+                window.location.href = "transaction?multipage=2";
+        });
+    }
+  }
+
+  //handle item loading:
+  handleLoad = () => {
+    var self = this;
+    this.props.axios
+      .get("/budget")
+      .then(function(response) {
+        var d = response.data;
+        console.log(d);
+        self.setState({ budgets: d });
+      })
+      .catch(function(err) {
+        self.setState({ error: err });
+      });
+  };
+
+    // handle add new budget
+    handleAddNew = (newData) => {
+      console.log("new",newData)
+      var self = newData;
+      var self_2 = this; 
+    
+      this.props.axios
+        .post("/budget", { 
+          name: self.name,
+          isIncome: self.isIncome,
+          preference: self.preference,
+          budgetedAmount: self.budgetAmount
+        })
+        .then(function(response) {
+          console.log("res", response);
+          self_2.handleLoad();
+        })
+        .catch(function(err) {
+          alert(err);
+          self_2.setState({ error: err });
+        });
+    };
+  
+    //handles updating budget amounts:
+    handleUpdate = (newData) => {
+      console.log("handling update");
+      var self = newData;
+      var self_2 = this; 
+  
+      console.log("update",newData);
+  
+  
+      this.props.axios
+        .put("/budget", {
+          name: self.name,
+          preference: self.preference,
+          budgetedAmount: self.budgetAmount
+        })
+        .then(function(response) {
+          console.log("res", response);
+  
+          self_2.handleLoad();
+        })
+        .catch(function(err) {
+          self_2.setState({ error: err });
+        });
+    };
+  
+    //handles deleting a  category:
+    handleDelete = (budget) => {
+      var self_2 = this; 
+  
+      this.props.axios
+        .delete("/budget", {
+          data: { name: budget }
+        })
+        .then(function(response) {
+          self_2.handleLoad();
+        })
+        .catch(function(err) {
+          self_2.setState({ error: err });
+        });
+    };
+
+
+  // show pop up modal
+  showModal = () => {
+    this.setState({ visible: true });
+  };
+
+  // handle cancel modal
+  handleCancel = () => {
+    this.setState({ visible: false, editingKey: "-1"});
+  };
+
+  // handle add new/ edit 
+  handleCreate = () => {
+    const form = this.formRef.props.form;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+      console.log('Received values of form: ', values);
+
+      form.resetFields();
+      
+      const {budgets,editingKey} = this.state;
+  
+      let newData = {
+        isIncome: values.isIncome,
+        name: values.name,
+        preference: values.preference,
+        budgetAmount: values.budgetAmount
+      }
+
+     if(editingKey !== '-1'){
+  
+       // TODO update a transaction
+      //this.setState({budgets: newd})
+      this.handleUpdate(newData)
+     } else {
+         // TODO create new transaction
+      //this.setState({budgets:[...budgets,newData],count: this.state.count+1});
+      this.handleAddNew(newData);
+     }
+
+      this.setState({ visible: false, editingKey: "-1"});
+    });
+    
+  };
+
+
+  edit(key) {
+    this.setState({ editingKey: key });
+    this.setState({ visible: true });
+  }
+
+  saveFormRef = formRef => {
+    this.formRef = formRef;
+  };
+
+  render() {
+  
+    const { budgets, editingKey} = this.state;
+    const item = (editingKey === '-1' ? {} : budgets.find(item => item._id === editingKey));
+
+    const columns = this.columns.map((col) => {
+      if (!col.editable) {
+        return col;
+      }
+      return {
+        ...col,
+        onCell: record => ({
+          record,
+          dataIndex: col.dataIndex,
+          title: col.title,
+          editing: this.isEditing(record),
+        }),
+      };
+    });
+
+    return (
+      <div>
+        <h2>Budget</h2>
+        <Button type="primary" onClick={this.showModal}>
+          New Budget
+        </Button>
+        <BudgetFormTable 
+          wrappedComponentRef={this.saveFormRef}
+          visible={this.state.visible}
+          onCancel={this.handleCancel}
+          onCreate={this.handleCreate}
+          item = {item}
+        />
+    
+      <Table
+          bordered
+          dataSource={budgets}
+          columns={columns}
+          rowClassName={record => record.isIncome==='wants' ? "editable-row" : "no-expand"} 
+          pagination={{
+            onChange: this.cancel,
+          }}
+          expandedRowRender={record => record.isIncome==='wants' ? <div>
+                                                                  <p style={{ margin: 0 }}>{`Preference: ${record.preference}`}</p>
+                                                                  <p style={{ margin: 0 }}>{`Amount: ${record.budgetedAmount}`}</p>
+                                                              </div> : null}
+      />
+ 
+      </div>
+    );
+  }
 }
+
+const EditableFormTable = Form.create()(EditableTable);
+export default EditableFormTable;
+    
+    
+              
