@@ -52,7 +52,6 @@ passport.use(
         if (!isMatch) {
           return done(null, false);
         }
-        
 
         // Otherwise, return the user
         done(null, user);
@@ -60,5 +59,5 @@ passport.use(
         done(error, false);
       }
     }
-  ));
- 
+  )
+);

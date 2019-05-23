@@ -18,7 +18,6 @@ export default class SideBar extends React.Component {
   render() {
     return (
       <Menu>
-        
         <NavLink className="menu-item" href="/">
           <Icon id="icon" icon={dashboard} />
           Dashboard

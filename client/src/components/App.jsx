@@ -3,66 +3,61 @@ import { Switch, Route } from "react-router-dom";
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import axios from "axios";
 import "./App.css";
-import NavBar from "./Header";
+import NavBar from "./navbar/Header";
 import Report from "./report/ReportNew";
-import SignIn from "./SignIn";
+import SignIn from "./signin/SignIn";
 
 import SideBar from "./sidebar/sidebar";
 import TransList from "./transaction/transList";
 import GoalList from "./goal/goalList";
 import BudgetList from "./budget/budgetList.jsx";
-import UserProfile from './UserProfile';
-import browserstore from "browser-session-store"
+import UserProfile from "./UserProfile";
+import browserstore from "browser-session-store";
 
 class App extends Component {
-  
   constructor(props) {
     super(props);
-    
+
     this.state = {
-      token :"",
+      token: "",
       axios: "",
       username: "",
       password: "",
       existingUser: false,
       error: ""
     };
-    this.setToken()
-    
+    this.setToken();
   }
-   setToken(){
-     var self = this;
+  setToken() {
+    var self = this;
     //console.log(UserProfile.getName(), "First init");
-    browserstore.get("ezLife", function (err,val){
+    browserstore.get("ezLife", function(err, val) {
       console.log(err);
       // handle error or nonexistence token:
-      if(err || (val == null)){
-        self.setState({token : ""});
+      if (err || val == null) {
+        self.setState({ token: "" });
         return;
       }
-      // init axios,token to this existing token: 
+      // init axios,token to this existing token:
 
-      axios.defaults.headers.common["Authorization"] = val; 
-      self.setState({token : val});
+      axios.defaults.headers.common["Authorization"] = val;
+      self.setState({ token: val });
       return;
-      
-    })
-    
-    
+    });
   }
   /**sets token */
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
-  
-  //user log out: 
-  handleLogOut = event =>{
-    //remove persisting token: 
+
+  //user log out:
+  handleLogOut = event => {
+    //remove persisting token:
     browserstore.remove("ezLife");
-    //reset state, reload page: 
+    //reset state, reload page:
     this.setToken();
     window.location.reload();
-  }
+  };
 
   // existing user or not:
   isExistingUser = event => {
@@ -75,19 +70,16 @@ class App extends Component {
     //first time up, ask for email/username and password:
     if (this.state.token.length === 0) {
       var err = this.state.error;
-      res = (
-          <SignIn/>
-      );
+      res = <SignIn />;
     } else {
       res = (
         <div>
-          <NavBar signedIn = {true} logout= {this.handleLogOut}/>
-          <SideBar/>
-          <div class = "panel-body">
-
-          <div class = "row">
-          <div className="col-xs-2"></div>
-          <div className="col-xs-9">
+          <NavBar signedIn={true} logout={this.handleLogOut} />
+          <SideBar />
+          <div class="panel-body">
+            <div class="row">
+              <div className="col-xs-2" />
+              <div className="col-xs-9">
                 <Switch>
                   <Route
                     exact
@@ -100,17 +92,15 @@ class App extends Component {
                   />
                   <Route
                     path="/report"
-                    render={() => <Report axios = {axios} />}
+                    render={() => <Report axios={axios} />}
                   />
                   <Route
                     path="/budget"
                     render={() => <BudgetList axios={axios} />}
                   />
                 </Switch>
-              
-          </div>
-
-          </div>
+              </div>
+            </div>
           </div>
         </div>
       );

@@ -24,7 +24,4 @@ router.post(
   reportController.oneCategory
 );
 
-
-
-
 module.exports = router;

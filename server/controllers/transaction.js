@@ -8,7 +8,6 @@ var Budget = mongoose.model("budget");
  * @param req.body : all the details of the transaction inserted as json object. */
 
 var createNewTransaction = function(req, res) {
-
   Joi.validate(req.body, schemas.transactionCreateSchema)
     .then(item => {
       // find if req.body.name exists on budget first:
@@ -135,19 +134,14 @@ var updateTransaction = function(req, res) {
 
 var getDistinctName = function(req, res) {
   //allows user to change name/type/frequency/amount of the transaction.
- 
-  Budget.find(
-    {user: req.user._id, ignored: false })
-    .then( doc => {
-      
-      
-      
+
+  Budget.find({ user: req.user._id, ignored: false })
+    .then(doc => {
       res.send(doc);
-    
-    }
-  ).catch(err => {
-    res.status(500).json(err);
-  });
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
 };
 
 /*exporting.. */
@@ -155,4 +149,3 @@ module.exports.createNewTransaction = createNewTransaction;
 module.exports.findTransaction = findTransaction;
 module.exports.updateTransaction = updateTransaction;
 module.exports.getDistinctName = getDistinctName;
-

@@ -3,7 +3,7 @@ var Person = mongoose.model("person");
 var JWT = require("jsonwebtoken");
 var { schemas } = require("../validators/validator");
 var Joi = require("joi");
- 
+
 //code goes here.
 var signUp = async (req, res, next) => {
   const { email, password } = req.body;

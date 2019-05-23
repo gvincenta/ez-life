@@ -1,13 +1,11 @@
-
 tr.goal:nth-child(even) {
-    background-color: #f18f50;
-  }
-  tr.goal:nth-child(odd) {
-    background-color:#f8bd83;
-  }
-  button{
-  
-    background-color: #172f3f;
-    color : whitesmoke!important;
-    padding: 100px;
-  }
+  background-color: #f18f50;
+}
+tr.goal:nth-child(odd) {
+  background-color: #f8bd83;
+}
+button {
+  background-color: #172f3f;
+  color: whitesmoke !important;
+  padding: 100px;
+}

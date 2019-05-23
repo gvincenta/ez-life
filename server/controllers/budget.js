@@ -6,8 +6,8 @@ var Joi = require("joi");
  * @param req.body : all the details of 1 budget inserted as json object. */
 
 var createBudget = function(req, res) {
-  if (req.body.isIncome !== "wants"){
-      req.body.preference = 1; 
+  if (req.body.isIncome !== "wants") {
+    req.body.preference = 1;
   }
   Joi.validate(req.body, schemas.budgetSchema)
     .then(
@@ -160,7 +160,7 @@ var updateBudget = function(req, res) {
       {
         name: req.body.name,
         user: req.user._id,
-        ignored : false
+        ignored: false
       },
       {
         name: item.name,
