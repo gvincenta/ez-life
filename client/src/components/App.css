@@ -117,3 +117,8 @@ form {
 .panel{
     border :0;
 }
+
+body #dashboard{
+    background-color: whitesmoke!important;
+    background-image: none!important;
+}

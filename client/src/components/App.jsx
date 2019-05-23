@@ -74,7 +74,7 @@ class App extends Component {
             res = <SignIn />;
         } else {
             res = (
-                <div>
+                <div id="dashboard">
                     <NavBar signedIn={true} logout={this.handleLogOut} />
                     <SideBar />
                     <div class="panel-body">
