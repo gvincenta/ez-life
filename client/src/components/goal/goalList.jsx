@@ -151,6 +151,22 @@ export default class GoalList extends Component {
                 self.setState({ error: err });
             });
     };
+    
+    //handles deleting a  goal:
+    handleDelete = (goal) => {
+        var self_2 = this; 
+    
+        this.props.axios
+          .delete("/goals", {
+            data: { name: goal }
+          })
+          .then(function(response) {
+            self_2.handleLoad();
+          })
+          .catch(function(err) {
+            self_2.setState({ error: err });
+          });
+      };
 
     //renders goal's input fields + goal's table:
     render() {
@@ -158,32 +174,12 @@ export default class GoalList extends Component {
         var res;
         return (
             <div className="table responsive">
+            
                     <h1 data-step="1" data-intro="Record your Goals here">
                         {" "}
                         Goals{" "}
                     </h1>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Due Date</th>
-                                <th>Goal</th>
-                                <th>Total Amount</th>
-                                <th>Amount Saved So Far.. </th>
-                                <th>Preference </th>
-                                <th> Update /Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {goals.map((goal, index) => (
-                                <GoalItem
-                                    key={index}
-                                    goals={goal}
-                                    setUpdate={this.setUpdate}
-                                />
-                            ))}
-                        </tbody>
-                    </table>
-                    
+                    <hr/>
                     {(() => {
                      switch(mode) {
                         case 'add':
@@ -332,6 +328,31 @@ export default class GoalList extends Component {
                             return null;
                         }
                     })()}
+                    <hr/>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Due Date</th>
+                                <th>Goal</th>
+                                <th>Total Amount</th>
+                                <th>Amount Saved So Far.. </th>
+                                <th>Preference </th>
+                                <th> Update </th>
+                                <th> Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {goals.map((goal, index) => (
+                                <GoalItem
+                                    key={index}
+                                    goals={goal}
+                                    setUpdate={this.setUpdate}
+                                    handleDelete = {this.handleDelete}
+                                />
+                            ))}
+                        </tbody>
+                    </table>
+                    
                     
                 </div>
         );

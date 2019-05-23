@@ -90,9 +90,21 @@ var updateGoals = (req, res) => {
             .catch(err => {
                 res.status(500).json(err);
             });
-    }
+}
+
+var deleteGoals = (req, res) => {
+    Goal.deleteOne({user : req.user._id,
+        name:req.body.name})
+        .then(doc => {
+            res.status(200).json(doc);
+        })
+        .catch(err => {
+            res.status(500).json(err);
+        });
+}
 
 
 module.exports.updateGoals = updateGoals;
 module.exports.addNew = addNew;
 module.exports.getGoals = getGoals;
+module.exports.deleteGoals = deleteGoals;

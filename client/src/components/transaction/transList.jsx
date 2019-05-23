@@ -9,6 +9,7 @@ import TransFormTable from "./transForm";
 import moment from "moment";
 import introJs from "intro.js";
 import "intro.js/introjs.css";
+import "./transaction.css";
 
 class EditableTable extends React.Component {
     constructor(props) {
@@ -166,7 +167,6 @@ class EditableTable extends React.Component {
     handleAddNew = newData => {
         var self = newData;
         var self_2 = this;
-        console.log("frontend", newData);
 
         this.props.axios
             .post("/transactions", {
@@ -198,6 +198,7 @@ class EditableTable extends React.Component {
         this.setState({
             transactions: transactions.filter(item => item.key !== key)
         });
+        
     };
 
     categoryOption = () => {

@@ -7,7 +7,14 @@ export default class GoalItem extends Component {
     };
     //ready for update 1 row:
     handleDisplay = event => {
+      if (event.target.name === "update"){
         this.props.setUpdate(this.props.goals.name);
+
+      }
+      else if (event.target.name === "delete"){
+        this.props.handleDelete(this.props.goals.name);
+      }
+        
     };
 
     render() {
@@ -28,6 +35,16 @@ export default class GoalItem extends Component {
                         onClick={this.handleDisplay}
                     >
                         update
+                    </button>
+                </td>
+                <td width={50}>
+                    <button
+                        type="button"
+                        name="delete"
+                        class="btn btn-secondary"
+                        onClick={this.handleDisplay}
+                    >
+                        delete
                     </button>
                 </td>
             </tr>

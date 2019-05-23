@@ -9,7 +9,6 @@ import Typography from "@material-ui/core/Typography";
 import { Line, Doughnut } from "react-chartjs-2";
 import GoalList from "../goal/goalList";
 import "bootstrap-directional-buttons";
-import { withStyles } from '@material-ui/styles';
 
 import SuggestFurther from "./SuggestFurther";
 import BudgetSuggest from "./BudgetSuggest";
@@ -22,12 +21,6 @@ var wants = [];
 var incomeTotal = 0;
 var needsTotal = 0;
 var wantsTotal = 0;
-var wantsAvg = 0;
-var incomeAvg = 0;
-var needsAvg = 0;
-var idx_above_needs = [];
-var idx_above_wants = [];
-var idx_above_income = [];
 var run_span = 0;
 var maxWants, minWants;
 function CheckWants() {
@@ -36,26 +29,26 @@ function CheckWants() {
             <p class="mx-5 mb-5">
                 {" "}
                 Your huge spending was on : {maxWants.name}, as much as :{" "}
-                {maxWants.totalAmount}, with preference of:{" "}
-                {maxWants.preference}
+                ${maxWants.totalAmount}, with preference of:{" "}
+                {maxWants.preference} (out of 10)
             </p>
             <p class="mx-5 mb-5">
                 Your smallest spending was on : {minWants.name}, as much as :{" "}
-                {minWants.totalAmount}, with preference of:{" "}
-                {minWants.preference}
+                ${minWants.totalAmount}, with preference of:{" "}
+                {minWants.preference} (out of 10)
             </p>
 
             {maxWants.preference < minWants.preference ? (
                 <p>
                     {" "}
-                    You may want to re-prioritise your preferences for your
+                    You may want to <b>re-prioritise</b> your preferences for your
                     wants' categories.{" "}
                 </p>
             ) : (
                 <p>
                     {" "}
                     Your wants' preference seem to be sorted out. Keep up the
-                    good work!{" "}
+                    <i>good work!</i>{" "}
                 </p>
             )}
         </div>
@@ -64,14 +57,14 @@ function CheckWants() {
 function Suggest(props) {
     var data = props.daily;
     var myPieChart = {
-        labels: ["income", "needs", "wants"],
+        labels: ["saving", "needs", "wants"],
         datasets: [
             {
-                label: ["income", "needs", "wants"],
+                label: ["saving", "needs", "wants"],
                 backgroundColor: [
-                    "rgb(120,230,240)",
-                    "rgb(200,121,210)",
-                    "rgb(10,200,21)"
+                    "rgba(120,230,240,0.8)",
+                    "rgba(200,121,210,0.8)",
+                    "rgba(10,200,21,0.8)"
                 ],
                 data: [
                     incomeTotal - needsTotal - wantsTotal,
@@ -83,9 +76,15 @@ function Suggest(props) {
     };
     return (
         <div class="jumbotron card card-image">
+            <h3 class="mx-5 mb-5"> Day to Day Transactions for this Month: </h3>
             <Line data={data} />
+            <hr/>
             {incomeTotal - needsTotal - wantsTotal >= 0 ? (
+                <div>
+                
+                <h3 class="mx-5 mb-5"> Overall saving for this month: </h3>
                 <Doughnut data={myPieChart} />
+                </div>
             ) : (
                 <hr />
             )}
@@ -94,14 +93,14 @@ function Suggest(props) {
                     {incomeTotal - needsTotal - wantsTotal >= 0 ? (
                         <p class="mx-5 mb-5">
                             You've gained{" "}
-                            {incomeTotal - needsTotal - wantsTotal} this month.
+                            ${incomeTotal - needsTotal - wantsTotal} this month.
                             Great job! Don't forget to plan your goals and for
                             next month.{" "}
                         </p>
                     ) : (
                         <p class="mx-5 mb-5">
                             You've lost{" "}
-                            {(incomeTotal - needsTotal - wantsTotal) * -1} this
+                            ${(incomeTotal - needsTotal - wantsTotal) * -1} this
                             month. re-budgeting and re-planning goals is
                             strongly recommended.{" "}
                         </p>
@@ -174,22 +173,7 @@ function processDaily(daily) {
     };
     return newData;
 }
-/*function compareAvg(){
-  
-    for (var i = 0; i < wants.length ; i++){
-      if (needsAvg > 0  && wants[i] > needsAvg){
-        idx_above_needs.push(i);
-      }
-      if (wantsAvg > 0  && wants[i] > wantsAvg){
-        idx_above_wants.push(i);
 
-      }
-      if (incomeAvg > 0  && wants[i] > incomeAvg){
-        idx_above_income.push(i);
-
-      }
-    }
-  }*/
 
 function MonthlyTable(props) {
     return (
@@ -200,7 +184,7 @@ function MonthlyTable(props) {
                         <thead>
                             <tr>
                                 <th width={120}> {props.children} Category</th>
-                                <th width={200}>Total Amount</th>
+                                <th width={200}>Total Amount ($)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -281,30 +265,21 @@ function SpanningTable(props) {
             <div class="text-white text-center py-5 px-4">
                 <p class="mx-5 mb-5">
                     {" "}
-                    Total : {incomeTotal - needsTotal - wantsTotal}{" "}
+                    Total : ${incomeTotal - needsTotal - wantsTotal}{" "}
                 </p>{" "}
             </div>
         </div>
     );
-    /*const { classes } = props;
-
-);*/
 }
 
 /**Handles monthly report for client. */
-function TabContainer(props) {
-    return (
-        <Typography component="div" style={{ padding: 8 * 3 }}>
-            {props.children}
-        </Typography>
-    );
-}
+
 
 function Graph(props) {
-    console.log(props.yearly);
 
     return (
         <div>
+            <h1> Yearly Graph on all Budget Categories:  </h1> 
             <Line data={props.yearly} />
         </div>
     );
@@ -313,10 +288,9 @@ function Graph(props) {
 class Report extends Component {
     constructor(props) {
         super(props); // mandatory
-        this.handleSelect = this.handleSelect.bind(this);
 
         this.state = {
-            value: 3,
+            value: 0,
             openGraph: false,
             openReport: false,
             openGoal: false,
@@ -421,15 +395,9 @@ class Report extends Component {
                 alert(error);
             });
     };
-    handleSelect(selectedIndex, e) {
-        this.setState({
-            index: selectedIndex,
-            direction: e.direction
-        });
-    }
+   
     handleDailyRetrieval = () => {
         var self = this;
-        console.log("asking for daily");
 
         this.props.axios
             .get("/report/daily")

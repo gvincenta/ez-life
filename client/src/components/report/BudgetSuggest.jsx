@@ -32,7 +32,7 @@ export default class BudgetSuggest extends Component {
                             <thead>
                                 <tr>
                                     <th width={120}> Budget Category</th>
-                                    <th width={200}>Suggested Amount</th>
+                                    <th width={200}>Suggested Amount ($)</th>
                                 </tr>
                             </thead>
                             <tbody>

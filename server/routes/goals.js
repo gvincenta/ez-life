@@ -33,4 +33,14 @@ router.put(
     goalController.updateGoals
 );
 
+
+/** Deletes 1 user's  goal (name/due date/amount).
+ * @param req.body:(required)  name of the goal to be deleted.  */
+
+router.delete(
+    "/",
+    passport.authenticate("jwt", { session: false }),
+    goalController.deleteGoals
+);
+
 module.exports = router;

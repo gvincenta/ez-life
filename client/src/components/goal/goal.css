@@ -1,8 +1,11 @@
 tr.goal:nth-child(even) {
     background-color: #f18f50;
+    border :0;
 }
 tr.goal:nth-child(odd) {
     background-color: #f8bd83;
+    border : 0;
+    
 }
 button {
     background-color: #172f3f;
@@ -10,9 +13,4 @@ button {
     padding: 100px;
 }
 
-.panel{
-  background-color: wheat;
-  
-    border: 0;
 
-}
