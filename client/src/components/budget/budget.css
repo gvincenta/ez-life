@@ -9,3 +9,6 @@ button {
     color: whitesmoke !important;
     padding: 100px;
 }
+form {
+    text-align: left;
+}

@@ -160,43 +160,44 @@ export default class BudgetList extends Component {
     };
     // renders category table + category input's fields :
     render = () => {
-        const { budgets } = this.state;
-        var res;
-
-        if (this.state.mode === "read") {
-            res = (
-                <div>
-                    <h1
-                        id="startButton"
-                        data-step="1"
-                        data-intro="hello budget"
-                    >
-                        {" "}
-                        Budget Categories{" "}
-                    </h1>
-                    <table className="table responsive">
-                        <thead>
-                            <tr>
-                                <th width={120}>Name: </th>
-                                <th width={200}>Type: </th>
-                                <th width={200}>Preference (1 to 10): </th>
-                                <th width={200}>Budget Amount: </th>
-                                <th width={50}> Update </th>
-                                <th width={50}> Delete </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {budgets.map((budget, index) => (
-                                <BudgetItem
-                                    key={index}
-                                    budget={budget}
-                                    setUpdate={this.setUpdate}
-                                    handleDelete={this.handleDelete}
-                                />
-                            ))}
-                        </tbody>
-                    </table>
-                    <button
+        const { budgets, mode } = this.state;
+        return (
+            <div>
+            <h1
+                id="startButton"
+                data-step="1"
+                data-intro="hello budget"
+            >
+                {" "}
+                Budget Categories{" "}
+            </h1>
+            <table className="table responsive">
+                <thead>
+                    <tr>
+                        <th width={120}>Name: </th>
+                        <th width={200}>Type: </th>
+                        <th width={200}>Preference (1 to 10): </th>
+                        <th width={200}>Budget Amount: </th>
+                        <th width={50}> Update </th>
+                        <th width={50}> Delete </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {budgets.map((budget, index) => (
+                        <BudgetItem
+                            key={index}
+                            budget={budget}
+                            setUpdate={this.setUpdate}
+                            handleDelete={this.handleDelete}
+                        />
+                    ))}
+                </tbody>
+            </table>
+            {(() => {
+                     switch(mode) {
+                        case 'read':
+                            return (
+                                <button
                         name="add"
                         type="button"
                         className="btn btn-secondary"
@@ -206,192 +207,99 @@ export default class BudgetList extends Component {
                     >
                         add new category
                     </button>
-                </div>
-            );
-        }
-        // add new budget:
-        else if (this.state.mode === "add") {
-            res = (
-                <div>
-                    <h1> Budget Categories </h1>
-                    <table className="table responsive">
-                        <thead>
-                            <tr>
-                                <th width={120}>Name: </th>
-                                <th width={200}>Type: </th>
-                                <th width={200}>Preference (1 to 10): </th>
-                                <th width={200}>Budget Amount: </th>
-                                <th width={50}> Update </th>
-                                <th width={50}> Delete </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {budgets.map((budget, index) => (
-                                <BudgetItem
-                                    key={index}
-                                    budget={budget}
-                                    setUpdate={this.setUpdate}
-                                    handleDelete={this.handleDelete}
-                                />
-                            ))}
-                        </tbody>
-                    </table>
-                    <form>
-                        <label> Name: </label>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="min. 3 characters"
-                            value={this.state.name}
-                            onChange={this.handleChange}
-                        />
-                        <label> Type:</label>
-                        <input
-                            type="text"
-                            name="isIncome"
-                            placeholder="income/needs/wants"
-                            value={this.state.isIncome}
-                            onChange={this.handleChange}
-                        />
-                        {this.state.isIncome === "wants" ? (
-                            <div>
-                                <label> Preference:</label>
-                                <input
+                            ); 
+                        case 'add':
+                            return (<div ><h3>  add new budget: </h3>
+                                <div class="col-xs-3">
+                                <label for="ex1" > Name: </label>
+                                <input className="form-control" id="ex1"
                                     type="text"
+                                    name="name"
+                                    placeholder="min. 3 characters"
+                                    value={this.state.name}
+                                    onChange={this.handleChange}
+                                /></div>
+                                <div class="col-xs-3">
+                                <label for="ex2" >  Type:</label>
+                                <input className="form-control" id="ex2"
+                                    type="text"
+                                    name="isIncome"
+                                    placeholder="income/needs/wants"
+                                    value={this.state.isIncome}
+                                    onChange={this.handleChange}
+                                /></div>
+                                 
+                                {this.state.isIncome === "wants" ? (
+                                     <div class="col-xs-2">
+                                     <label for="ex3" >  Preference:</label>
+                                        <input  className="form-control" id="ex3"
+                                            type="number"
+                                            name="preference"
+                                            placeholder="1 to 10"
+                                            value={this.state.preference}
+                                            onChange={this.handleChange}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div />
+                                )}<br/>
+                            <button
+                                name="submit_add"
+                                type="button"
+                                class="btn btn-secondary"
+                                onClick={this.handleDisplay}
+                            >
+                                submit
+                            </button>&nbsp;
+                            <button
+                                name="cancel"
+                                type="button"
+                                class="btn btn-secondary"
+                                onClick={this.handleDisplay}
+                            >
+                                cancel
+                            </button></div>);
+                        case 'update':
+                            return (<div ><h3>   Updating {this.state.name} </h3>
+                                
+                                <div class="col-xs-2">
+                                     <label for="ex4" >  Preference:</label>
+                                <input className="form-control" id="ex4"
+                                    type="number"
                                     name="preference"
-                                    placeholder="1 to 10"
                                     value={this.state.preference}
                                     onChange={this.handleChange}
-                                />
-                            </div>
-                        ) : (
-                            <div />
-                        )}
-                    </form>
-                    <button
-                        name="submit_add"
-                        type="button"
-                        class="btn btn-secondary"
-                        onClick={this.handleDisplay}
-                    >
-                        submit
-                    </button>
-                    <button
-                        name="cancel"
-                        type="button"
-                        class="btn btn-secondary"
-                        onClick={this.handleDisplay}
-                    >
-                        cancel
-                    </button>
-                </div>
-            );
-        }
-        //updating budget amount:
-        else if (
-            this.state.mode === "update" &&
-            this.state.isIncome === "wants"
-        ) {
-            res = (
-                <div>
-                    <table className="table responsive">
-                        <thead>
-                            <tr>
-                                <th width={120}>Name: </th>
-                                <th width={200}>Type: </th>
-                                <th width={200}>Preference (1 to 10): </th>
-                                <th width={200}>Budget Amount: </th>
-                                <th width={50}> Update </th>
-                                <th width={50}> Delete </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {budgets.map((budget, index) => (
-                                <BudgetItem
-                                    key={index}
-                                    budget={budget}
-                                    setUpdate={this.setUpdate}
-                                    handleDelete={this.handleDelete}
-                                />
-                            ))}
-                        </tbody>
-                    </table>
-                    <form>
-                        <h2> Updating {this.state.name} </h2>
-                        <h2> {this.state.isIncome} </h2>
+                                /></div>
+                                 <div class="col-xs-2">
+                                     <label for="ex5" > Budget Amount:</label>
+                                <input className="form-control" id="ex5"
+                                    type="number"
+                                    name="budgetedAmount"
+                                    value={this.state.budgetedAmount}
+                                    onChange={this.handleChange}
+                                /></div><br/>
+                      
+                            <button
+                                name="submit_update"
+                                type="button"
+                                class="btn btn-secondary"
+                                onClick={this.handleDisplay}
+                            >
+                                submit
+                            </button>&nbsp;
+                            <button
+                                name="cancel"
+                                type="button"
+                                class="btn btn-secondary"
+                                onClick={this.handleDisplay}
+                            >
+                                cancel
+                            </button></div>)
+                        default:
+                            return null;
+                        }
+                    })()}</div>
+        );
 
-                        <label> Preference:</label>
-                        <input
-                            type="text"
-                            name="preference"
-                            value={this.state.preference}
-                            onChange={this.handleChange}
-                        />
-                        <label> Budget Amount:</label>
-                        <input
-                            type="text"
-                            name="budgetedAmount"
-                            value={this.state.budgetedAmount}
-                            onChange={this.handleChange}
-                        />
-                    </form>
-                    <button
-                        name="submit_update"
-                        type="button"
-                        class="btn btn-secondary"
-                        onClick={this.handleDisplay}
-                    >
-                        submit
-                    </button>
-                    <button
-                        name="cancel"
-                        type="button"
-                        class="btn btn-secondary"
-                        onClick={this.handleDisplay}
-                    >
-                        cancel
-                    </button>
-                </div>
-            );
-        }
-        //plan for next month:
-        else {
-            var plans = JSON.stringify(this.state.response);
-            res = (
-                <div>
-                    <table className="table responsive">
-                        <thead>
-                            <tr>
-                                <th width={120}>Name: </th>
-                                <th width={200}>Type: </th>
-                                <th width={200}>Preference (1 to 10): </th>
-                                <th width={200}>Budget Amount: </th>
-                                <th width={50}> Update </th>
-                                <th width={50}> Delete </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {budgets.map((budget, index) => (
-                                <BudgetItem
-                                    key={index}
-                                    budget={budget}
-                                    setUpdate={this.setUpdate}
-                                    handleDelete={this.handleDelete}
-                                />
-                            ))}
-                        </tbody>
-                    </table>
-                    <button
-                        name="add"
-                        type="button"
-                        class="btn btn-secondary"
-                        onClick={this.handleDisplay}
-                    >
-                        add new category
-                    </button>
-                </div>
-            );
-        }
-        return res;
     };
 }

@@ -114,3 +114,6 @@ button:hover {
 form {
     text-align: center;
 }
+.panel{
+    border :0;
+}

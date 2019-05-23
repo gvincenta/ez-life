@@ -25,7 +25,7 @@ export default class BudgetSuggest extends Component {
         var { response } = this.state;
 
         return (
-            <div className="col-xs-6">
+            <div className="col-s-6">
                 {response.length > 0 ? (
                     <div className="table responsive">
                         <table class="table">
