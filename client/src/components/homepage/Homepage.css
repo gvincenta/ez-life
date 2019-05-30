@@ -1,0 +1,20 @@
+
+#centertitle {
+    vertical-align: 0%;
+    text-align: center;
+}
+
+#homepage {
+    padding-top: 30px;
+    font-size: 5vw;
+    text-align: center;
+    font-family: sans-serif;
+    color: white;
+    margin: 15vw auto;
+    max-width: 600px;
+    bottom: 0;
+  }
+  
+#signin{
+    font-size: 2vw;
+}
