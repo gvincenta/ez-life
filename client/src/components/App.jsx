@@ -6,6 +6,7 @@ import "./App.css";
 import NavBar from "./navbar/Header";
 import Report from "./report/ReportNew";
 import SignIn from "./signin/SignIn";
+import Homepage from "./homepage/Homepage";
 
 import SideBar from "./sidebar/sidebar";
 import TransList from "./transaction/transList";
@@ -24,7 +25,8 @@ class App extends Component {
             username: "",
             password: "",
             existingUser: false,
-            error: ""
+            error: "",
+            homepage: true
         };
         this.setToken();
     }
@@ -65,12 +67,13 @@ class App extends Component {
         var negate = !this.state.existingUser;
         this.setState({ existingUser: negate });
     };
-    //renders login page, then dashboard page.
+    //renders home page, then dashboard page.
     render() {
         var res;
-        //first time up, ask for email/username and password:
-        if (this.state.token.length === 0) {
-            var err = this.state.error;
+        //first time up, show homepage
+        if (this.state.homepage === true && this.state.token.length === 0) {
+            res = <Homepage />;
+        } else if(this.state.homepage === false && this.state.token.length === 0){
             res = <SignIn />;
         } else {
             res = (
