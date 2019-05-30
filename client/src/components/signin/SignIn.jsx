@@ -17,9 +17,8 @@ export default class SignIn extends Component {
       axios: "",
       username: "",
       password: "",
-      existingUser: false,
+      existingUser: true,
       error: "",
-      signUp: false
     };
     this.setToken()
   }
@@ -90,6 +89,7 @@ export default class SignIn extends Component {
  isExistingUser = event => {
   var negate = !this.state.existingUser;
   this.setState({ existingUser: negate });
+  console.log("state", negate);
 };
 
 handleSignUp = event => {
@@ -98,11 +98,17 @@ handleSignUp = event => {
   
   render() {
     var res;
-    if(this.state.signUp == false){
+    var {existingUser} = this.state;
+ 
       res = (
       <body id="SignIn">
         <div id="SignInBox">
-          <div className="SignInTitle">Sign In</div>
+        {(existingUser === true)
+              ?<div className="SignInTitle">Sign In</div>
+            :<div className="SignInTitle">Sign Up</div>
+
+              }
+          
           <div className="SignIn">
             <form onSubmit={this.handleSubmit}>
               <FormGroup controlId="email" bsSize="lg">
@@ -124,6 +130,20 @@ handleSignUp = event => {
                   placeholder="Password"
                 />
               </FormGroup>
+              {(existingUser === true)
+              ?<Button
+              name = "signup" type="button" class="btn btn-secondary" onClick = {this.isExistingUser}
+            >
+              I'm a new user
+            </Button>
+            :<Button
+            name = "signup" type="button" class="btn btn-secondary" onClick = {this.isExistingUser}
+          >
+            I'm an existing user
+          </Button>
+
+              }
+               &nbsp;
               <Button
                 name = "login" type="button" class="btn btn-secondary" onClick = {this.handleLogIn}
               >
@@ -131,33 +151,20 @@ handleSignUp = event => {
               </Button>
               <br/>
             </form>
-            <div className="checkbox">
-            <input 
-                  type="checkbox"
-                  value="I am an existing user"
-                  onClick={this.isExistingUser}
-                />< label> I am an existing user </label> <br /><br />
-            </div>
+           
+            
+           
           </div>
-          <div className="NoAccount">
-            Don't have an account?
+          
             <br/>
-            <Link  onClick = {this.handleSignUp}>Create an account</Link>
-            <Switch>
-                  <Route
-                    path="/signup"
-                    render={() => <NavBar />}
-                  />
-          </Switch>
+            
+            
+            
           </div>
-        </div>
+      
       </body>
     );
-      }else{
-        res = (
-          <h1>test</h1>
-        )
-      }
+    
     return res;
   }
 }

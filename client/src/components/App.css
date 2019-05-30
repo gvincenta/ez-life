@@ -118,7 +118,10 @@ form {
     border :0;
 }
 
-body #dashboard{
-    background-color: whitesmoke!important;
-    background-image: none!important;
-}
+
+body{
+    background-image: url("../images/background.jpg");
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
+  }

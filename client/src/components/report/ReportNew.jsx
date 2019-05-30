@@ -278,8 +278,8 @@ function SpanningTable(props) {
 function Graph(props) {
 
     return (
-        <div>
-            <h1> Yearly Graph on all Budget Categories:  </h1> 
+      <div class="jumbotron card card-image">
+            <h3> Yearly Graph on all Budget Categories:  </h3> 
             <Line data={props.yearly} />
         </div>
     );
