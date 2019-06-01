@@ -57,7 +57,8 @@ module.exports = {
             isIncome: Joi.string()
                 .lowercase()
                 .valid(["income", "needs", "wants"])
-                .required()
+                .required(),
+            budgetedAmount: Joi.number()
         }),
         budgetUpdateSchema: Joi.object().keys({
             name: Joi.string()

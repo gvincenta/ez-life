@@ -2,10 +2,12 @@ var mongoose = require("mongoose");
 var Budget = mongoose.model("budget");
 var { schemas } = require("../validators/validator");
 var Joi = require("joi");
+
 /** Creates a new budget for the user for an account that exist for less than 3 months.
  * @param req.body : all the details of 1 budget inserted as json object. */
 
 var createBudget = function(req, res) {
+    
     if (req.body.isIncome !== "wants") {
         req.body.preference = 1;
     }
@@ -18,6 +20,7 @@ var createBudget = function(req, res) {
                         item.preference = 1;
                     }
                 }
+               
                 var model = new Budget({
                     user: req.user._id,
                     name: item.name,
@@ -25,9 +28,13 @@ var createBudget = function(req, res) {
                     isIncome: item.isIncome,
 
                     preference: item.preference,
+                    budgetedAmount : item.budgetedAmount,
                     ignored: false
                 });
-                model.save();
+                model.save().catch(err => {
+                    res.json(err);
+                    return;
+                });
                 res.status(200).json(model);
             }
         )

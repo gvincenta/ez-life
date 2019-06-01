@@ -18,12 +18,11 @@ tr:nth-child(even) {
 }
 tr:nth-child(odd) {
     background-color: #baccd1;
+    
 }
-button {
-    background-color: #172f3f;
-    color: whitesmoke !important;
-    padding: 100px;
-}
+
 form {
     text-align: center;
+    
 }
+

@@ -174,17 +174,23 @@ export default class GoalList extends Component {
         const { goals,mode } = this.state;
         return (
             <div className="table responsive">
-            
-                    <h1 data-step="1" data-intro="Record your Goals here">
+              <h1 data-step="1" data-intro="Record your Goals (a.k.a wishlist) here">
                         {" "}
                         Goals{" "}
                     </h1>
+        <Button
+                    className="btn btn-large"
+                    onClick={() => introJs().start()}
+                >
+                    ?
+                </Button> &nbsp;
+                   
                     
                     {(() => {
                      switch(mode) {
                         case 'add':
                             return (
-                                <div ><h3> add new goals: </h3>
+                                <div ><h3 data-step="2" data-intro="Add a new goal along with its required amount, preference (1 the least  to 5 the most), and its due date."> add new goals: </h3>
                             
                            
                             
@@ -253,11 +259,12 @@ export default class GoalList extends Component {
                                 data-step="2"
                                 data-intro="add new Goal"
                                 onClick={this.handleDisplay}
+                                data-step="2" data-intro="Add a new goal along with its required amount, preference (1 the least  to 5 the most), and its due date."
                                 >
                                 Add New Goals
                             </Button>);
                         case 'update':
-                            return ( <div ><h3>  Updating {this.state.name} </h3>
+                            return ( <div ><h3 data-step="2" data-intro="update the amount you've saved so far for this goal..">  Updating {this.state.name} </h3>
                        
                         
                             <div class="col-xs-2">

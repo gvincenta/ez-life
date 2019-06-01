@@ -76,7 +76,7 @@ class TransForm extends Component {
         return (
             <Modal
                 visible={visible}
-                title="Create a new collection"
+                title="Create a new transaction log"
                 okText="Create"
                 onCancel={onCancel}
                 onOk={onCreate}
@@ -108,11 +108,7 @@ class TransForm extends Component {
                         )}
                     </Form.Item>
 
-                    {/* <Form.Item label="Name">
-            {getFieldDecorator('name',nameConfig)(
-                <Input placeholder="Transaction Detail"/>
-            )}
-            </Form.Item> */}
+                    
 
                     <Form.Item label="Amount">
                         {getFieldDecorator("amount", amountConfig)(

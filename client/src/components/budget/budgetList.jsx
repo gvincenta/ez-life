@@ -8,8 +8,9 @@ import "intro.js/introjs.css";
 
 
 
-import {Table, Button, Popconfirm, Form,Divider,Icon} from 'antd';
 
+import {Table, Popconfirm, Form,Divider} from 'antd';
+import {Button} from "react-bootstrap";
 import BudgetFormTable from './budgetForm'
 
 
@@ -17,7 +18,7 @@ class EditableTable extends React.Component {
   constructor(props) {
     super(props);
     
-    // talble columns
+    // table columns
     this.columns =
       [{
         title: 'Type',
@@ -48,7 +49,7 @@ class EditableTable extends React.Component {
                 {
                   this.state.budgets.length >= 1
                   ? (
-                    <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.name)}>
+                    <Popconfirm title="Confirm deletion?" onConfirm={() => this.handleDelete(record.name)}>
                       <a href={"javascript:;"}>Delete</a>
                     </Popconfirm>
                   )
@@ -107,44 +108,45 @@ class EditableTable extends React.Component {
 
     // handle add new budget
     handleAddNew = (newData) => {
-      var self = newData;
-      var self_2 = this; 
+      var data = newData;
+      var self = this; 
+
     
       this.props.axios
         .post("/budget", { 
-          name: self.name,
-          isIncome: self.isIncome,
-          preference: self.preference,
-          budgetedAmount: self.budgetAmount
+          name: data.name,
+          isIncome: data.isIncome,
+          preference: data.preference,
+          budgetedAmount: data.budgetAmount
         })
         .then(function(response) {
-          self_2.handleLoad();
+          self.handleLoad();
         })
         .catch(function(err) {
           alert(err);
-          self_2.setState({ error: err });
+          self.setState({ error: err });
         });
     };
   
     //handles updating budget amounts:
     handleUpdate = (newData) => {
-      var self = newData;
-      var self_2 = this; 
+      var data = newData;
+      var self = this; 
   
   
   
       this.props.axios
         .put("/budget", {
-          name: self.name,
-          preference: self.preference,
-          budgetedAmount: self.budgetAmount
+          name: data.name,
+          preference: data.preference,
+          budgetedAmount: data.budgetAmount
         })
         .then(function(response) {
   
-          self_2.handleLoad();
+          self.handleLoad();
         })
         .catch(function(err) {
-          self_2.setState({ error: err });
+          self.setState({ error: err });
         });
     };
   
@@ -182,11 +184,10 @@ class EditableTable extends React.Component {
       if (err) {
         return;
       }
-      console.log('Received values of form: ', values);
 
       form.resetFields();
       
-      const {budgets,editingKey} = this.state;
+      const {editingKey} = this.state;
   
       let newData = {
         isIncome: values.isIncome,
@@ -194,6 +195,7 @@ class EditableTable extends React.Component {
         preference: values.preference,
         budgetAmount: values.budgetAmount
       }
+
 
      if(editingKey !== '-1'){
   
@@ -238,13 +240,23 @@ class EditableTable extends React.Component {
         }),
       };
     });
+    var str = ' needs :  expenses that are immediate and inevitable. \nwants : expenses  that you can cut down. \npreference : 1 (least) to 5 (most). \nBudget Amount : $ allocated to this category.'
 
     return (
       <div>
-        <h2>Budget</h2>
-        <Button type="primary" onClick={this.showModal} data-step="1" data-intro="Record your Goals here">
-          New Budget
+        <h1 data-step="1" data-intro="Add any category for income / expenses here">Budget</h1>
+        <Button
+                    className="btn btn-large"
+                    onClick={() => introJs().start()}
+                >
+                    ?
+                </Button> &nbsp;
+        <Button type="primary" onClick={this.showModal} data-step="2" 
+        data-intro={str} >
+          
+          Add New Budget
         </Button>
+        <hr/>
         <BudgetFormTable 
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
@@ -259,8 +271,9 @@ class EditableTable extends React.Component {
           columns={columns}
           rowClassName={record => record.isIncome==='wants' ? "editable-row" : "no-expand"} 
           pagination={{
-            onChange: this.cancel,
-          }}
+            pageSizeOptions: ['10', '15','20'], 
+            showSizeChanger: true
+        }}
           expandedRowRender={record => record.isIncome==='wants' ? <div>
                                                                   <p style={{ margin: 0 }}>{`Preference: ${record.preference}`}</p>
                                                                   <p style={{ margin: 0 }}>{`Amount: ${record.budgetedAmount}`}</p>

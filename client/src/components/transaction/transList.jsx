@@ -10,6 +10,7 @@ import moment from "moment";
 import introJs from "intro.js";
 import "intro.js/introjs.css";
 import "./transaction.css";
+import { configConsumerProps } from "antd/lib/config-provider";
 
 class EditableTable extends React.Component {
     constructor(props) {
@@ -266,25 +267,26 @@ class EditableTable extends React.Component {
 
         return (
             <div>
-                <h1 data-step="1" data-intro="Record your Transaction!">
+                <h1 data-step="1" data-intro="Record your Transaction here">
                     {" "}
-                    Transaction Logs{" "}
+                    Transaction Logs For  {new Date().toLocaleString('en-us', {month : "long"})}, {new Date().getFullYear() }{" "}
                 </h1>
 
                 <Button
                     className="btn btn-large"
                     onClick={() => introJs().start()}
                 >
-                    intro
+                    ?
                 </Button> &nbsp;
                 <Button
                     data-step="2"
-                    data-intro="Add a new transaction"
+                    data-intro="Record the category, along its amount (spent / recieved) and date of occurence (for this month only). If you can't find the category here, don't forget to add it on the Budget section first."
                     type="primary"
                     onClick={this.showModal}
                 >
-                    New Transaction
+                    Add New Transaction
                 </Button>
+                <hr/>
                 <TransFormTable
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
@@ -300,13 +302,17 @@ class EditableTable extends React.Component {
                     columns={columns}
                     rowClassName="editable-row"
                     pagination={{
-                        onChange: this.cancel
+                        pageSizeOptions: ['10', '15','20'], 
+                        showSizeChanger: true
                     }}
+                   
                 />
             </div>
         );
     }
+
 }
+
 
 const EditableFormTable = Form.create()(EditableTable);
 export default EditableFormTable;

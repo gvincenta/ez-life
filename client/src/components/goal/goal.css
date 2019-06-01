@@ -7,11 +7,5 @@ tr.goal:nth-child(odd) {
     border : 0;
     
 }
-hr{
-    display: block; height: 1px;
-    border: 0; border-top: 1px solid rgb(255, 0, 0);
-    margin: 1em 0; padding: 0;
-    visibility: hidden;
-}
 
 

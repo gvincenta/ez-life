@@ -18,14 +18,10 @@ export default class SideBar extends React.Component {
     render() {
         return (
             <Menu>
-                <NavLink className="menu-item" href="/">
-                    <Icon id="icon" icon={dashboard} />
-                    Dashboard
-                </NavLink>
 
                 <NavLink className="menu-item" to="/budget">
                     <Icon id="icon" icon={ic_attach_money} />
-                    Budget Plan
+                    Budget Category
                 </NavLink>
 
                 <NavLink className="menu-item" to="/goal">
@@ -42,14 +38,8 @@ export default class SideBar extends React.Component {
                     Transaction
                 </NavLink>
 
-                <NavLink className="menu-item" href="/">
-                    <Icon id="icon" icon={ic_forum} />
-                    Forum
-                </NavLink>
-                <a className="menu-item" href="https://bit.ly/2PxitmU">
-                    <Icon id="icon" icon={ic_forum} />
-                    Instructions{" "}
-                </a>
+                
+                
             </Menu>
         );
     }

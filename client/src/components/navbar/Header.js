@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./navbar.css";
 import "intro.js/introjs.css";
-
+import logo from './logo.jpg';
 import {Button} from "react-bootstrap";
 class NavBar extends Component {
     startIntro = () => {
@@ -20,7 +20,7 @@ class NavBar extends Component {
                         <div> </div>
                     )}
                     <a href="#default" class="logo">
-                        Ez Life
+                       <img src = {logo} alt = "Ez Life" />
                     </a>
                 </div>
 
@@ -29,7 +29,7 @@ class NavBar extends Component {
                         className="btn btn-secondary"
                         onClick={this.startIntro}
                     >
-                        Guide
+                        Guide Me Please
                     </Button></a>
                 </div>
             </div>

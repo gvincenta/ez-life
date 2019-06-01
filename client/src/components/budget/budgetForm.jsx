@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Form, Input, InputNumber, Select,Modal} from 'antd';
 
-const FormItem = Form.Item;
 
 const {Option} = Select;
 
-class TransForm extends Component {
+class BudgetForm extends Component {
 
     constructor(props) {
         super(props);
@@ -90,20 +89,20 @@ class TransForm extends Component {
         
       
       return (
-        <Modal
+        <Modal className="popup"
           visible={visible}
-          title="Create a new Budget Item"
+          title="Create a new Budget Category"
           okText="Ok"
-          onCancel={onCancel}
+          onCancel={onCancel } 
           onOk={onCreate}
           afterClose={this.afterClose}
         >
             
-            <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+            <Form {...formItemLayout} onSubmit={this.handleSubmit} >
 
                 <Form.Item label="Name">
                 {getFieldDecorator('name',nameConfig)(
-                    <Input placeholder="Budget Item Name"/>
+                    <Input placeholder="Budget Category Name"/>
                 )}
                 </Form.Item>
 
@@ -117,6 +116,7 @@ class TransForm extends Component {
                 )}
 
                 </Form.Item>
+               
 
                 {!this.state.isDisabled ? (
                     <div>
@@ -131,6 +131,7 @@ class TransForm extends Component {
                 </Select>
                 )}
                 </Form.Item>
+                
 
                 <Form.Item label="Budget Amount">
                 {getFieldDecorator('budgetAmount', amountConfig)(
@@ -142,9 +143,11 @@ class TransForm extends Component {
                 />
                 )}
                 </Form.Item>
+                
                 </div>
                 ) : null
                 }
+                
 
                 
             </Form>
@@ -153,6 +156,6 @@ class TransForm extends Component {
   }
 }
  
-const TransFormTable = Form.create({ name: 'form_in_modal' })(TransForm);
-export default TransFormTable
+const BudgetFormTable = Form.create({ name: 'form_in_modal' })(BudgetForm);
+export default BudgetFormTable
  

@@ -5,7 +5,6 @@ import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
-import Typography from "@material-ui/core/Typography";
 import { Line, Doughnut } from "react-chartjs-2";
 import GoalList from "../goal/goalList";
 import "bootstrap-directional-buttons";
@@ -14,6 +13,7 @@ import SuggestFurther from "./SuggestFurther";
 import BudgetSuggest from "./BudgetSuggest";
 import BudgetList from "../budget/budgetList";
 
+import "./report.css";
 
 var income = [];
 var needs = [];
