@@ -9,20 +9,16 @@
     cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
-
+    -ms-user-select: none;
+    user-select: none;
 }
 tr:nth-child(even) {
     background-color: #f4f5fa;
 }
 tr:nth-child(odd) {
     background-color: #baccd1;
-    
 }
 
 form {
     text-align: center;
-    
 }
-

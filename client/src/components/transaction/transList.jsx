@@ -2,8 +2,8 @@ import React from "react";
 
 import "antd/dist/antd.css";
 
-import { Table,  Popconfirm, Form, Divider } from "antd";
-import {Button} from "react-bootstrap";
+import { Table, Popconfirm, Form, Divider } from "antd";
+import { Button } from "react-bootstrap";
 import TransFormTable from "./transForm";
 
 import moment from "moment";
@@ -199,7 +199,6 @@ class EditableTable extends React.Component {
         this.setState({
             transactions: transactions.filter(item => item.key !== key)
         });
-        
     };
 
     categoryOption = () => {
@@ -269,15 +268,18 @@ class EditableTable extends React.Component {
             <div>
                 <h1 data-step="1" data-intro="Record your Transaction here">
                     {" "}
-                    Transaction Logs For  {new Date().toLocaleString('en-us', {month : "long"})}, {new Date().getFullYear() }{" "}
+                    Transaction Logs For{" "}
+                    {new Date().toLocaleString("en-us", {
+                        month: "long"
+                    })}, {new Date().getFullYear()}{" "}
                 </h1>
-
                 <Button
                     className="btn btn-large"
                     onClick={() => introJs().start()}
                 >
                     ?
-                </Button> &nbsp;
+                </Button>{" "}
+                &nbsp;
                 <Button
                     data-step="2"
                     data-intro="Record the category, along its amount (spent / recieved) and date of occurence (for this month only). If you can't find the category here, don't forget to add it on the Budget section first."
@@ -286,7 +288,7 @@ class EditableTable extends React.Component {
                 >
                     Add New Transaction
                 </Button>
-                <hr/>
+                <hr />
                 <TransFormTable
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
@@ -295,24 +297,20 @@ class EditableTable extends React.Component {
                     item={item}
                     categoryOption={this.state.option}
                 />
-
                 <Table
                     bordered
                     dataSource={transactions}
                     columns={columns}
                     rowClassName="editable-row"
                     pagination={{
-                        pageSizeOptions: ['10', '15','20'], 
+                        pageSizeOptions: ["10", "15", "20"],
                         showSizeChanger: true
                     }}
-                   
                 />
             </div>
         );
     }
-
 }
-
 
 const EditableFormTable = Form.create()(EditableTable);
 export default EditableFormTable;

@@ -1,52 +1,48 @@
-body{
-    background-image: url("../../images/background.jpg")!important;
+body {
+    background-image: url("../../images/background.jpg") !important;
     background-position: center center;
     background-attachment: fixed;
     background-size: cover;
-  }
-  
-  
-  @media all and (min-width: 480px) {
-      
-      
-      .SignIn {
+}
+
+@media all and (min-width: 480px) {
+    .SignIn {
         padding: 40px 0;
-      }
-    
-      .SignIn form {
+    }
+
+    .SignIn form {
         margin: 0 auto;
         max-width: 320px;
         font-size: 20px;
-      }
     }
-  
-  .NoAccount{
+}
+
+.NoAccount {
     text-align: center;
-  }
-  .SignInTitle{
+}
+.SignInTitle {
     padding-top: 30px;
     font-size: 5vw;
     text-align: center;
     font-family: sans-serif;
-  }
-  
-  .checkbox{
+}
+
+.checkbox {
     text-align: center;
-  }
-  
-  #SignInBox{
+}
+
+#SignInBox {
     position: center;
     padding: 20px;
-    margin:60px auto;
+    margin: 60px auto;
     max-width: 35%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     background-color: whitesmoke;
     border-radius: 9px;
-  }
-  
-  @media only screen and (max-width: 600px) {
-    #SignInBox{
-      max-width: 80%;
+}
+
+@media only screen and (max-width: 600px) {
+    #SignInBox {
+        max-width: 80%;
     }
-  }
-  
+}

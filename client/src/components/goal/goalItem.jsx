@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button}from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 export default class GoalItem extends Component {
     //format date:
@@ -9,14 +9,11 @@ export default class GoalItem extends Component {
     };
     //ready for update 1 row:
     handleDisplay = event => {
-      if (event.target.name === "update"){
-        this.props.setUpdate(this.props.goals.name);
-
-      }
-      else if (event.target.name === "delete"){
-        this.props.handleDelete(this.props.goals.name);
-      }
-        
+        if (event.target.name === "update") {
+            this.props.setUpdate(this.props.goals.name);
+        } else if (event.target.name === "delete") {
+            this.props.handleDelete(this.props.goals.name);
+        }
     };
 
     render() {

@@ -1,17 +1,12 @@
 tr.goal:nth-child(even) {
     background-color: #f18f50;
-    border :0;
+    border: 0;
 }
 tr.goal:nth-child(odd) {
     background-color: #f8bd83;
-    border : 0;
-    
-    
-
+    border: 0;
 }
 
-label{
+label {
     color: black;
 }
-
-

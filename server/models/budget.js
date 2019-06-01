@@ -29,6 +29,6 @@ var budgetSchema = mongoose.Schema({
         required: true
     }
 });
-budgetSchema.index({ name :1, user:1 }, { unique: true});
+budgetSchema.index({ name: 1, user: 1 }, { unique: true });
 
 mongoose.model("budget", budgetSchema);

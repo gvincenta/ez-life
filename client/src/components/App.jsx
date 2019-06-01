@@ -30,7 +30,7 @@ class App extends Component {
         };
         this.setToken();
     }
-    
+
     setToken() {
         var self = this;
         //console.log(UserProfile.getName(), "First init");
@@ -73,7 +73,10 @@ class App extends Component {
         //first time up, show homepage
         if (this.state.homepage === true && this.state.token.length === 0) {
             res = <Homepage />;
-        } else if(this.state.homepage === false && this.state.token.length === 0){
+        } else if (
+            this.state.homepage === false &&
+            this.state.token.length === 0
+        ) {
             res = <SignIn />;
         } else {
             res = (

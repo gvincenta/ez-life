@@ -1,11 +1,5 @@
 import React, { Component } from "react";
-import {
-    Form,
-    DatePicker,
-    InputNumber,
-    Cascader,
-    Modal
-} from "antd";
+import { Form, DatePicker, InputNumber, Cascader, Modal } from "antd";
 
 import moment from "moment";
 
@@ -17,8 +11,6 @@ class TransForm extends Component {
                 console.log("Received values of form: ", values);
             }
         });
-
-
     };
 
     render() {
@@ -71,7 +63,6 @@ class TransForm extends Component {
                 }
             ]
         };
-        
 
         return (
             <Modal
@@ -107,8 +98,6 @@ class TransForm extends Component {
                             />
                         )}
                     </Form.Item>
-
-                    
 
                     <Form.Item label="Amount">
                         {getFieldDecorator("amount", amountConfig)(

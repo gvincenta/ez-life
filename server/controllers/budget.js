@@ -7,7 +7,6 @@ var Joi = require("joi");
  * @param req.body : all the details of 1 budget inserted as json object. */
 
 var createBudget = function(req, res) {
-    
     if (req.body.isIncome !== "wants") {
         req.body.preference = 1;
     }
@@ -20,7 +19,7 @@ var createBudget = function(req, res) {
                         item.preference = 1;
                     }
                 }
-               
+
                 var model = new Budget({
                     user: req.user._id,
                     name: item.name,
@@ -28,7 +27,7 @@ var createBudget = function(req, res) {
                     isIncome: item.isIncome,
 
                     preference: item.preference,
-                    budgetedAmount : item.budgetedAmount,
+                    budgetedAmount: item.budgetedAmount,
                     ignored: false
                 });
                 model.save().catch(err => {

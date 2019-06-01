@@ -18,7 +18,6 @@ export default class SideBar extends React.Component {
     render() {
         return (
             <Menu>
-
                 <NavLink className="menu-item" to="/budget">
                     <Icon id="icon" icon={ic_attach_money} />
                     Budget Category
@@ -37,9 +36,6 @@ export default class SideBar extends React.Component {
                     <Icon id="icon" icon={graph} />
                     Transaction
                 </NavLink>
-
-                
-                
             </Menu>
         );
     }

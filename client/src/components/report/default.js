@@ -1,5 +1,5 @@
-var  item = {
-    piechart : {
+var item = {
+    piechart: {
         labels: ["saving", "needs", "wants"],
         datasets: [
             {
@@ -17,4 +17,4 @@ var  item = {
             }
         ]
     }
-}
+};

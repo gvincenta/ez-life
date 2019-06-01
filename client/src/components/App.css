@@ -1,4 +1,4 @@
- .App {
+.App {
     text-align: center;
 }
 body {
@@ -114,21 +114,23 @@ button:hover {
 form {
     text-align: center;
 }
-.panel{
-    border :0;
+.panel {
+    border: 0;
 }
 
-
-body{
+body {
     background-image: url("../images/background.jpg");
     background-position: center center;
     background-attachment: fixed;
     background-size: cover;
-  }
+}
 
-  hr{
-    display: block; height: 1px;
-    border: 0; border-top: 1px solid rgb(255, 0, 0);
-    margin: 1em 0; padding: 0;
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid rgb(255, 0, 0);
+    margin: 1em 0;
+    padding: 0;
     visibility: hidden;
 }

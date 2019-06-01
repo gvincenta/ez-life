@@ -3,7 +3,7 @@ import PubSub from "pubsub-js";
 import introJs from "intro.js";
 import "intro.js/introjs.css";
 import GoalItem from "./goalItem";
-import { Button}from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 import "./goal.css";
 //handles user's goals
@@ -119,12 +119,14 @@ export default class GoalList extends Component {
 
             return;
         } else if (event.target.name === "add") {
-            this.setState({ mode: "add" ,
-            name: "",
-            amount: 1,
-            preference: 1,
-            due: "",
-            progress:0});
+            this.setState({
+                mode: "add",
+                name: "",
+                amount: 1,
+                preference: 1,
+                due: "",
+                progress: 0
+            });
             return;
         }
     };
@@ -138,11 +140,10 @@ export default class GoalList extends Component {
         this.props.axios
             .put("/goals", {
                 name: this.state.name,
-                amount : this.state.amount,
+                amount: this.state.amount,
                 preference: this.state.preference,
                 progress: this.state.progress,
-                due : this.state.due
-
+                due: this.state.due
             })
             .then(function(response) {
                 self.handleLoad();
@@ -152,217 +153,245 @@ export default class GoalList extends Component {
                 self.setState({ error: err });
             });
     };
-    
+
     //handles deleting a  goal:
-    handleDelete = (goal) => {
-        var self_2 = this; 
-    
+    handleDelete = goal => {
+        var self_2 = this;
+
         this.props.axios
-          .delete("/goals", {
-            data: { name: goal }
-          })
-          .then(function(response) {
-            self_2.handleLoad();
-          })
-          .catch(function(err) {
-            self_2.setState({ error: err });
-          });
-      };
+            .delete("/goals", {
+                data: { name: goal }
+            })
+            .then(function(response) {
+                self_2.handleLoad();
+            })
+            .catch(function(err) {
+                self_2.setState({ error: err });
+            });
+    };
 
     //renders goal's input fields + goal's table:
     render() {
-        const { goals,mode } = this.state;
+        const { goals, mode } = this.state;
         return (
             <div className="table responsive">
-              <h1 data-step="1" data-intro="Record your Goals (a.k.a wishlist) here">
-                        {" "}
-                        Goals{" "}
-                    </h1>
-        <Button
+                <h1
+                    data-step="1"
+                    data-intro="Record your Goals (a.k.a wishlist) here"
+                >
+                    {" "}
+                    Goals{" "}
+                </h1>
+                <Button
                     className="btn btn-large"
                     onClick={() => introJs().start()}
                 >
                     ?
-                </Button> &nbsp;
-                   
-                    
-                    {(() => {
-                     switch(mode) {
-                        case 'add':
+                </Button>{" "}
+                &nbsp;
+                {(() => {
+                    switch (mode) {
+                        case "add":
                             return (
-                                <div ><h3 data-step="2" data-intro="Add a new goal along with its required amount, preference (1 the least  to 5 the most), and its due date."> add new goals: </h3>
-                            
-                           
-                            
-                            <div class="col-xs-3">
-                                <label for="ex1" > Name: </label>
-                                
-                                <input className="form-control" id="ex1" 
-                                    type="text"
-                                    name="name"
-                                    placeholder="min. 3 characters"
-                                    value={this.state.name}
-                                    onChange={this.handleChange}
-                                />
+                                <div>
+                                    <h3
+                                        data-step="2"
+                                        data-intro="Add a new goal along with its required amount, preference (1 the least  to 5 the most), and its due date."
+                                    >
+                                        {" "}
+                                        add new goals:{" "}
+                                    </h3>
+                                    <div class="col-xs-3">
+                                        <label for="ex1"> Name: </label>
+
+                                        <input
+                                            className="form-control"
+                                            id="ex1"
+                                            type="text"
+                                            name="name"
+                                            placeholder="min. 3 characters"
+                                            value={this.state.name}
+                                            onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <label for="ex2"> Total Amount:</label>
+                                        <input
+                                            className="form-control"
+                                            id="ex2"
+                                            type="number"
+                                            name="amount"
+                                            placeholder="minimum $1"
+                                            value={this.state.amount}
+                                            onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <label for="ex3"> Preference:</label>
+                                        <input
+                                            className="form-control"
+                                            id="ex3"
+                                            type="number"
+                                            name="preference"
+                                            placeholder="1 to 5"
+                                            value={this.state.preference}
+                                            onChange={this.handleChange}
+                                        />{" "}
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <label for="ex4"> Due:</label>
+                                        <input
+                                            className="form-control"
+                                            id="ex4"
+                                            type="date"
+                                            name="due"
+                                            value={this.state.due}
+                                            placeholder="min. tomorrow"
+                                            onChange={this.handleChange}
+                                        />{" "}
+                                    </div>
+                                    <br />
+                                    <Button
+                                        name="submit_add"
+                                        type="Button"
+                                        class="btn btn-secondary"
+                                        onClick={this.handleDisplay}
+                                    >
+                                        Submit
+                                    </Button>
+                                    &nbsp;
+                                    <Button
+                                        name="cancel"
+                                        type="Button"
+                                        class="btn btn-secondary"
+                                        onClick={this.handleDisplay}
+                                    >
+                                        Cancel
+                                    </Button>
                                 </div>
-                                <div class="col-xs-2">
-                                <label for="ex2"> Total Amount:</label>
-                                <input className="form-control" id="ex2" 
-                                    type="number"
-                                    name="amount"
-                                    placeholder="minimum $1"
-                                    value={this.state.amount}
-                                    onChange={this.handleChange}
-                                /></div>
-                                <div class="col-xs-2">
-                                <label for="ex3">  Preference:</label>
-                                <input className="form-control" id="ex3" 
-                                    type="number"
-                                    name="preference"
-                                    placeholder="1 to 5"
-                                    value={this.state.preference}
-                                    onChange={this.handleChange}
-                                /> </div>
-                                <div class="col-xs-2">
-                                <label for="ex4"> Due:</label>
-                                <input className="form-control" id="ex4" 
-                                    type="date"
-                                    name="due"
-                                    value={this.state.due}
-                                    placeholder="min. tomorrow"
-                                    onChange={this.handleChange}
-                                /> </div>
-                                <br/> 
+                            );
+                        case "read":
+                            return (
                                 <Button
-                                    name="submit_add"
+                                    name="add"
                                     type="Button"
                                     class="btn btn-secondary"
+                                    data-step="2"
+                                    data-intro="add new Goal"
                                     onClick={this.handleDisplay}
+                                    data-step="2"
+                                    data-intro="Add a new goal along with its required amount, preference (1 the least  to 5 the most), and its due date."
                                 >
-                                    Submit
+                                    Add New Goals
                                 </Button>
-                               &nbsp;
-                                <Button
-                                    name="cancel"
-                                    type="Button"
-                                    class="btn btn-secondary"
-                                    onClick={this.handleDisplay}
-                                >
-                                    Cancel
-                                </Button>
-                           </div>);
-                        case 'read':
-                            return (<Button
-                                name="add"
-                                type="Button"
-                                class="btn btn-secondary"
-                                data-step="2"
-                                data-intro="add new Goal"
-                                onClick={this.handleDisplay}
-                                data-step="2" data-intro="Add a new goal along with its required amount, preference (1 the least  to 5 the most), and its due date."
-                                >
-                                Add New Goals
-                            </Button>);
-                        case 'update':
-                            return ( <div ><h3 data-step="2" data-intro="update the amount you've saved so far for this goal..">  Updating {this.state.name} </h3>
-                       
-                        
-                            <div class="col-xs-2">
-                                
-        
-                                <label for="ex5"> Total Amount:</label>
-                                <input className="form-control" id="ex5" 
-                                    type="number"
-                                    name="amount"
-                                    placeholder="minimum $1"
-                                    value={this.state.amount}
-                                    onChange={this.handleChange}
-                                /></div>
-                                <div class="col-xs-2">
-                                
-        
-                                <label for="ex6"> Preference:</label>
-                                <input className="form-control" id="ex6"
-                                    type="number"
-                                    name="preference"
-                                    placeholder="1 to 5"
-                                    value={this.state.preference}
-                                    onChange={this.handleChange}
-                                /></div>
-                                <div class="col-xs-3">
-                                
-        
-                                <label for="ex7">  Due:</label>
-                                <input className="form-control" id="ex7"
-                                    type="date"
-                                    name="due"
-                                    value={this.state.due}
-                                    placeholder="min. tomorrow"
-                                    onChange={this.handleChange}
-                                /></div>
-                                <div class="col-xs-2">
-                                
-        
-                                <label for="ex8">  Add Amount:</label>
-                                <input className="form-control" id="ex8"
-                                    type="number"
-                                    name="progress"
-                                    placeholder="min. 1"
-                                    value={this.state.progress}
-                                    onChange={this.handleChange}
-                                /></div>
-                                <br/>
-                                
-                                <Button
-                                    name="submit_update"
-                                    type="Button"
-                                    class="btn btn-secondary"
-                                    onClick={this.handleDisplay}
-                                >
-                                    Submit
-                                </Button>
-                                &nbsp;
-                                <Button
-                                    name="cancel"
-                                    type="Button"
-                                    class="btn btn-secondary"
-                                    onClick={this.handleDisplay}
-                                >
-                                    Cancel
-                                </Button>
-                            </div> );
+                            );
+                        case "update":
+                            return (
+                                <div>
+                                    <h3
+                                        data-step="2"
+                                        data-intro="update the amount you've saved so far for this goal.."
+                                    >
+                                        {" "}
+                                        Updating {this.state.name}{" "}
+                                    </h3>
+                                    <div class="col-xs-2">
+                                        <label for="ex5"> Total Amount:</label>
+                                        <input
+                                            className="form-control"
+                                            id="ex5"
+                                            type="number"
+                                            name="amount"
+                                            placeholder="minimum $1"
+                                            value={this.state.amount}
+                                            onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <label for="ex6"> Preference:</label>
+                                        <input
+                                            className="form-control"
+                                            id="ex6"
+                                            type="number"
+                                            name="preference"
+                                            placeholder="1 to 5"
+                                            value={this.state.preference}
+                                            onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <label for="ex7"> Due:</label>
+                                        <input
+                                            className="form-control"
+                                            id="ex7"
+                                            type="date"
+                                            name="due"
+                                            value={this.state.due}
+                                            placeholder="min. tomorrow"
+                                            onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <label for="ex8"> Add Amount:</label>
+                                        <input
+                                            className="form-control"
+                                            id="ex8"
+                                            type="number"
+                                            name="progress"
+                                            placeholder="min. 1"
+                                            value={this.state.progress}
+                                            onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <br />
+                                    <Button
+                                        name="submit_update"
+                                        type="Button"
+                                        class="btn btn-secondary"
+                                        onClick={this.handleDisplay}
+                                    >
+                                        Submit
+                                    </Button>
+                                    &nbsp;
+                                    <Button
+                                        name="cancel"
+                                        type="Button"
+                                        class="btn btn-secondary"
+                                        onClick={this.handleDisplay}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </div>
+                            );
                         default:
                             return null;
-                        }
-                    })()}
-                    <hr/>
-                    
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Due Date</th>
-                                <th>Goal</th>
-                                <th>Total Amount</th>
-                                <th>Amount Saved So Far.. </th>
-                                <th>Preference </th>
-                                <th> Update </th>
-                                <th> Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {goals.map((goal, index) => (
-                                <GoalItem
-                                    key={index}
-                                    goals={goal}
-                                    setUpdate={this.setUpdate}
-                                    handleDelete = {this.handleDelete}
-                                />
-                            ))}
-                        </tbody>
-                    </table>
-                    
-                    
-                </div>
+                    }
+                })()}
+                <hr />
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Due Date</th>
+                            <th>Goal</th>
+                            <th>Total Amount</th>
+                            <th>Amount Saved So Far.. </th>
+                            <th>Preference </th>
+                            <th> Update </th>
+                            <th> Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {goals.map((goal, index) => (
+                            <GoalItem
+                                key={index}
+                                goals={goal}
+                                setUpdate={this.setUpdate}
+                                handleDelete={this.handleDelete}
+                            />
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }
