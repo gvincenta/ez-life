@@ -3,6 +3,7 @@ import PubSub from "pubsub-js";
 import introJs from "intro.js";
 import "intro.js/introjs.css";
 import GoalItem from "./goalItem";
+import { Button}from "react-bootstrap";
 
 import "./goal.css";
 //handles user's goals
@@ -171,7 +172,6 @@ export default class GoalList extends Component {
     //renders goal's input fields + goal's table:
     render() {
         const { goals,mode } = this.state;
-        var res;
         return (
             <div className="table responsive">
             
@@ -179,7 +179,7 @@ export default class GoalList extends Component {
                         {" "}
                         Goals{" "}
                     </h1>
-                    <hr/>
+                    
                     {(() => {
                      switch(mode) {
                         case 'add':
@@ -227,35 +227,35 @@ export default class GoalList extends Component {
                                     onChange={this.handleChange}
                                 /> </div>
                                 <br/> 
-                                <button
+                                <Button
                                     name="submit_add"
-                                    type="button"
+                                    type="Button"
                                     class="btn btn-secondary"
                                     onClick={this.handleDisplay}
                                 >
                                     Submit
-                                </button>
+                                </Button>
                                &nbsp;
-                                <button
+                                <Button
                                     name="cancel"
-                                    type="button"
+                                    type="Button"
                                     class="btn btn-secondary"
                                     onClick={this.handleDisplay}
                                 >
                                     Cancel
-                                </button>
+                                </Button>
                            </div>);
                         case 'read':
-                            return (<button
+                            return (<Button
                                 name="add"
-                                type="button"
+                                type="Button"
                                 class="btn btn-secondary"
                                 data-step="2"
                                 data-intro="add new Goal"
                                 onClick={this.handleDisplay}
                                 >
                                 Add New Goals
-                            </button>);
+                            </Button>);
                         case 'update':
                             return ( <div ><h3>  Updating {this.state.name} </h3>
                        
@@ -306,29 +306,30 @@ export default class GoalList extends Component {
                                 /></div>
                                 <br/>
                                 
-                                <button
+                                <Button
                                     name="submit_update"
-                                    type="button"
+                                    type="Button"
                                     class="btn btn-secondary"
                                     onClick={this.handleDisplay}
                                 >
                                     Submit
-                                </button>
+                                </Button>
                                 &nbsp;
-                                <button
+                                <Button
                                     name="cancel"
-                                    type="button"
+                                    type="Button"
                                     class="btn btn-secondary"
                                     onClick={this.handleDisplay}
                                 >
                                     Cancel
-                                </button>
+                                </Button>
                             </div> );
                         default:
                             return null;
                         }
                     })()}
                     <hr/>
+                    
                     <table class="table">
                         <thead>
                             <tr>

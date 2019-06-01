@@ -34,7 +34,7 @@ class TransForm extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
           if (!err) {
-            console.log('Received values of form123: ', values);
+            this.props.onCreate(values);
           }
         });
     }
@@ -47,11 +47,7 @@ class TransForm extends Component {
             this.setState({isDisabled: true})
         }
 
-        // if(!this.state.isDisabled && this.state.inital === -1){
-        //     console.log("try")
-        //     this.props.form.setFields({"preference": null})
-        //     this.props.form.setFields({"budgetAmount": null})
-        // }
+       
     };
 
 

@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import { Button, FormGroup, FormControl} from "react-bootstrap";
-import NavBar from "../navbar/Header";
 import axios from "axios";
 import "./SignIn.css";
 import UserProfile from '../UserProfile';
 import browserstore from "browser-session-store"
-import NavLink from "react-bootstrap/NavLink";
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -19,6 +17,7 @@ export default class SignIn extends Component {
       password: "",
       existingUser: true,
       error: "",
+      signUp: false
     };
     this.setToken()
   }
@@ -30,9 +29,7 @@ export default class SignIn extends Component {
   
   setToken(){
     var self = this;
-   //console.log(UserProfile.getName(), "First init");
    browserstore.get("ezLife", function (err,val){
-     console.log(err);
      // handle error or nonexistence token:
      if(err || (val == null)){
        self.setState({token : ""});
@@ -89,7 +86,6 @@ export default class SignIn extends Component {
  isExistingUser = event => {
   var negate = !this.state.existingUser;
   this.setState({ existingUser: negate });
-  console.log("state", negate);
 };
 
 handleSignUp = event => {
@@ -97,17 +93,16 @@ handleSignUp = event => {
 }
   
   render() {
-    var res;
     var {existingUser} = this.state;
- 
-      res = (
+    
+     return (
       <body id="SignIn">
         <div id="SignInBox">
-        {(existingUser === true)
-              ?<div className="SignInTitle">Sign In</div>
-            :<div className="SignInTitle">Sign Up</div>
-
-              }
+        { (existingUser == true)
+          ?<div className="SignInTitle">Sign In</div>
+          : 
+          <div className="SignInTitle">Sign Up</div>
+          }
           
           <div className="SignIn">
             <form onSubmit={this.handleSubmit}>
@@ -130,41 +125,41 @@ handleSignUp = event => {
                   placeholder="Password"
                 />
               </FormGroup>
-              {(existingUser === true)
-              ?<Button
-              name = "signup" type="button" class="btn btn-secondary" onClick = {this.isExistingUser}
-            >
-              I'm a new user
-            </Button>
-            :<Button
-            name = "signup" type="button" class="btn btn-secondary" onClick = {this.isExistingUser}
-          >
-            I'm an existing user
-          </Button>
-
-              }
-               &nbsp;
-              <Button
-                name = "login" type="button" class="btn btn-secondary" onClick = {this.handleLogIn}
-              >
-                Sign In
-              </Button>
-              <br/>
+              { (existingUser == true)
+          ? <Button
+          name = "login" type="button" class="btn btn-secondary" onClick = {this.handleLogIn}
+        >
+          Sign In
+        </Button>
+          :  <Button
+          name = "login" type="button" class="btn btn-secondary" onClick = {this.handleLogIn}
+        >
+          Sign Up
+        </Button>
+          }
+             
             </form>
-           
             
-           
           </div>
-          
+          { (existingUser == true)
+          ?<div className="NoAccount">
+            Don't have an account?
             <br/>
+            <Link  onClick={this.isExistingUser}>Create an account</Link>
+            </div>
+          : 
+          <div className="NoAccount">
+            Already have an account?
+            <br/>
+            <Link  onClick={this.isExistingUser}>Sign in instead</Link>
+            </div>
+          }
             
-            
-            
-          </div>
-      
+          
+        </div>
       </body>
     );
+      
     
-    return res;
   }
 }

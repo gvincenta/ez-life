@@ -98,7 +98,6 @@ class EditableTable extends React.Component {
       .get("/budget")
       .then(function(response) {
         var d = response.data;
-        console.log(d);
         self.setState({ budgets: d });
       })
       .catch(function(err) {
@@ -108,7 +107,6 @@ class EditableTable extends React.Component {
 
     // handle add new budget
     handleAddNew = (newData) => {
-      console.log("new",newData)
       var self = newData;
       var self_2 = this; 
     
@@ -120,7 +118,6 @@ class EditableTable extends React.Component {
           budgetedAmount: self.budgetAmount
         })
         .then(function(response) {
-          console.log("res", response);
           self_2.handleLoad();
         })
         .catch(function(err) {
@@ -131,11 +128,9 @@ class EditableTable extends React.Component {
   
     //handles updating budget amounts:
     handleUpdate = (newData) => {
-      console.log("handling update");
       var self = newData;
       var self_2 = this; 
   
-      console.log("update",newData);
   
   
       this.props.axios
@@ -145,7 +140,6 @@ class EditableTable extends React.Component {
           budgetedAmount: self.budgetAmount
         })
         .then(function(response) {
-          console.log("res", response);
   
           self_2.handleLoad();
         })
@@ -204,11 +198,9 @@ class EditableTable extends React.Component {
      if(editingKey !== '-1'){
   
        // TODO update a transaction
-      //this.setState({budgets: newd})
       this.handleUpdate(newData)
      } else {
          // TODO create new transaction
-      //this.setState({budgets:[...budgets,newData],count: this.state.count+1});
       this.handleAddNew(newData);
      }
 
@@ -250,7 +242,7 @@ class EditableTable extends React.Component {
     return (
       <div>
         <h2>Budget</h2>
-        <Button type="primary" onClick={this.showModal}>
+        <Button type="primary" onClick={this.showModal} data-step="1" data-intro="Record your Goals here">
           New Budget
         </Button>
         <BudgetFormTable 

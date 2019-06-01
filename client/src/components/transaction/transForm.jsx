@@ -1,17 +1,13 @@
 import React, { Component } from "react";
 import {
     Form,
-    Input,
     DatePicker,
     InputNumber,
     Cascader,
-    Button,
     Modal
 } from "antd";
-import PubSub from "pubsub-js";
 
 import moment from "moment";
-const FormItem = Form.Item;
 
 class TransForm extends Component {
     handleSubmit = e => {
@@ -22,10 +18,7 @@ class TransForm extends Component {
             }
         });
 
-        const { getFieldsValue, validateFields } = this.props.form;
-        const value = getFieldsValue();
 
-        console.log(value);
     };
 
     render() {
@@ -34,7 +27,6 @@ class TransForm extends Component {
             visible,
             onCancel,
             onCreate,
-            form,
             item,
             categoryOption
         } = this.props;
@@ -79,10 +71,7 @@ class TransForm extends Component {
                 }
             ]
         };
-        //     const nameConfig = {
-        //       initialValue: item.name,
-        //       rules: [{ type: 'string', required: true, message: 'Please enter name!' }],
-        //   };
+        
 
         return (
             <Modal

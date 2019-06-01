@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Button}from "react-bootstrap";
+
 export default class GoalItem extends Component {
     //format date:
     formatDate = date => {
@@ -28,24 +30,24 @@ export default class GoalItem extends Component {
                 <td width={200}> {goal.progress}</td>
                 <td width={120}> {goal.preference}</td>
                 <td width={50}>
-                    <button
+                    <Button
                         type="button"
                         name="update"
                         class="btn btn-secondary"
                         onClick={this.handleDisplay}
                     >
                         update
-                    </button>
+                    </Button>
                 </td>
                 <td width={50}>
-                    <button
+                    <Button
                         type="button"
                         name="delete"
                         class="btn btn-secondary"
                         onClick={this.handleDisplay}
                     >
                         delete
-                    </button>
+                    </Button>
                 </td>
             </tr>
         );

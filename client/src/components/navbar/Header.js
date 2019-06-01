@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "./navbar.css";
-import introJs from "intro.js";
 import "intro.js/introjs.css";
 
+import {Button} from "react-bootstrap";
 class NavBar extends Component {
     startIntro = () => {
         window.location.href = "budget?multipage=true";
@@ -13,9 +13,9 @@ class NavBar extends Component {
             <div class="header">
                 <div class="header-right">
                     {this.props.signedIn === true ? (
-                        <a className="active" onClick={this.props.logout}>
+                        <a  ><Button onClick={this.props.logout}>
                             Log Out
-                        </a>
+                        </Button></a>
                     ) : (
                         <div> </div>
                     )}
@@ -25,12 +25,12 @@ class NavBar extends Component {
                 </div>
 
                 <div className="header-right">
-                    <button
+                <a ><Button
                         className="btn btn-secondary"
                         onClick={this.startIntro}
                     >
                         Guide
-                    </button>
+                    </Button></a>
                 </div>
             </div>
         );

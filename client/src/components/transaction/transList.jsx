@@ -2,8 +2,8 @@ import React from "react";
 
 import "antd/dist/antd.css";
 
-import { Table, Button, Popconfirm, Form, Divider } from "antd";
-
+import { Table,  Popconfirm, Form, Divider } from "antd";
+import {Button} from "react-bootstrap";
 import TransFormTable from "./transForm";
 
 import moment from "moment";
@@ -271,12 +271,12 @@ class EditableTable extends React.Component {
                     Transaction Logs{" "}
                 </h1>
 
-                <button
+                <Button
                     className="btn btn-large"
                     onClick={() => introJs().start()}
                 >
                     intro
-                </button> &nbsp;
+                </Button> &nbsp;
                 <Button
                     data-step="2"
                     data-intro="Add a new transaction"
