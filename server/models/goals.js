@@ -26,4 +26,6 @@ var goalSchema = mongoose.Schema({
     }
 });
 //exporting...
+goalSchema.index({ name :1, user:1 }, { unique: true});
+
 mongoose.model("goal", goalSchema);

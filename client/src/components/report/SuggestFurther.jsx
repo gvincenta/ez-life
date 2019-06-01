@@ -118,8 +118,8 @@ export default class SuggestFurther extends Component {
         }
 
         return (
-            <div>
-                <h1> Find a Category's transaction history </h1>
+            <div className = "jumbotron card card-image">
+                <h2> Find a Category's transaction history </h2>
                 <p> Please select certain Budget Category: </p>
                 <Cascader
                     options={this.state.option}
@@ -127,10 +127,11 @@ export default class SuggestFurther extends Component {
                     onChange={this.handleOnChange}
                 />
                 {oneCat !== "" ? (
-                    <div>
+                    <div  >
                         {" "}
                         <h2> Overview of {catName} for the past 1 year:</h2>
                         <Line data={oneCat} />{" "}
+                        
                         <div class="text-white text-center py-5 px-4">
                         <p class="mx-5 mb-5">
                            the highest amount  was  ${maxVal.amount } on {maxVal.month}.
@@ -151,6 +152,7 @@ export default class SuggestFurther extends Component {
                         }
                         
                         </div>
+                        
                     </div>
                 ) : (
                     <hr />

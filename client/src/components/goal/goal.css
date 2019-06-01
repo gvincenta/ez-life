@@ -6,6 +6,12 @@ tr.goal:nth-child(odd) {
     background-color: #f8bd83;
     border : 0;
     
+    
+
+}
+
+label{
+    color: black;
 }
 
 

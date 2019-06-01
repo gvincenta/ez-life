@@ -12,8 +12,10 @@ import "bootstrap-directional-buttons";
 import SuggestFurther from "./SuggestFurther";
 import BudgetSuggest from "./BudgetSuggest";
 import BudgetList from "../budget/budgetList";
-
+import {Button} from "react-bootstrap";
 import "./report.css";
+import introJs from "intro.js";
+
 
 var income = [];
 var needs = [];
@@ -177,7 +179,8 @@ function processDaily(daily) {
 
 function MonthlyTable(props) {
     return (
-        <div>
+       
+            <div >
             {props.item.length > 0 ? (
                 <div className="table responsive">
                     <table class="table">
@@ -204,9 +207,9 @@ function MonthlyTable(props) {
                     <hr />
                 </div>
             ) : (
-                <div>
-                    {" "}
-                    No {props.children} found for this Month <hr />{" "}
+                <div class="text-white text-center py-5 px-4">
+                   <p class="mx-5 mb-5"> {" "}
+                    No {props.children} found for this Month <hr />{" "} </p>
                 </div>
             )}{" "}
         </div>
@@ -247,7 +250,7 @@ function SpanningTable(props) {
     run_span += 1;
 
     return (
-        <div>
+        <div className = "jumbotron card card-image">
             <h1> Monthly Report </h1>
 
             <MonthlyTable item={income} subtotal={incomeTotal}>
@@ -262,8 +265,9 @@ function SpanningTable(props) {
                 {" "}
                 Wants{" "}
             </MonthlyTable>
+            
             <div class="text-white text-center py-5 px-4">
-                <p class="mx-5 mb-5">
+                <p>
                     {" "}
                     Total : ${incomeTotal - needsTotal - wantsTotal}{" "}
                 </p>{" "}
@@ -413,7 +417,15 @@ class Report extends Component {
     handleTabChange = (event, value) => {
         this.setState({ value });
     };
-   
+    componentDidMount() {
+        
+        if (RegExp("multipage=4", "gi").test(window.location.search)) {
+            introJs()
+                .setOption("doneLabel", "Next page")
+                .start()
+                
+        }
+    }
 
     render() {
         var value = this.state.value;
@@ -421,10 +433,17 @@ class Report extends Component {
         return (
           
             <div>
+                <h1 data-step="1" data-intro="Welcome to the report section, where you can get insights on your spending."> Report  <Button
+                    className="btn btn-large"
+                    onClick={() => introJs().start()}
+                >
+                    ?
+                </Button></h1>
+                 &nbsp;
           
 
-                <AppBar position="static" style={{ background: "#437487" }}>
-                    <Tabs
+                <AppBar position="static" style={{ background: "#3ca4ff" }}>
+                    <Tabs 
                       
                         value={value}
                         onChange={this.handleTabChange}
@@ -433,24 +452,24 @@ class Report extends Component {
                         indicatorColor="inherit"
                         textColor="inherit"
                     >
-                      <Tab
-                            label="Report Graph"
+                      <Tab data-step="2" data-intro="Get a general yearly graphical report on all your budget categories here."
+                            label="Yeary Graph"
                         />
-                      <Tab
+                      <Tab data-step="3" data-intro="Here's a detailed income-expense report of the month."
                             label="Monthly Report Details"
                             onActive={this.handleReportRetrieval}
                         />
-                        <Tab
+                        <Tab data-step="4" data-intro="Get day to day transactions, overall  saving / loss, as well as suggestions here."
                             label="Suggestion"
                         />
-                        <Tab 
+                        <Tab  data-step="5" data-intro="Track certain budget category over the past year."
                             label="Tell Me Further"
                         />
                
-                        <Tab
+                        <Tab data-step="6" data-intro="Change your goals based on your saving / loss this month."
                             label="Change Goals"
                         />
-                        <Tab
+                        <Tab data-step="7" data-intro="Plan your budget for the next month."
                             label="Plan My Budget"
                        />
                     </Tabs>

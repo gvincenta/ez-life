@@ -20,7 +20,7 @@ class NavBar extends Component {
                         <div> </div>
                     )}
                     <a href="#default" class="logo">
-                       <img src = {logo} alt = "Ez Life" />
+                       <img src = {logo} alt = "Ez Life"  />
                     </a>
                 </div>
 
