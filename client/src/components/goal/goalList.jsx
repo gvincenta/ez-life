@@ -61,7 +61,6 @@ export default class EditableGoal extends React.Component {
             .then(function(response) {
                 var d = response.data;
                 self.setState({ goals: d });
-                console.log(d)
             })
             .catch(function(error) {
                 alert(error);
@@ -130,7 +129,6 @@ export default class EditableGoal extends React.Component {
             return;
         }
 
-        console.log('Received values of form: ', values);
 
         form.resetFields();
         
@@ -146,7 +144,13 @@ export default class EditableGoal extends React.Component {
         
         if(editingKey !== '-1'){
             // update existing goal
-            
+            const item =
+                    editingKey === "-1"
+                        ? {}
+                        : goals.find(item => item._id === editingKey);
+
+                newData.name = item.name;
+        
         this.handleUpdate(newData);
 
         } else {

@@ -10,14 +10,14 @@ class GoalsForm extends Component {
 
   state = {
     isDisabled: true,
-    inital: 0
+    inital: 0,
+    amount: 0,
   }
 
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
           if (!err) {
-            console.log('Received values of form: ', values);
           }
         });
    
@@ -39,8 +39,13 @@ class GoalsForm extends Component {
     afterClose = () =>{
       this.setState({isDisabled: true})
       this.setState({inital: 0})
+      this.setState({amount: 0})
       this.props.form.resetFields();
-  }
+    }
+
+    handleAmountChange = e => {
+      this.setState({amount: e})
+    }
 
     // render the form
     // which has due date, goal, amount, preference
@@ -98,7 +103,7 @@ class GoalsForm extends Component {
         <Modal
           className="popup"
           visible={visible}
-          title= {item.name ? item.name : "Create a new Goal"}
+          title= {item.name ?  ("Updating "  + item.name) : "Create a new Goal"}
           okText="Confirm"
           onCancel={onCancel}
           onOk={onCreate}
@@ -116,16 +121,18 @@ class GoalsForm extends Component {
             )}
             </Form.Item>
 
+            { item.name == undefined  ?
             <Form.Item label="Name">
             {getFieldDecorator('name',nameConfig)(
                 <Input placeholder="Goal Theme/Name"/>
             )}
             </Form.Item>
+            : null}
 
             <Form.Item label="Amount Required">
             {getFieldDecorator('amount',amountConfig)(
                 <InputNumber
-                
+                    onChange={this.handleAmountChange}
                     min={isNaN(item.progress)? 1 : item.progress}
                     formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
@@ -151,7 +158,7 @@ class GoalsForm extends Component {
             {getFieldDecorator('progress', goalAmountConfig)(
                 <InputNumber
                     min={1}
-                    max = {isNaN(item.progress)? item.amount - 0 : item.amount - item.progress}
+                    max = {this.state.amount === 0 ? item.amount : this.state.amount}
                     formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
                     style={{width: '110px'}}
