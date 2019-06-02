@@ -7,7 +7,6 @@ import Tab from "@material-ui/core/Tab";
 
 import { Line, Doughnut } from "react-chartjs-2";
 import GoalList from "../goal/goalList";
-import "bootstrap-directional-buttons";
 
 import SuggestFurther from "./SuggestFurther";
 import BudgetSuggest from "./BudgetSuggest";
