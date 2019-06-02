@@ -22,6 +22,7 @@ var needsTotal = 0;
 var wantsTotal = 0;
 var run_span = 0;
 var maxWants, minWants;
+// check if wants consistent or not: 
 function CheckWants() {
     return (
         <div>
@@ -53,6 +54,7 @@ function CheckWants() {
         </div>
     );
 }
+//suggest tab : day to day transaction + overall saving.  
 function Suggest(props) {
     var data = props.daily;
     var myPieChart = {
@@ -117,6 +119,7 @@ function Suggest(props) {
         </div>
     );
 }
+//process day to day transactions
 function processDaily(daily) {
     var data = daily;
 
@@ -171,7 +174,7 @@ function processDaily(daily) {
     };
     return newData;
 }
-
+// make monthly tabular report: 
 function MonthlyTable(props) {
     return (
         <div>
@@ -211,6 +214,7 @@ function MonthlyTable(props) {
         </div>
     );
 }
+// preprocess the data from backend. return a monthly tabular form. 
 function SpanningTable(props) {
     /**Generates monthly report from backend. */
     var d = props.res.document;
@@ -269,7 +273,7 @@ function SpanningTable(props) {
     );
 }
 
-/**Handles monthly report for client. */
+/**Handles yearly graph for client. */
 
 function Graph(props) {
     return (
@@ -279,7 +283,7 @@ function Graph(props) {
         </div>
     );
 }
-
+// handles various report to be generated.
 class Report extends Component {
     constructor(props) {
         super(props); // mandatory
@@ -320,7 +324,7 @@ class Report extends Component {
                 alert(error);
             });
     };
-    /** process garph report:*/
+    /** process graph report:*/
     processData = data => {
         var incomeData = {
             fill: false,
@@ -390,7 +394,7 @@ class Report extends Component {
                 alert(error);
             });
     };
-
+    // retrieve day to day transactions: 
     handleDailyRetrieval = () => {
         var self = this;
 
@@ -405,9 +409,11 @@ class Report extends Component {
                 alert(error);
             });
     };
+    //change tabs: 
     handleTabChange = (event, value) => {
         this.setState({ value });
     };
+    // introJS handling: 
     componentDidMount() {
         if (RegExp("multipage=4", "gi").test(window.location.search)) {
             introJs()
