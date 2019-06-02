@@ -99,10 +99,6 @@ var findTransaction = function(req, res) {
                 amount: "$data.realAmount",
                 date: "$data.date"
             }
-        },
-        //sort descending
-        {
-            $sort: { date: -1 }
         }
     ]).then(doc => {
         res.json(doc);
