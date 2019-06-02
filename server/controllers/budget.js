@@ -19,7 +19,7 @@ var createBudget = function(req, res) {
                         item.preference = 1;
                     }
                 }
-                // make a new one. 
+                // make a new one.
 
                 var model = new Budget({
                     user: req.user._id,

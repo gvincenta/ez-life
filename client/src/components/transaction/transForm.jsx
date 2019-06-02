@@ -9,7 +9,6 @@ class TransForm extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                
             }
         });
     };
@@ -78,8 +77,10 @@ class TransForm extends Component {
                         {getFieldDecorator("transdate", timeConfig)(
                             <DatePicker
                                 disabledDate={current => {
-                                
-                                   return  ( moment(new Date()) <= current || moment().add(-1, "month") >=current ) ;
+                                    return (
+                                        moment(new Date()) <= current ||
+                                        moment().add(-1, "month") >= current
+                                    );
                                 }}
                                 dateRender={current => {
                                     return (

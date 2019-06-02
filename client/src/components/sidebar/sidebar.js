@@ -34,7 +34,10 @@ export default class SideBar extends React.Component {
                     <Icon id="icon" icon={graph} />
                     Transaction
                 </NavLink>
-                
+                <a href="https://bit.ly/2MyiZ6a">
+                    <Icon id="icon" icon={bullseye} />
+                    Saving tips
+                </a>
             </Menu>
         );
     }

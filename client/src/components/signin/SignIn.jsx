@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button, FormGroup, FormControl } from "react-bootstrap";
 import axios from "axios";
 import "./SignIn.css";
@@ -100,7 +100,7 @@ export default class SignIn extends Component {
         return (
             <body id="SignIn">
                 <div id="SignInBox">
-                    {existingUser == true ? (
+                    {existingUser === true ? (
                         <div className="SignInTitle">Sign In</div>
                     ) : (
                         <div className="SignInTitle">Sign Up</div>
@@ -127,7 +127,7 @@ export default class SignIn extends Component {
                                     placeholder="Password"
                                 />
                             </FormGroup>
-                            {existingUser == true ? (
+                            {existingUser === true ? (
                                 <Button
                                     name="login"
                                     type="button"
@@ -148,7 +148,7 @@ export default class SignIn extends Component {
                             )}
                         </form>
                     </div>
-                    {existingUser == true ? (
+                    {existingUser === true ? (
                         <div className="NoAccount">
                             Don't have an account?
                             <br />

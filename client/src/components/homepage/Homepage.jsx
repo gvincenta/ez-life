@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route, Link } from "react-router-dom";
-import { Button, FormGroup, FormControl } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import SignIn from "../signin/SignIn";
 import "./Homepage.css";
 
@@ -22,7 +21,7 @@ export default class Homepage extends Component {
 
     render() {
         var res;
-        if (this.state.signin == false) {
+        if (this.state.signin === false) {
             res = (
                 <div id="homepage">
                     <strong>

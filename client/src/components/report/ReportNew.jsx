@@ -217,7 +217,6 @@ function MonthlyTable(props) {
 // preprocess the data from backend. return a monthly tabular form.
 function SpanningTable(props) {
     /**Generates monthly report from backend. */
-    var d = props.res.document;
     if (run_span == 0) {
         for (var i = 0; i < props.res.document.length; i++) {
             if (props.res.document[i].isIncome === "income") {
@@ -422,7 +421,6 @@ class Report extends Component {
 
     render() {
         var value = this.state.value;
-        var res = this.state.res;
         return (
             <div>
                 <h1

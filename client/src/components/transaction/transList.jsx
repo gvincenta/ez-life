@@ -2,7 +2,7 @@ import React from "react";
 
 import "antd/dist/antd.css";
 
-import { Table, Popconfirm, Form, Divider } from "antd";
+import { Table, Form } from "antd";
 import { Button } from "react-bootstrap";
 import TransFormTable from "./transForm";
 
@@ -10,7 +10,6 @@ import moment from "moment";
 import introJs from "intro.js";
 import "intro.js/introjs.css";
 import "./transaction.css";
-import { configConsumerProps } from "antd/lib/config-provider";
 
 // Transaction page
 // display the transaction table
@@ -105,10 +104,7 @@ class EditableTable extends React.Component {
                 return;
             }
 
-
             form.resetFields();
-
-            const { transactions, editingKey } = this.state;
 
             const newData = {
                 date: moment(values.transdate).format("YYYY-MM-DD"),
@@ -196,7 +192,7 @@ class EditableTable extends React.Component {
 
     // render the transaction table
     render() {
-        const { transactions, editingKey, option } = this.state;
+        const { transactions, editingKey } = this.state;
         const item =
             editingKey === "-1"
                 ? {}

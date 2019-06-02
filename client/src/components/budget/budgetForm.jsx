@@ -55,7 +55,6 @@ class BudgetForm extends Component {
         const { getFieldDecorator } = this.props.form;
         const { visible, onCancel, onCreate, form, item } = this.props;
 
-
         const { isDisabled } = this.state;
         const formItemLayout = {
             labelCol: {
