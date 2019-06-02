@@ -1,9 +1,8 @@
-
 .numberCard {
-  padding: 32px;
-  font-family: monospace;
-  margin-bottom: 24px;
-  cursor: pointer;
+    padding: 32px;
+    font-family: monospace;
+    margin-bottom: 24px;
+    cursor: pointer;
 }
 .iconWarp {
     font-size: 54px;
@@ -13,19 +12,17 @@
 .content {
     width: 100%;
     padding-left: 78px;
-    align-content: center
+    align-content: center;
 }
 .title {
     line-height: 16px;
     font-size: 16px;
     margin-bottom: 8px;
     height: 16px;
-
 }
 
 .number {
     line-height: 32px;
     font-size: 24px;
     height: 32px;
-
 }

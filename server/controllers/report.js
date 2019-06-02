@@ -146,11 +146,11 @@ var monthlyTransaction = function(req, res) {
                         as: "data"
                     }
                 },
-                //flatten.. 
+                //flatten..
                 {
                     $unwind: "$data"
                 },
-                //match this month: 
+                //match this month:
                 {
                     $match: {
                         "data.month": {
@@ -159,7 +159,7 @@ var monthlyTransaction = function(req, res) {
                         }
                     }
                 },
-                //change field names: 
+                //change field names:
                 {
                     $project: {
                         name: "$name",
@@ -177,7 +177,7 @@ var monthlyTransaction = function(req, res) {
             //make this month's report for each category from the list of transactions:
             Budget.aggregate([
                 { $match: { user: req.user._id, ignored: false } },
-                //aggregate to transactions: 
+                //aggregate to transactions:
                 {
                     $lookup: {
                         from: "transactions",
@@ -190,7 +190,7 @@ var monthlyTransaction = function(req, res) {
                 {
                     $unwind: "$data"
                 },
-                //match this month: 
+                //match this month:
                 {
                     $match: {
                         "data.date": {
@@ -199,7 +199,7 @@ var monthlyTransaction = function(req, res) {
                         }
                     }
                 },
-                //group for each category: 
+                //group for each category:
                 {
                     $group: {
                         _id: {
@@ -236,7 +236,7 @@ var monthlyTransaction = function(req, res) {
                         {
                             $push: { reportID: model._id }
                         },
-                        
+
                         { new: true }
                     ).then(result => {});
                     //send to front:

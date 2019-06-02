@@ -35,9 +35,7 @@ class EditableTable extends React.Component {
             {
                 title: "Amount",
                 dataIndex: "amount"
-            },
-            
-            
+            }
         ];
 
         this.state = {
@@ -88,7 +86,7 @@ class EditableTable extends React.Component {
                 alert(err);
                 self.setState({ error: err });
             });
-    };  
+    };
 
     // show pop up modal
     showModal = () => {
@@ -115,15 +113,13 @@ class EditableTable extends React.Component {
             const { transactions, editingKey } = this.state;
 
             const newData = {
-            
                 date: moment(values.transdate).format("YYYY-MM-DD"),
                 name: values.category[1],
                 amount: values.amount.toString()
             };
 
-            
             this.handleAddNew(newData);
-                
+
             this.setState({ visible: false, editingKey: "-1" });
         });
     };
@@ -132,7 +128,7 @@ class EditableTable extends React.Component {
     handleAddNew = newData => {
         var self = newData;
         var self_2 = this;
-        console.log("data", typeof(self.date))
+        console.log("data", typeof self.date);
         this.props.axios
             .post("/transactions", {
                 name: self.name,
@@ -159,8 +155,6 @@ class EditableTable extends React.Component {
         this.formRef = formRef;
     };
 
-   
-   
     // handle the category option loading
     categoryOption = () => {
         var self = this;
@@ -233,7 +227,8 @@ class EditableTable extends React.Component {
                     Transaction Logs For{" "}
                     {new Date().toLocaleString("en-us", {
                         month: "long"
-                    })}, {new Date().getFullYear()}{" "}
+                    })}
+                    , {new Date().getFullYear()}{" "}
                 </h1>
                 <Button
                     className="btn btn-large"

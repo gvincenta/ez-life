@@ -78,7 +78,7 @@ class TransForm extends Component {
                         {getFieldDecorator("transdate", timeConfig)(
                             <DatePicker
                                 disabledDate={current => {
-                                    return  current.isAfter(new Date());
+                                    return current.isAfter(new Date());
                                 }}
                                 dateRender={current => {
                                     return (

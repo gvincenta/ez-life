@@ -22,7 +22,7 @@ var needsTotal = 0;
 var wantsTotal = 0;
 var run_span = 0;
 var maxWants, minWants;
-// check if wants consistent or not: 
+// check if wants consistent or not:
 function CheckWants() {
     return (
         <div>
@@ -54,7 +54,7 @@ function CheckWants() {
         </div>
     );
 }
-//suggest tab : day to day transaction + overall saving.  
+//suggest tab : day to day transaction + overall saving.
 function Suggest(props) {
     var data = props.daily;
     var myPieChart = {
@@ -174,7 +174,7 @@ function processDaily(daily) {
     };
     return newData;
 }
-// make monthly tabular report: 
+// make monthly tabular report:
 function MonthlyTable(props) {
     return (
         <div>
@@ -214,7 +214,7 @@ function MonthlyTable(props) {
         </div>
     );
 }
-// preprocess the data from backend. return a monthly tabular form. 
+// preprocess the data from backend. return a monthly tabular form.
 function SpanningTable(props) {
     /**Generates monthly report from backend. */
     var d = props.res.document;
@@ -394,7 +394,7 @@ class Report extends Component {
                 alert(error);
             });
     };
-    // retrieve day to day transactions: 
+    // retrieve day to day transactions:
     handleDailyRetrieval = () => {
         var self = this;
 
@@ -409,11 +409,11 @@ class Report extends Component {
                 alert(error);
             });
     };
-    //change tabs: 
+    //change tabs:
     handleTabChange = (event, value) => {
         this.setState({ value });
     };
-    // introJS handling: 
+    // introJS handling:
     componentDidMount() {
         if (RegExp("multipage=4", "gi").test(window.location.search)) {
             introJs()

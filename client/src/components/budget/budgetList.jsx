@@ -84,7 +84,6 @@ class EditableTable extends React.Component {
     // load the existing data
     // and intro guide tour
     componentDidMount() {
-
         this.handleLoad();
 
         // introJs
@@ -196,17 +195,16 @@ class EditableTable extends React.Component {
                 preference: values.preference,
                 budgetAmount: values.budgetAmount
             };
-            console.log(newData)
+            console.log(newData);
             if (editingKey !== "-1") {
                 const item =
-                editingKey === "-1"
-                    ? {}
-                    : budgets.find(item => item._id === editingKey);
-            
-                newData.name =  item.name
+                    editingKey === "-1"
+                        ? {}
+                        : budgets.find(item => item._id === editingKey);
+
+                newData.name = item.name;
                 this.handleUpdate(newData);
             } else {
-
                 this.handleAddNew(newData);
             }
 

@@ -25,7 +25,7 @@ class BudgetForm extends Component {
         }
     }
 
-     // reset the form field after close it
+    // reset the form field after close it
     afterClose = () => {
         this.setState({ isDisabled: true });
         this.setState({ inital: 0 });
@@ -42,7 +42,7 @@ class BudgetForm extends Component {
         });
     };
 
-    // handle the type be chosen 
+    // handle the type be chosen
     handleTypeChange = e => {
         console.log("e,", e, this.state.isDisabled);
         if (e === "wants") {
@@ -85,7 +85,10 @@ class BudgetForm extends Component {
         // validation for preference field
         // range is 1 to 5
         const preferenceConfig = {
-            initialValue: item.preference === undefined ? item.preference : item.preference.toString(),
+            initialValue:
+                item.preference === undefined
+                    ? item.preference
+                    : item.preference.toString(),
             rules: [
                 {
                     type: "string",
@@ -123,35 +126,38 @@ class BudgetForm extends Component {
             <Modal
                 className="popup"
                 visible={visible}
-                title= {item.name ? "Updating " + item.name : "Create a new Budget Category"}
+                title={
+                    item.name
+                        ? "Updating " + item.name
+                        : "Create a new Budget Category"
+                }
                 okText="Confirm"
                 onCancel={onCancel}
                 onOk={onCreate}
                 afterClose={this.afterClose}
             >
                 <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-                    {item.name ? null :
-                    <div>
-                    <Form.Item label="Name">
-                        {getFieldDecorator("name", nameConfig)(
-                            <Input placeholder="Budget Category Name" />
-                        )}
-                    </Form.Item>
-                     <Form.Item label="Type">
-                     {getFieldDecorator("isIncome", typeConfig)(
-                         <Select
-                             style={{ width: 120 }}
-                             onChange={this.handleTypeChange}
-                         >
-                             <Option value="income">Income</Option>
-                             <Option value="needs">Needs</Option>
-                             <Option value="wants">Wants</Option>
-                         </Select>
-                     )}
-                 </Form.Item>
-                 </div>
-                    }
-                   
+                    {item.name ? null : (
+                        <div>
+                            <Form.Item label="Name">
+                                {getFieldDecorator("name", nameConfig)(
+                                    <Input placeholder="Budget Category Name" />
+                                )}
+                            </Form.Item>
+                            <Form.Item label="Type">
+                                {getFieldDecorator("isIncome", typeConfig)(
+                                    <Select
+                                        style={{ width: 120 }}
+                                        onChange={this.handleTypeChange}
+                                    >
+                                        <Option value="income">Income</Option>
+                                        <Option value="needs">Needs</Option>
+                                        <Option value="wants">Wants</Option>
+                                    </Select>
+                                )}
+                            </Form.Item>
+                        </div>
+                    )}
 
                     {!this.state.isDisabled ? (
                         <div>
