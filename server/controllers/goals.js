@@ -93,7 +93,7 @@ var updateGoals = (req, res) => {
             res.status(500).json(err);
         });
 };
-
+//delete a goal. 
 var deleteGoals = (req, res) => {
     Goal.deleteOne({ user: req.user._id, name: req.body.name })
         .then(doc => {

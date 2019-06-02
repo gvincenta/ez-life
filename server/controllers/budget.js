@@ -75,6 +75,7 @@ var suggestBudget = function(req, res) {
             }
         }
     ]);
+    //ask for avg income: 
     var avgIncome = Budget.aggregate([
         { $match: { user: req.user._id, isIncome: "income" } },
         {
@@ -163,6 +164,7 @@ var getBudget = function(req, res) {
  * @param req.body:(required)  updated budget details provided in JSON object.  */
 
 var updateBudget = function(req, res) {
+    
     Joi.validate(req.body, schemas.budgetUpdateSchema).then(item => {
         Budget.findOneAndUpdate(
             {

@@ -62,6 +62,7 @@ var dailyTransaction = function(req, res) {
     var lowerBound = new Date(currYear, currMonth);
     // upperBound = this month's last date, e.g. 30th April.
     var upperBound = new Date(currYear, currMonth + 1);
+    //return the day to day transactions (ascending).
     Budget.aggregate([
         { $match: { user: req.user._id, ignored: false } },
         {
@@ -145,9 +146,11 @@ var monthlyTransaction = function(req, res) {
                         as: "data"
                     }
                 },
+                //flatten.. 
                 {
                     $unwind: "$data"
                 },
+                //match this month: 
                 {
                     $match: {
                         "data.month": {
@@ -156,6 +159,7 @@ var monthlyTransaction = function(req, res) {
                         }
                     }
                 },
+                //change field names: 
                 {
                     $project: {
                         name: "$name",
@@ -173,6 +177,7 @@ var monthlyTransaction = function(req, res) {
             //make this month's report for each category from the list of transactions:
             Budget.aggregate([
                 { $match: { user: req.user._id, ignored: false } },
+                //aggregate to transactions: 
                 {
                     $lookup: {
                         from: "transactions",
@@ -181,9 +186,11 @@ var monthlyTransaction = function(req, res) {
                         as: "data"
                     }
                 },
+                //flatten
                 {
                     $unwind: "$data"
                 },
+                //match this month: 
                 {
                     $match: {
                         "data.date": {
@@ -192,6 +199,7 @@ var monthlyTransaction = function(req, res) {
                         }
                     }
                 },
+                //group for each category: 
                 {
                     $group: {
                         _id: {
@@ -211,6 +219,7 @@ var monthlyTransaction = function(req, res) {
                 var sum = 0;
                 var answer = [];
                 for (let i = 0; i < doc.length; i++) {
+                    //put into remort
                     var model = new Report({
                         user: req.user._id,
                         amountPerMonth: doc[i].totalAmount,
@@ -223,11 +232,14 @@ var monthlyTransaction = function(req, res) {
                             user: req.user._id,
                             _id: doc[i]._id.id
                         },
+                        //add associated reportID:
                         {
                             $push: { reportID: model._id }
                         },
+                        
                         { new: true }
                     ).then(result => {});
+                    //send to front:
                     answer.push({
                         name: doc[i]._id.name,
                         totalAmount: model.amountPerMonth,
@@ -235,7 +247,6 @@ var monthlyTransaction = function(req, res) {
                     });
                 }
 
-                //answer.push(sum);
                 res.send({ document: answer, found: false });
                 return;
             });

@@ -65,9 +65,11 @@ var findTransaction = function(req, res) {
     // gives all of user's transactions if no query name defined.
     var upperBound = new Date(currYear, currMonth + 1);
     var lowerBound = new Date(currYear, currMonth);
+    //populate with budget to get all transactions: 
 
     Budget.aggregate([
         { $match: { user: req.user._id, ignored: false } },
+        //populating..
         {
             $lookup: {
                 from: "transactions",
@@ -76,9 +78,11 @@ var findTransaction = function(req, res) {
                 as: "data"
             }
         },
+        //flatten: 
         {
             $unwind: "$data"
         },
+        //match within this month: 
         {
             $match: {
                 "data.date": {
@@ -87,14 +91,19 @@ var findTransaction = function(req, res) {
                 }
             }
         },
+        //change fields name: 
         {
             $project: {
                 _id: "$data._id",
                 name: "$name",
                 amount: "$data.realAmount",
                 date: "$data.date"
+            }},
+            //sort descending
+            {
+                $sort: { date: -1 }
             }
-        }
+        
     ]).then(doc => {
         res.json(doc);
     });
