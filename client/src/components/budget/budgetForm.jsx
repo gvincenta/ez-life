@@ -3,6 +3,7 @@ import { Form, Input, InputNumber, Select, Modal } from "antd";
 
 const { Option } = Select;
 
+// Provided Budget Form format and data validation
 class BudgetForm extends Component {
     constructor(props) {
         super(props);
@@ -12,6 +13,7 @@ class BudgetForm extends Component {
         };
     }
 
+    // only wants can be updated
     componentDidUpdate() {
         if (
             this.state.isDisabled !== false &&
@@ -23,12 +25,14 @@ class BudgetForm extends Component {
         }
     }
 
+     // reset the form field after close it
     afterClose = () => {
         this.setState({ isDisabled: true });
         this.setState({ inital: 0 });
         this.props.form.resetFields();
     };
 
+    // handle submit the form
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -38,6 +42,7 @@ class BudgetForm extends Component {
         });
     };
 
+    // handle the type be chosen 
     handleTypeChange = e => {
         console.log("e,", e, this.state.isDisabled);
         if (e === "wants") {
@@ -65,6 +70,8 @@ class BudgetForm extends Component {
             }
         };
 
+        // validation for amount field
+        // range is 1 and beyond
         const amountConfig = {
             initialValue: item.budgetedAmount,
             rules: [
@@ -75,8 +82,10 @@ class BudgetForm extends Component {
                 }
             ]
         };
+        // validation for preference field
+        // range is 1 to 5
         const preferenceConfig = {
-            initialValue: item.preference,
+            initialValue: item.preference === undefined ? item.preference : item.preference.toString(),
             rules: [
                 {
                     type: "string",
@@ -85,6 +94,7 @@ class BudgetForm extends Component {
                 }
             ]
         };
+        // validation for type field
         const typeConfig = {
             initialValue: item.isIncome,
             rules: [
@@ -95,6 +105,7 @@ class BudgetForm extends Component {
                 }
             ]
         };
+        // validation for name field
         const nameConfig = {
             initialValue: item.name,
             rules: [
@@ -107,34 +118,40 @@ class BudgetForm extends Component {
         };
 
         return (
+            // modal form
+            // preference and budget amount only appear when u select 'wants' as type
             <Modal
                 className="popup"
                 visible={visible}
-                title="Create a new Budget Category"
+                title= {item.name ? "Updating " + item.name : "Create a new Budget Category"}
                 okText="Confirm"
                 onCancel={onCancel}
                 onOk={onCreate}
                 afterClose={this.afterClose}
             >
                 <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+                    {item.name ? null :
+                    <div>
                     <Form.Item label="Name">
                         {getFieldDecorator("name", nameConfig)(
                             <Input placeholder="Budget Category Name" />
                         )}
                     </Form.Item>
-
-                    <Form.Item label="Type">
-                        {getFieldDecorator("isIncome", typeConfig)(
-                            <Select
-                                style={{ width: 120 }}
-                                onChange={this.handleTypeChange}
-                            >
-                                <Option value="income">Income</Option>
-                                <Option value="needs">Needs</Option>
-                                <Option value="wants">Wants</Option>
-                            </Select>
-                        )}
-                    </Form.Item>
+                     <Form.Item label="Type">
+                     {getFieldDecorator("isIncome", typeConfig)(
+                         <Select
+                             style={{ width: 120 }}
+                             onChange={this.handleTypeChange}
+                         >
+                             <Option value="income">Income</Option>
+                             <Option value="needs">Needs</Option>
+                             <Option value="wants">Wants</Option>
+                         </Select>
+                     )}
+                 </Form.Item>
+                 </div>
+                    }
+                   
 
                     {!this.state.isDisabled ? (
                         <div>

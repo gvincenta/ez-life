@@ -5,7 +5,8 @@ import moment from 'moment'
 const FormItem = Form.Item;
 const {Option} = Select;
 
-class TransForm extends Component {
+// Provided Goal Form format and validation
+class GoalsForm extends Component {
 
   state = {
     isDisabled: true,
@@ -91,7 +92,10 @@ class TransForm extends Component {
         
       
       return (
+        // modal form
+        // update goal amount only appear when u update a goal
         <Modal
+          className="popup"
           visible={visible}
           title= {item.name ? item.name : "Create a new Goal"}
           okText="Confirm"
@@ -99,7 +103,7 @@ class TransForm extends Component {
           onOk={onCreate}
           afterClose={this.afterClose}
         >
-            
+      
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
             <Form.Item label="Achieved Date">
             {getFieldDecorator('due', timeConfig)(
@@ -162,6 +166,6 @@ class TransForm extends Component {
   }
 }
  
-const GoalsFormTable = Form.create({ name: 'form_in_modal' })(TransForm);
+const GoalsFormTable = Form.create({ name: 'form_in_modal' })(GoalsForm);
 export default GoalsFormTable
  

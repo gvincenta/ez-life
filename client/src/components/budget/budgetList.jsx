@@ -81,8 +81,10 @@ class EditableTable extends React.Component {
         };
     }
 
+    // load the existing data
+    // and intro guide tour
     componentDidMount() {
-        // TODO handleload()
+
         this.handleLoad();
 
         // introJs
@@ -186,7 +188,7 @@ class EditableTable extends React.Component {
 
             form.resetFields();
 
-            const { editingKey } = this.state;
+            const { budgets, editingKey } = this.state;
 
             let newData = {
                 isIncome: values.isIncome,
@@ -194,12 +196,17 @@ class EditableTable extends React.Component {
                 preference: values.preference,
                 budgetAmount: values.budgetAmount
             };
-
+            console.log(newData)
             if (editingKey !== "-1") {
-                // TODO update a transaction
+                const item =
+                editingKey === "-1"
+                    ? {}
+                    : budgets.find(item => item._id === editingKey);
+            
+                newData.name =  item.name
                 this.handleUpdate(newData);
             } else {
-                // TODO create new transaction
+
                 this.handleAddNew(newData);
             }
 
@@ -207,15 +214,19 @@ class EditableTable extends React.Component {
         });
     };
 
+    // handle edit
     edit(key) {
         this.setState({ editingKey: key });
         this.setState({ visible: true });
     }
 
+    // collect the data from the form when 'Confirm' be click
     saveFormRef = formRef => {
         this.formRef = formRef;
     };
 
+    // render the budget table
+    // only 'wants' has expanded table showing preference and budget amount
     render() {
         const { budgets, editingKey } = this.state;
         const item =

@@ -3,6 +3,7 @@ import { Form, DatePicker, InputNumber, Cascader, Modal } from "antd";
 
 import moment from "moment";
 
+// Provided Transaction Form format and validation
 class TransForm extends Component {
     handleSubmit = e => {
         e.preventDefault();
@@ -77,7 +78,7 @@ class TransForm extends Component {
                         {getFieldDecorator("transdate", timeConfig)(
                             <DatePicker
                                 disabledDate={current => {
-                                    return moment().endOf('month').subtract('1','month') < current  && current.isAfter(new Date());
+                                    return  current.isAfter(new Date());
                                 }}
                                 dateRender={current => {
                                     return (
