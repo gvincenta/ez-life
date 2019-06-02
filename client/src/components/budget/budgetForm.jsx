@@ -111,7 +111,7 @@ class BudgetForm extends Component {
                 className="popup"
                 visible={visible}
                 title="Create a new Budget Category"
-                okText="Ok"
+                okText="Confirm"
                 onCancel={onCancel}
                 onOk={onCreate}
                 afterClose={this.afterClose}

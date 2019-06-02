@@ -154,6 +154,7 @@ class EditableTable extends React.Component {
                 });
                 // TODO update a transaction
                 //this.setState({dataSource: newd})
+                //this.handleUpdate(newData);
             } else {
                 // TODO create new transaction
 
@@ -168,7 +169,7 @@ class EditableTable extends React.Component {
     handleAddNew = newData => {
         var self = newData;
         var self_2 = this;
-
+        console.log("data", typeof(self.date))
         this.props.axios
             .post("/transactions", {
                 name: self.name,
@@ -193,13 +194,33 @@ class EditableTable extends React.Component {
         this.formRef = formRef;
     };
 
-    handleDelete = key => {
-        // TODO delete a transaction
-        const transactions = [...this.state.transactions];
-        this.setState({
-            transactions: transactions.filter(item => item.key !== key)
-        });
+    // handleDelete = key => {
+    //     // TODO delete a transaction
+    //     const transactions = [...this.state.transactions];
+    //     this.setState({
+    //         transactions: transactions.filter(item => item.key !== key)
+    //     });
+    // };
+    //handles updating budget amounts:
+    handleUpdate = newData => {
+        var data = newData;
+        var self = this;
+
+        this.props.axios
+            .put("/transaction", {
+                name: data.name,
+                realAmount: data.amount,
+                date: data.date
+            })
+            .then(function(response) {
+                self.handleLoad();
+            })
+            .catch(function(err) {
+                self.setState({ error: err });
+            });
     };
+
+   
 
     categoryOption = () => {
         var self = this;

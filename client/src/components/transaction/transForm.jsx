@@ -67,8 +67,8 @@ class TransForm extends Component {
         return (
             <Modal
                 visible={visible}
-                title="Create a new transaction log"
-                okText="Create"
+                title={item.name ? item.name : "Create a new transaction log"}
+                okText="Confirm"
                 onCancel={onCancel}
                 onOk={onCreate}
             >
@@ -77,7 +77,7 @@ class TransForm extends Component {
                         {getFieldDecorator("transdate", timeConfig)(
                             <DatePicker
                                 disabledDate={current => {
-                                    return current.isAfter(new Date());
+                                    return moment().endOf('month').subtract('1','month') < current  && current.isAfter(new Date());
                                 }}
                                 dateRender={current => {
                                     return (

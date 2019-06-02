@@ -9,11 +9,14 @@ var Joi = require("joi");
  * @param req.query : all the details of the goal inserted as queries. */
 
 var addNew = (req, res) => {
+    console.log(req.body, "erq.body");
     // validates user input
     Joi.validate(req.body, schemas.goalSchema)
         .then(
             // if validated,
             item => {
+                console.log(item, "item.body");
+
                 var model = new Goal({
                     user: req.user._id,
                     name: item.name,
@@ -28,6 +31,7 @@ var addNew = (req, res) => {
         .catch(err => {
             res.json(err);
         });
+
 };
 
 /** Checks on 1 goal or all goals related to 1 user.
