@@ -12,10 +12,14 @@ import "intro.js/introjs.css";
 import "./transaction.css";
 import { configConsumerProps } from "antd/lib/config-provider";
 
+// Transaction page
+// display the transaction table
+// handle the function of adding transaction
 class EditableTable extends React.Component {
     constructor(props) {
         super(props);
 
+        // table columns
         this.columns = [
             {
                 title: "Date",
@@ -32,40 +36,8 @@ class EditableTable extends React.Component {
                 title: "Amount",
                 dataIndex: "amount"
             },
-            {
-                title: "Operation",
-                dataIndex: "operation",
-                width: "20%",
-                render: (text, record) => {
-                    const { editingKey } = this.state;
-                    return (
-                        <div>
-                            <span>
-                                {
-                                    <a
-                                        disabled={editingKey !== "-1"}
-                                        onClick={() => this.edit(record.key)}
-                                    >
-                                        Edit
-                                    </a>
-                                }
-                                <Divider type="vertical" />
-
-                                {this.state.transactions.length >= 1 ? (
-                                    <Popconfirm
-                                        title="Sure to delete?"
-                                        onConfirm={() =>
-                                            this.handleDelete(record.key)
-                                        }
-                                    >
-                                        <a href={"javascript:;"}>Delete</a>
-                                    </Popconfirm>
-                                ) : null}
-                            </span>
-                        </div>
-                    );
-                }
-            }
+            
+            
         ];
 
         this.state = {
@@ -86,8 +58,9 @@ class EditableTable extends React.Component {
         };
     }
 
+    // load the existing data
+    // and intro guide tour
     componentDidMount() {
-        // TODO handleload()
         this.handleLoad();
         this.categoryOption();
         if (RegExp("multipage=2", "gi").test(window.location.search)) {
@@ -99,6 +72,8 @@ class EditableTable extends React.Component {
                 });
         }
     }
+
+    //handle item loading:
     handleLoad = () => {
         var self = this;
         this.props.axios
@@ -113,16 +88,19 @@ class EditableTable extends React.Component {
                 alert(err);
                 self.setState({ error: err });
             });
-    };
+    };  
 
+    // show pop up modal
     showModal = () => {
         this.setState({ visible: true });
     };
 
+    // handle cancel modal
     handleCancel = () => {
         this.setState({ visible: false, editingKey: "-1" });
     };
 
+    // handle add new transaction
     handleCreate = () => {
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {
@@ -137,38 +115,24 @@ class EditableTable extends React.Component {
             const { transactions, editingKey } = this.state;
 
             const newData = {
-                //key: editingKey === '-1' ? this.state.count : parseInt(editingKey),
+            
                 date: moment(values.transdate).format("YYYY-MM-DD"),
                 name: values.category[1],
                 amount: values.amount.toString()
             };
 
-            console.log("newData", newData);
-            if (editingKey !== "-1") {
-                // edit
-                let newd = transactions.map(item => {
-                    if (item.key === parseInt(editingKey)) {
-                        item = newData;
-                    }
-                    return item;
-                });
-                // TODO update a transaction
-                //this.setState({dataSource: newd})
-            } else {
-                // TODO create new transaction
-
-                this.handleAddNew(newData);
-                //this.setState({dataSource:[...dataSource,newData],count: this.state.count+1});
-            }
-            //
+            
+            this.handleAddNew(newData);
+                
             this.setState({ visible: false, editingKey: "-1" });
         });
     };
 
+    // handle add new transaction
     handleAddNew = newData => {
         var self = newData;
         var self_2 = this;
-
+        console.log("data", typeof(self.date))
         this.props.axios
             .post("/transactions", {
                 name: self.name,
@@ -184,23 +148,20 @@ class EditableTable extends React.Component {
             });
     };
 
+    // handle edit
     edit(key) {
         this.setState({ editingKey: key });
         this.setState({ visible: true });
     }
 
+    // collect the data from the form when 'Confirm' be click
     saveFormRef = formRef => {
         this.formRef = formRef;
     };
 
-    handleDelete = key => {
-        // TODO delete a transaction
-        const transactions = [...this.state.transactions];
-        this.setState({
-            transactions: transactions.filter(item => item.key !== key)
-        });
-    };
-
+   
+   
+    // handle the category option loading
     categoryOption = () => {
         var self = this;
 
@@ -242,6 +203,7 @@ class EditableTable extends React.Component {
             });
     };
 
+    // render the transaction table
     render() {
         const { transactions, editingKey, option } = this.state;
         const item =
