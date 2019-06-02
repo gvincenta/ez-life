@@ -79,7 +79,8 @@ class TransForm extends Component {
                             <DatePicker
                                 disabledDate={current => {
                                 
-                                   return  ( moment(new Date()) <= current || moment().add(-1, "month") >=current ) ;
+                                    return current.isAfter(new Date());
+
                                 }}
                                 dateRender={current => {
                                     return (
