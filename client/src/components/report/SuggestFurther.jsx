@@ -117,7 +117,6 @@ export default class SuggestFurther extends Component {
         var { oneCat, maxVal, minVal, currVal, isIncome } = this.state;
         var catName = "";
         if (oneCat !== "") {
-            console.log(oneCat);
             catName = oneCat.datasets[0].label[0];
         }
 

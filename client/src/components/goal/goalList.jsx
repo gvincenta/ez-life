@@ -58,7 +58,6 @@ export default class EditableGoal extends React.Component {
             .then(function(response) {
                 var d = response.data;
                 self.setState({ goals: d });
-                console.log(d);
             })
             .catch(function(error) {
                 alert(error);
@@ -127,7 +126,6 @@ export default class EditableGoal extends React.Component {
                 return;
             }
 
-            console.log("Received values of form: ", values);
 
             form.resetFields();
 

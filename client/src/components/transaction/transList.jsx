@@ -80,7 +80,6 @@ class EditableTable extends React.Component {
                 var d = response.data;
 
                 self.setState({ transactions: d });
-                console.log(self.state.transactions);
             })
             .catch(function(err) {
                 alert(err);
@@ -106,7 +105,6 @@ class EditableTable extends React.Component {
                 return;
             }
 
-            console.log("Received values of form: ", values);
 
             form.resetFields();
 
@@ -128,7 +126,6 @@ class EditableTable extends React.Component {
     handleAddNew = newData => {
         var self = newData;
         var self_2 = this;
-        console.log("data", typeof self.date);
         this.props.axios
             .post("/transactions", {
                 name: self.name,

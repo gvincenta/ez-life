@@ -195,7 +195,6 @@ class EditableTable extends React.Component {
                 preference: values.preference,
                 budgetAmount: values.budgetAmount
             };
-            console.log(newData);
             if (editingKey !== "-1") {
                 const item =
                     editingKey === "-1"

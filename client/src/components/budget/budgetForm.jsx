@@ -44,7 +44,6 @@ class BudgetForm extends Component {
 
     // handle the type be chosen
     handleTypeChange = e => {
-        console.log("e,", e, this.state.isDisabled);
         if (e === "wants") {
             this.setState({ isDisabled: false });
         } else {
@@ -56,7 +55,6 @@ class BudgetForm extends Component {
         const { getFieldDecorator } = this.props.form;
         const { visible, onCancel, onCreate, form, item } = this.props;
 
-        console.log(item);
 
         const { isDisabled } = this.state;
         const formItemLayout = {

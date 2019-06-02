@@ -308,7 +308,6 @@ class Report extends Component {
         this.handleReportRetrieval();
         this.handleDailyRetrieval();
         this.handleGraphRetrieval();
-        console.log(this.state.yearly, "yearly");
     }
     /** gets yearly graph report:*/
     handleGraphRetrieval = () => {
@@ -377,7 +376,6 @@ class Report extends Component {
         };
 
         this.setState({ yearly: newData });
-        console.log(this.state.yearly);
     };
 
     handleReportRetrieval = () => {
