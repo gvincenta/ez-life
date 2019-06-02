@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
-import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import axios from "axios";
 import "./App.css";
 import NavBar from "./navbar/Header";
@@ -12,7 +11,7 @@ import SideBar from "./sidebar/sidebar";
 import TransList from "./transaction/transList";
 import GoalList from "./goal/goalList";
 import BudgetList from "./budget/budgetList.jsx";
-import UserProfile from "./UserProfile";
+
 import browserstore from "browser-session-store";
 
 class App extends Component {
