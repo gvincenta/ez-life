@@ -16,6 +16,7 @@
     "jsonschema": "^1.2.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.4.20",
+    "nodemon": "^1.19.1",
     "opn": "^6.0.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
